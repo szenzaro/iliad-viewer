@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ViewerPageComponent } from './components/pages/viewer-page/viewer-page.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { AboutPageComponent } from './components/pages/about-page/about-page.component';
+import { PageNotFoundComponent } from './components/pages/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { AboutPageComponent } from './components/pages/about-page/about-page.com
     ViewerPageComponent,
     HomePageComponent,
     AboutPageComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
