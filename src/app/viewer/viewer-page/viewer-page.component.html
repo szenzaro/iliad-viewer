@@ -1,4 +1,8 @@
-<p>
-  viewer-page works!
-</p>
-{{ data | async | json }}
+
+<div class="d-flex justify-content-end viewer-nav">
+  <app-mode-selector></app-mode-selector>
+</div>
+<div class="d-flex">
+  <router-outlet></router-outlet>
+  {{ data | async | json }}
+</div>
