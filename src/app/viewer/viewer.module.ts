@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ViewerRoutingModule } from './viewer-routing.module';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
+import { ModeSelectorComponent } from './components/mode-selector/mode-selector.component';
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import { ViewerPageComponent } from './viewer-page/viewer-page.component';
   ],
   declarations: [
     ViewerPageComponent,
+    ModeSelectorComponent,
   ],
 })
 export class ViewerModule { }

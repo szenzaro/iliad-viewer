@@ -1,0 +1,11 @@
+<div class="d-flex justify-content-end viewer-nav">
+    <div class="p-1 btn-group">
+        <button *ngFor="let option of options | async" 
+            type="button" 
+            class="btn btn-secondary active"
+            [routerLink]="option.path"
+            [class.active]="option.active">
+            {{ option.label }}
+        </button>
+    </div>
+</div>
