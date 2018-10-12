@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { TextService } from './services/text.service';
+import { NEVER, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'iliad-viewer';
+  title = 'iliad-viewer';  
 }
