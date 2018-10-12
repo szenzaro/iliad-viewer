@@ -8,7 +8,7 @@ export class TextService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getText() {
-    return this.http.get('./assets/texts/test.json');
+  getVerses(text: string, chant: number) {
+    return this.http.get(`./assets/texts/${text}/${chant}/verses.json`);
   }
 }

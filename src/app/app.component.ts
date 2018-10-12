@@ -13,6 +13,6 @@ export class AppComponent {
   data: Observable<Object> = NEVER;
 
   constructor(private readonly textService: TextService) {
-    this.data = this.textService.getText();
+    this.data = this.textService.getVerses('text1', 1);
   }
 }
