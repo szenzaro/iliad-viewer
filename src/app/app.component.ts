@@ -8,11 +8,5 @@ import { NEVER, Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'iliad-viewer';
-
-  data: Observable<Object> = NEVER;
-
-  constructor(private readonly textService: TextService) {
-    this.data = this.textService.getVerses('text1', 1);
-  }
+  title = 'iliad-viewer';  
 }

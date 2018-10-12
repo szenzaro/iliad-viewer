@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { TextService } from 'src/app/services/text.service';
+import { Observable, NEVER } from 'rxjs';
 
 @Component({
   selector: 'app-viewer-page',
   templateUrl: './viewer-page.component.html',
-  styleUrls: ['./viewer-page.component.scss']
+  styleUrls: ['./viewer-page.component.scss'],
 })
-export class ViewerPageComponent implements OnInit {
+export class ViewerPageComponent {
 
-  constructor() { }
+  data: Observable<Object> = NEVER;
 
-  ngOnInit() {
+  constructor(private readonly textService: TextService) {
+    this.data = this.textService.getVerses('text1', 1);
   }
 
 }
