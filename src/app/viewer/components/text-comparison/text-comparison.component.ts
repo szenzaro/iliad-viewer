@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Observable, NEVER } from 'rxjs';
+import { TextService } from 'src/app/services/text.service';
+import { Verse } from 'src/app/utils/models';
 
 @Component({
   selector: 'app-text-comparison',
   templateUrl: './text-comparison.component.html',
-  styleUrls: ['./text-comparison.component.scss']
+  styleUrls: ['./text-comparison.component.scss'],
 })
-export class TextComparisonComponent implements OnInit {
+export class TextComparisonComponent {
 
-  constructor() { }
+  data: Observable<Verse[]> = NEVER;
 
-  ngOnInit() {
+  constructor(private readonly textService: TextService) {
+    this.data = this.textService.getVerses('text1', 1);
   }
 
 }
