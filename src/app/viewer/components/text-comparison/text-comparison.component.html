@@ -1,3 +1,8 @@
-<p *ngFor="let verse of data | async">
-  {{ verse | json }}
-</p>
+<div class="d-flex flex-grow-1 full-height justify-content-around">
+  <div class="col overflow-scroll border-right">
+    <app-verse *ngFor="let verse of data | async" [verse]="verse"></app-verse>
+  </div>
+  <div class="col overflow-scroll border-right">
+    <app-verse *ngFor="let verse of data | async" [verse]="verse"></app-verse>
+  </div>
+</div>
