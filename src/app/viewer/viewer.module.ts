@@ -6,6 +6,7 @@ import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ModeSelectorComponent } from './components/mode-selector/mode-selector.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
+import { WordComponent } from './components/word/word.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { ManuscriptComponent } from './components/manuscript/manuscript.componen
     ModeSelectorComponent,
     TextComparisonComponent,
     ManuscriptComponent,
+    WordComponent,
   ],
 })
 export class ViewerModule { }
