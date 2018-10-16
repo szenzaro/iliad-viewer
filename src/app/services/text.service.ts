@@ -18,7 +18,7 @@ export class TextService {
         tap((x: Chant) => console.log(x)),
         map(({ verses }: Chant) => verses
           .map((verse, i) => ({
-            n: 1,
+            n: i + 1,
             words: verse.map((lemma, j) => ({ id: `${chant}.${i + 1}.${j + 1}`, lemma } as Word)),
           } as Verse))),
       );
