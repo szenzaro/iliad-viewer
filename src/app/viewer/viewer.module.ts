@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ViewerRoutingModule } from './viewer-routing.module';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
+import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import { ViewerPageComponent } from './viewer-page/viewer-page.component';
   ],
   declarations: [
     ViewerPageComponent,
+    OpenseadragonComponent,
   ],
 })
 export class ViewerModule { }
