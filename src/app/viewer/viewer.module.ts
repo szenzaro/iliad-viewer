@@ -8,6 +8,7 @@ import { TextComparisonComponent } from './components/text-comparison/text-compa
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { VerseComponent } from './components/verse/verse.component';
 import { WordComponent } from './components/word/word.component';
+import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { WordComponent } from './components/word/word.component';
     ManuscriptComponent,
     VerseComponent,
     WordComponent,
+    OpenseadragonComponent,
   ],
 })
 export class ViewerModule { }
