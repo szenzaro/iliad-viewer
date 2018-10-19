@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/variables";
+@import "scss/colors.scss";
+
 .full-height {
     height: 100vh;
 }
@@ -30,5 +33,14 @@
 }
 
 .border-right {
-    border: solid 1px #cccccc;
+    border: solid 1px $c-light-grey;
+}
+
+.verse:hover {
+    background-color: $c-light-grey;
+}
+
+.word:hover {
+    cursor: pointer;
+    color: $info;
 }
