@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Verse, Word, Chant } from '../utils/models';
+import { Injectable } from '@angular/core';
+import { Chant, Verse, Word } from '../utils/models';
 
 import { map } from 'rxjs/operators';
 

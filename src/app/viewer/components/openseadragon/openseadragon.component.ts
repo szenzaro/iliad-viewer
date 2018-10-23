@@ -1,9 +1,9 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 
-import OpenSeadragon from 'openseadragon';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { map, filter, switchMap, startWith, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import OpenSeadragon from 'openseadragon';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 /*
 

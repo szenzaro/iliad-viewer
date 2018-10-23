@@ -7,6 +7,11 @@
             "app",
             "camelCase"
         ],
+        "ordered-imports": true,
+        "trailing-comma": [true],
+        "no-unused-expression": true,
+        "triple-equals": true,
+        "prefer-const": true,
         "component-selector": [
             true,
             "element",

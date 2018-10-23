@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ViewerPageComponent } from './viewer-page/viewer-page.component';
+import { RouterModule, Routes } from '@angular/router';
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
+import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 
 const routes: Routes = [
   {

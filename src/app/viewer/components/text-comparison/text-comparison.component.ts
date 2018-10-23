@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Observable, NEVER } from 'rxjs';
 import { TextService } from 'src/app/services/text.service';
 import { Verse } from 'src/app/utils/models';
+
+import { NEVER, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-text-comparison',

@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { map, filter, startWith } from 'rxjs/operators';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+
+import { filter, map, startWith } from 'rxjs/operators';
 
 type Mode = 'Manuscript' | 'Text Comparison';
 

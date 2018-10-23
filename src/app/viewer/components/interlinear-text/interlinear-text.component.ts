@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { TextService } from 'src/app/services/text.service';
+import { faListAlt, faThList } from '@fortawesome/free-solid-svg-icons';
+
 import { BehaviorSubject, combineLatest, forkJoin } from 'rxjs';
-import { map, switchMap, tap, filter } from 'rxjs/operators';
-import { faThList, faListAlt } from '@fortawesome/free-solid-svg-icons';
+import { map, switchMap } from 'rxjs/operators';
+import { TextService } from 'src/app/services/text.service';
 
 
 function pairwiseMerge<T>(arr: T[], arr2: T[], initial: T[] = []): T[] {
