@@ -26,6 +26,11 @@ export class TextService {
         map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
       );
   }
+
+  getVersesNumberFromPage(text: string, chant: number, n: number) {
+    return this.http.get(`./assets/texts/${text}/${chant}/pages.json`)
+      .pipe(
+        map((pages: number[][]) => pages[n] as [number, number]),
       );
   }
 }
