@@ -19,15 +19,13 @@ export class TextService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getVerses(text: string, chant: number): Observable<Verse[]> {
+  getVerses(text: string, chant: number, range?: [number, number]) {
     return this.http.get(`./assets/texts/${text}/${chant}/verses.json`)
       .pipe(
-        tap((x: Chant) => console.log(x)),
-        map(({ verses }: Chant) => verses
-          .map((verse, i) => ({
-            n: i + 1,
-            words: verse.map((lemma, j) => ({ id: `${chant}.${i + 1}.${j + 1}`, lemma } as Word)),
-          } as Verse))),
+        map(({ verses }: Chant) => jsonToModelVerses(chant, verses)),
+        map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
+      );
+  }
       );
   }
 }
