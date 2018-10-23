@@ -1,6 +1,13 @@
-<app-interlinear-text 
-  [page]="1" 
-  [chant]="1" 
-  text="text2" 
-  paraphrase="text1">
-</app-interlinear-text>
+<div class="d-flex">
+  <app-interlinear-text 
+    class="col"
+    [page]="1" 
+    [chant]="1" 
+    text="text2" 
+    paraphrase="text1">
+  </app-interlinear-text>
+  <app-openseadragon 
+    class="col"
+    manifestURL="https://www.e-codices.unifr.ch/metadata/iiif/bge-gr0044/manifest.json">
+  </app-openseadragon>
+</div>
