@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Verse, Word, Chant } from '../utils/models';
-import { Observable } from 'rxjs';
 
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+
+function jsonToModelVerses(chant: number, verses: string[][]) {
+  return verses
+    .map((verse, i) => ({
+      n: i + 1,
+      words: verse.map((lemma, j) => ({ id: `${chant}.${i + 1}.${j + 1}`, lemma } as Word)),
+    } as Verse));
+}
 
 @Injectable({
   providedIn: 'root'
