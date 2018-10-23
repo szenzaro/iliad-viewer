@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ViewerRoutingModule } from './viewer-routing.module';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
@@ -13,6 +14,7 @@ import { OpenseadragonComponent } from './components/openseadragon/openseadragon
 @NgModule({
   imports: [
     CommonModule,
+    FontAwesomeModule,
     ViewerRoutingModule,
   ],
   declarations: [
