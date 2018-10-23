@@ -9,6 +9,7 @@ import { Verse } from 'src/app/utils/models';
 export class VerseComponent {
 
   @Input() verse: Verse;
+  @Input() highlight = false;
 
 }
 
