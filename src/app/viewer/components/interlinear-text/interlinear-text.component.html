@@ -1,0 +1,24 @@
+<div class="btn-group" role="group" aria-label="Basic example">
+  <button 
+    (click)="clickParaphrase()" 
+    type="button" 
+    class="btn btn-secondary btn-sm" 
+    [class.active]="showParaphfrase">
+    <fa-icon [icon]="faThList"></fa-icon>
+  </button>
+  <button 
+    (click)="clickHomeric()" 
+    type="button" 
+    class="btn btn-secondary btn-sm" 
+    [class.active]="showHomeric">
+    <fa-icon [icon]="faListAlt"></fa-icon>
+  </button>
+</div>
+
+<app-verse 
+  *ngFor="let verse of verses | async; let index = index"  
+  [attr.data-index]="index"
+  [highlight]="showParaphfrase && index % 2 !== 0"
+  [class.d-none]="showHomeric && !showParaphfrase && index % 2 === 0 || !showHomeric && showParaphfrase && index % 2 === 1"
+  [verse]="verse">
+</app-verse>

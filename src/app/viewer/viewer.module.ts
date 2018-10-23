@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ViewerRoutingModule } from './viewer-routing.module';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
@@ -9,10 +10,12 @@ import { ManuscriptComponent } from './components/manuscript/manuscript.componen
 import { VerseComponent } from './components/verse/verse.component';
 import { WordComponent } from './components/word/word.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
+import { InterlinearTextComponent } from './components/interlinear-text/interlinear-text.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    FontAwesomeModule,
     ViewerRoutingModule,
   ],
   declarations: [
@@ -23,6 +26,7 @@ import { OpenseadragonComponent } from './components/openseadragon/openseadragon
     VerseComponent,
     WordComponent,
     OpenseadragonComponent,
+    InterlinearTextComponent,
   ],
 })
 export class ViewerModule { }
