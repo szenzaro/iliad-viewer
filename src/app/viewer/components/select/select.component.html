@@ -1,0 +1,7 @@
+<label *ngIf="label">{{ label }}</label>
+<select 
+  required
+  class="custom-select custom-select-lg mb-3" 
+  [formControl]="selected">
+  <option *ngFor="let opt of options" [value]="opt.id">{{ opt.label }}</option>
+</select>
