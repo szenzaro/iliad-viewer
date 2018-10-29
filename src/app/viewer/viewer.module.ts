@@ -7,6 +7,7 @@ import { InterlinearTextComponent } from './components/interlinear-text/interlin
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { ModeSelectorComponent } from './components/mode-selector/mode-selector.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
+import { SelectTextComponent } from './components/select-text/select-text.component';
 import { SelectComponent } from './components/select/select.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
 import { VerseComponent } from './components/verse/verse.component';
@@ -30,6 +31,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     VerseComponent,
     ViewerPageComponent,
     WordComponent,
+    SelectTextComponent,
     SelectComponent,
   ],
 })
