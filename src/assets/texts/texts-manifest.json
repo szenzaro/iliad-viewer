@@ -1,0 +1,7 @@
+{
+    "mainText": ".texts/text1/verses.json",
+    "textsList": [
+        { "id": "text2", "label": "Homeric", "chants": 1  },
+        { "id": "text1", "label": "Paraphrase", "chants": 1 }
+    ]
+}
