@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 import { Verse } from 'src/app/utils/models';
 
-import { NEVER, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-text-comparison',
@@ -11,10 +12,26 @@ import { NEVER, Observable } from 'rxjs';
 })
 export class TextComparisonComponent {
 
-  data: Observable<Verse[]> = NEVER;
+  textChanges = new BehaviorSubject<string>(undefined);
+  chantChanged = new BehaviorSubject<number>(1);
+
+  comparisonTextChanges = new BehaviorSubject<string>(undefined);
+  comparisonChantChanged = new BehaviorSubject<number>(1);
+
+  text: Observable<Verse[]> = combineLatest(this.textChanges, this.chantChanged)
+    .pipe(
+      filter(([text]) => !!text),
+      switchMap(([text, chant]) => this.textService.getVerses(text, chant)),
+    );
+
+  comparisonText: Observable<Verse[]> = combineLatest(this.comparisonTextChanges, this.comparisonChantChanged)
+    .pipe(
+      filter(([text]) => !!text),
+      switchMap(([text, chant]) => this.textService.getVerses(text, chant)),
+    );
+
 
   constructor(private readonly textService: TextService) {
-    this.data = this.textService.getVerses('text1', 1);
   }
 
 }

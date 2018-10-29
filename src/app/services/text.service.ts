@@ -12,6 +12,11 @@ function jsonToModelVerses(chant: number, verses: string[][]) {
     } as Verse));
 }
 
+interface TextManifest {
+  textsList: string[];
+  mainText: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,5 +37,9 @@ export class TextService {
       .pipe(
         map((pages: number[][]) => pages[n] as [number, number]),
       );
+  }
+
+  getTextsList() {
+    return this.http.get<TextManifest>(`./assets/texts/texts-manifest.json`);
   }
 }
