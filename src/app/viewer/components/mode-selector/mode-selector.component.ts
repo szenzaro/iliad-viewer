@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 
 import { filter, map, startWith } from 'rxjs/operators';
 
-type Mode = 'Manuscript' | 'Text Comparison';
+type Mode = 'Manuscript' | 'Text Comparison' | 'Search/Analytics';
 
 interface OptionItem {
   label: Mode;
@@ -21,6 +21,7 @@ export class ModeSelectorComponent {
   private defaultOptions: OptionItem[] = [
     { label: 'Manuscript', active: false, path: 'manuscript' },
     { label: 'Text Comparison', active: false, path: 'texts' },
+    { label: 'Search/Analytics', active: false, path: 'search' },
   ];
 
   private navigationEnd = this.router.events.pipe(
