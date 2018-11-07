@@ -7,6 +7,7 @@ import { InterlinearTextComponent } from './components/interlinear-text/interlin
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { ModeSelectorComponent } from './components/mode-selector/mode-selector.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
+import { SearchComponent } from './components/search/search.component';
 import { SelectTextComponent } from './components/select-text/select-text.component';
 import { SelectComponent } from './components/select/select.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
@@ -14,6 +15,7 @@ import { VerseComponent } from './components/verse/verse.component';
 import { WordComponent } from './components/word/word.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ViewerRoutingModule } from './viewer-routing.module';
+import { SearchResultComponent } from './components/search-result/search-result.component';
 
 @NgModule({
   imports: [
@@ -27,12 +29,14 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     ManuscriptComponent,
     ModeSelectorComponent,
     OpenseadragonComponent,
+    SearchComponent,
+    SelectComponent,
+    SelectTextComponent,
     TextComparisonComponent,
     VerseComponent,
     ViewerPageComponent,
     WordComponent,
-    SelectTextComponent,
-    SelectComponent,
+    SearchResultComponent,
   ],
 })
 export class ViewerModule { }
