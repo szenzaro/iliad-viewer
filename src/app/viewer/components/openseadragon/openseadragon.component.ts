@@ -78,16 +78,20 @@ export class OpenseadragonComponent implements AfterViewInit {
       ),
     );
 
+  // clip to project related images
+  clippedTileSources = this.tileSources
+    .pipe(
+      map((tiles: any[]) => tiles.slice(18)) // TODO: add right boundary
+    );
+
   viewer: any;
 
   constructor(private http: HttpClient) {
-    this.tileSources.subscribe();
-    this.optionsChange.subscribe();
   }
 
   ngAfterViewInit() {
     this.div.nativeElement.id = `openseadragon-${Math.random()}`;
-    combineLatest(this.optionsChange, this.tileSources)
+    combineLatest(this.optionsChange, this.clippedTileSources)
       .subscribe(([opts, tileSources]) => {
         console.log('here', opts, tileSources);
         if (!!tileSources) {
