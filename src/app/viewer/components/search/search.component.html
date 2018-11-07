@@ -1,0 +1,18 @@
+<div class="d-flex flex-column">
+
+  <div class="input-group p-3 w-50 align-self-center">
+    <input type="text" class="form-control" [formControl]="searchTextbox" placeholder="Search text">
+    <div class="input-group-append">
+      <fa-icon 
+        (click)="search()"
+        [icon]="faSearch"
+        class="search-button input-group-text">
+      </fa-icon>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column p-3">
+    <app-search-result *ngFor="let res of searchService.results | async" [data]="res"></app-search-result>
+  </div>
+
+</div>
