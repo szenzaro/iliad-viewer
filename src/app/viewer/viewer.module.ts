@@ -7,6 +7,7 @@ import { InterlinearTextComponent } from './components/interlinear-text/interlin
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { ModeSelectorComponent } from './components/mode-selector/mode-selector.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
+import { SearchResultComponent } from './components/search-result/search-result.component';
 import { SearchComponent } from './components/search/search.component';
 import { SelectTextComponent } from './components/select-text/select-text.component';
 import { SelectComponent } from './components/select/select.component';
@@ -15,7 +16,6 @@ import { VerseComponent } from './components/verse/verse.component';
 import { WordComponent } from './components/word/word.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ViewerRoutingModule } from './viewer-routing.module';
-import { SearchResultComponent } from './components/search-result/search-result.component';
 import { SelectNumberComponent } from './components/select-number/select-number.component';
 
 @NgModule({
@@ -31,13 +31,13 @@ import { SelectNumberComponent } from './components/select-number/select-number.
     ModeSelectorComponent,
     OpenseadragonComponent,
     SearchComponent,
+    SearchResultComponent,
     SelectComponent,
     SelectTextComponent,
     TextComparisonComponent,
     VerseComponent,
     ViewerPageComponent,
     WordComponent,
-    SearchResultComponent,
     SelectNumberComponent,
   ],
 })
