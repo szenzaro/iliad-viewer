@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import { InSubject } from '../../utils/InSubject';
 
 @Component({
   selector: 'app-select',
@@ -9,15 +10,24 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class SelectComponent {
 
+  @Input() inline = false;
   @Input() label: string;
-  @Input() set options(opts: { id: string, label: string }[]) {
-    this.optionsChange.next(opts);
-  }
-  get options() { return this.optionsChange.value; }
+  @Input() @InSubject() selectedId: string;
+  selectedIdChange = new BehaviorSubject<string>(undefined);
+  @Input() @InSubject() options: { id: string, label: string }[];
   optionsChange = new BehaviorSubject<{ id: string, label: string }[]>([]);
 
   selected = new FormControl();
 
+
   @Output() selectionChange = this.selected.valueChanges;
+
+  constructor() {
+    this.selectedIdChange.subscribe((x) => {
+      if (x !== this.selected.value) {
+        this.selected.setValue(this.selectedId);
+      }
+    });
+  }
 
 }
