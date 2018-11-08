@@ -12,8 +12,15 @@ function jsonToModelVerses(chant: number, verses: string[][]) {
     } as Verse));
 }
 
+
+interface TextItem {
+  id: string;
+  label: string;
+  chants: number;
+}
+
 interface TextManifest {
-  textsList: string[];
+  textsList: TextItem[];
   mainText: string;
 }
 
@@ -22,7 +29,9 @@ interface TextManifest {
 })
 export class TextService {
 
-  constructor(private readonly http: HttpClient) { }
+
+  constructor(private readonly http: HttpClient) {
+  }
 
   getVerses(text: string, chant: number, range?: [number, number]) {
     return this.http.get(`./assets/texts/${text}/${chant}/verses.json`)
@@ -41,5 +50,23 @@ export class TextService {
 
   getTextsList() {
     return this.http.get<TextManifest>(`./assets/texts/texts-manifest.json`);
+  }
+
+  getNumberOfPages(text: string, chant: number) {
+    return this.http.get(`./assets/texts/${text}/${chant}/pages.json`)
+      .pipe(
+        map((pages: number[][]) => pages.length),
+      );
+  }
+
+  // TODO: cache result in an internal data structure instead of http calls for every request
+  getNumberOfChants(text: string) {
+    return this.getTextsList()
+      .pipe(
+        map((textManifest) => {
+          const textInfo = textManifest.textsList.find((x) => x.id === text);
+          return textInfo.chants;
+        }),
+      );
   }
 }
