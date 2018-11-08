@@ -4,7 +4,7 @@ import { faListAlt, faThList } from '@fortawesome/free-solid-svg-icons';
 import { BehaviorSubject, combineLatest, forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
-
+import { InSubject } from '../../utils/InSubject';
 
 function pairwiseMerge<T>(arr: T[], arr2: T[], initial: T[] = []): T[] {
   if (arr.length === 0) {
@@ -32,39 +32,19 @@ export class InterlinearTextComponent {
   showHomeric = true;
   showParaphfrase = true;
 
-  @Input() set page(n: number) {
-    if (n !== this.pageChanged.value) {
-      this.pageChanged.next(n);
-    }
-  }
-  get page() { return this.pageChanged.value; }
-  pageChanged = new BehaviorSubject<number>(1);
+  @Input() @InSubject() page: number;
+  pageChange = new BehaviorSubject<number>(1);
 
-  @Input() set text(txt: string) {
-    if (txt !== this.textChanged.value) {
-      this.textChanged.next(txt);
-    }
-  }
-  get text() { return this.textChanged.value; }
-  textChanged = new BehaviorSubject<string>(undefined);
+  @Input() @InSubject() text: string;
+  textChange = new BehaviorSubject<string>(undefined);
 
-  @Input() set paraphrase(p: string) {
-    if (p !== this.paraphraseChanged.value) {
-      this.paraphraseChanged.next(p);
-    }
-  }
-  get paraphrase() { return this.paraphraseChanged.value; }
-  paraphraseChanged = new BehaviorSubject<string>(undefined);
+  @Input() @InSubject() paraphrase: string;
+  paraphraseChange = new BehaviorSubject<string>(undefined);
 
-  @Input() set chant(c: number) {
-    if (c !== this.chantChanged.value) {
-      this.chantChanged.next(c);
-    }
-  }
-  get chant() { return this.chantChanged.value; }
-  chantChanged = new BehaviorSubject<number>(1);
+  @Input() @InSubject() chant: number;
+  chantChange = new BehaviorSubject<number>(1);
 
-  verses = combineLatest(this.textChanged, this.paraphraseChanged, this.chantChanged, this.pageChanged)
+  verses = combineLatest(this.textChange, this.paraphraseChange, this.chantChange, this.pageChange)
     .pipe(
       switchMap(([text, paraphrase, chant, n]) =>
         this.textService.getVersesNumberFromPage(text, chant, n - 1)
@@ -78,6 +58,16 @@ export class InterlinearTextComponent {
             ),
           ),
       )
+    );
+
+  numberOfChants = this.textChange
+    .pipe(
+      switchMap((text) => this.textService.getNumberOfChants(text)),
+    );
+
+  numberOfPages = combineLatest(this.textChange, this.chantChange)
+    .pipe(
+      switchMap(([text, chant]) => this.textService.getNumberOfPages(text, chant)),
     );
 
   constructor(private textService: TextService) {

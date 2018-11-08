@@ -1,0 +1,27 @@
+
+<div class="d-flex">
+  <app-select 
+    class="flex-grow-1 mr-1" 
+    [options]="options | async" 
+    [label]="label" 
+    [inline]="inline"
+    [selectedId]="selectedOption | async"
+    (selectionChange)="selectionChange.next(toInt($event))">
+  </app-select>
+  <button 
+    class="btn btn-secondary btn-sm" 
+    (click)="selectionChange.next(selectionChange.value - 1)"
+    [disabled]="selectionChange.value <= 1">
+    <fa-icon 
+      [icon]="faArrowLeft">
+    </fa-icon>
+  </button>
+  <button 
+    class="btn btn-secondary btn-sm" 
+    (click)="selectionChange.next(selectionChange.value + 1)"
+    [disabled]="selectionChange.value >= number">
+    <fa-icon 
+      [icon]="faArrowRight">
+    </fa-icon>
+  </button>
+</div>
