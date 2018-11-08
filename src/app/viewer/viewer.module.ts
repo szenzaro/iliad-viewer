@@ -16,6 +16,7 @@ import { WordComponent } from './components/word/word.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ViewerRoutingModule } from './viewer-routing.module';
 import { SearchResultComponent } from './components/search-result/search-result.component';
+import { SelectNumberComponent } from './components/select-number/select-number.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { SearchResultComponent } from './components/search-result/search-result.
     ViewerPageComponent,
     WordComponent,
     SearchResultComponent,
+    SelectNumberComponent,
   ],
 })
 export class ViewerModule { }
