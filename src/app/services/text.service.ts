@@ -24,6 +24,8 @@ interface TextManifest {
   mainText: string;
 }
 
+type PageInfo = [number, [number, number]];
+
 @Injectable({
   providedIn: 'root'
 })
@@ -41,10 +43,12 @@ export class TextService {
       );
   }
 
-  getVersesNumberFromPage(text: string, chant: number, n: number) {
-    return this.http.get(`./assets/texts/${text}/${chant}/pages.json`)
+  getVersesNumberFromPage(text: string, n: number, chant?: number, ) {
+    return this.http.get(`./assets/texts/${text}/pagesToVerses.json`)
       .pipe(
-        map((pages: number[][]) => pages[n] as [number, number]),
+        map((pages: PageInfo[]) => chant !== undefined
+          ? pages[n].find((x) => x[0] === chant) // TODO check correctness
+          : pages[n][pages[n].length - 1]),
       );
   }
 
@@ -52,10 +56,10 @@ export class TextService {
     return this.http.get<TextManifest>(`./assets/texts/texts-manifest.json`);
   }
 
-  getNumberOfPages(text: string, chant: number) {
-    return this.http.get(`./assets/texts/${text}/${chant}/pages.json`)
+  getPageNumbers(text: string, chant: number) {
+    return this.http.get(`./assets/texts/${text}/booksToPages.json`)
       .pipe(
-        map((pages: number[][]) => pages.length),
+        map((pages: number[][]) => pages[chant - 1]),
       );
   }
 

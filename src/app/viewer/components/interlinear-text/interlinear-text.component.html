@@ -17,15 +17,16 @@
   </div>
 
   <app-select-number 
-    [number]="numberOfChants | async" 
-    label="Chant" 
+    [options]="chantsNumber | async"
+    label="Book" 
     class="flex-grow-1"
     (selectionChange)="chantChange.next($event)">
   </app-select-number>
   <app-select-number 
-    [number]="numberOfPages | async" 
+    [options]="chantPages | async"
     label="Page" 
     class="flex-grow-1"
+    [selection]="page"
     (selectionChange)="pageChange.next($event)">
   </app-select-number>
 </div>

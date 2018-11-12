@@ -2,7 +2,7 @@
 <div class="d-flex">
   <app-select 
     class="flex-grow-1 mr-1" 
-    [options]="options | async" 
+    [options]="options" 
     [label]="label" 
     [inline]="inline"
     [selectedId]="selectedOption | async"
@@ -10,16 +10,16 @@
   </app-select>
   <button 
     class="btn btn-secondary btn-sm" 
-    (click)="selectionChange.next(selectionChange.value - 1)"
-    [disabled]="selectionChange.value <= 1">
+    (click)="selectionChange.next(prevNumber)"
+    [disabled]="isFirstOption">
     <fa-icon 
       [icon]="faArrowLeft">
     </fa-icon>
   </button>
   <button 
     class="btn btn-secondary btn-sm" 
-    (click)="selectionChange.next(selectionChange.value + 1)"
-    [disabled]="selectionChange.value >= number">
+    (click)="selectionChange.next(nextNumber)"
+    [disabled]="isLastOption">
     <fa-icon 
       [icon]="faArrowRight">
     </fa-icon>
