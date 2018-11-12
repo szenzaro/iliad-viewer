@@ -121,6 +121,14 @@ export class OpenseadragonComponent implements AfterViewInit {
             navigatorBackground: '#606060',
           });
         }
+
+        this.viewer.addHandler('page', (x) => {
+          this.textService.getVersesNumberFromPage(this.text, x.page).toPromise()
+            .then((pageData) => {
+              this.pageChange.next(x.page + 1);
+              this.chantChange.next(pageData[0]);
+            });
+        });
       });
   }
 
