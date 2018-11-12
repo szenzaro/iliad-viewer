@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-manuscript',
   templateUrl: './manuscript.component.html',
-  styleUrls: ['./manuscript.component.scss']
+  styleUrls: ['./manuscript.component.scss'],
 })
-export class ManuscriptComponent implements OnInit {
+export class ManuscriptComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  @Input() currentPage = 1;
+  @Input() currentChant = 1;
 
 }
