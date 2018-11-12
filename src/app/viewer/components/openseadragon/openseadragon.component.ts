@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import OpenSeadragon from 'openseadragon';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
+import { TextService } from 'src/app/services/text.service';
 
 /*
 
@@ -67,6 +68,11 @@ export class OpenseadragonComponent implements AfterViewInit {
 
   manifestURLChange = new BehaviorSubject(undefined);
 
+  @Output() pageChange = new EventEmitter<number>();
+  @Output() chantChange = new EventEmitter<number>();
+
+  @Input() text: string;
+
   tileSources: Observable<{}[]> = this.manifestURLChange
     .pipe(
       filter((url) => !!url),
@@ -81,19 +87,21 @@ export class OpenseadragonComponent implements AfterViewInit {
   // clip to project related images
   clippedTileSources = this.tileSources
     .pipe(
-      map((tiles: any[]) => tiles.slice(18)) // TODO: add right boundary
+      map((tiles: any[]) => tiles.slice(18, 145)) // TODO: check right boundary
     );
 
-  viewer: any;
+  viewer: Partial<{ addHandler: any }>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private textService: TextService,
+  ) {
   }
 
   ngAfterViewInit() {
     this.div.nativeElement.id = `openseadragon-${Math.random()}`;
     combineLatest(this.optionsChange, this.clippedTileSources)
-      .subscribe(([opts, tileSources]) => {
-        console.log('here', opts, tileSources);
+      .subscribe(([_, tileSources]) => {
         if (!!tileSources) {
           this.viewer = OpenSeadragon({
             visibilityRatio: 1,
