@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, View
 
 import { HttpClient } from '@angular/common/http';
 import OpenSeadragon from 'openseadragon';
+
+import { InSubject } from '../../utils/InSubject';
+
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
@@ -52,20 +55,10 @@ function manifestResourcetoTileSource(manifestResource) {
 export class OpenseadragonComponent implements AfterViewInit {
   @ViewChild('osd', { read: ElementRef }) div: ElementRef;
 
-  @Input() set options(o) {
-    this.optionsChange.next(o);
-  }
-  get options() { return this.optionsChange.value; }
-
+  @Input() @InSubject() options; // TODO: add interface to better type this object
   optionsChange = new BehaviorSubject({});
 
-  @Input() set manifestURL(url: string) {
-    if (url !== this.manifestURLChange.value) {
-      this.manifestURLChange.next(url);
-    }
-  }
-  get manifestURL() { return this.manifestURLChange.value; }
-
+  @Input() @InSubject() manifestURL: string;
   manifestURLChange = new BehaviorSubject(undefined);
 
   @Output() pageChange = new EventEmitter<number>();
