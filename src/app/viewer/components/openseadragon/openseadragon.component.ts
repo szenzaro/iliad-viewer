@@ -1,9 +1,12 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import OpenSeadragon from 'openseadragon';
+
+import { InSubject } from '../../utils/InSubject';
+
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 /*
 
@@ -51,25 +54,21 @@ function manifestResourcetoTileSource(manifestResource) {
 export class OpenseadragonComponent implements AfterViewInit {
   @ViewChild('osd', { read: ElementRef }) div: ElementRef;
 
-  @Input() set options(o) {
-    this.optionsChange.next(o);
-  }
-  get options() { return this.optionsChange.value; }
-
+  @Input() @InSubject() options; // TODO: add interface to better type this object
   optionsChange = new BehaviorSubject({});
 
-  @Input() set manifestURL(url: string) {
-    if (url !== this.manifestURLChange.value) {
-      this.manifestURLChange.next(url);
-    }
-  }
-  get manifestURL() { return this.manifestURLChange.value; }
-
+  @Input() @InSubject() manifestURL: string;
   manifestURLChange = new BehaviorSubject(undefined);
+
+  @Input() @InSubject() page: number;
+  @Output() pageChange = new EventEmitter<number>();
+
+  @Input() text: string;
 
   tileSources: Observable<{}[]> = this.manifestURLChange
     .pipe(
       filter((url) => !!url),
+      distinctUntilChanged(),
       switchMap((url) => this.http.get(url)),
       map((manifest: { sequences: any[] }) => manifest // get the resource fields in the manifest json structure
         .sequences.map((seq) => seq.canvases.map((canv) => canv.images).reduce((x, y) => x.concat(y), []))
@@ -81,39 +80,58 @@ export class OpenseadragonComponent implements AfterViewInit {
   // clip to project related images
   clippedTileSources = this.tileSources
     .pipe(
-      map((tiles: any[]) => tiles.slice(18)) // TODO: add right boundary
+      map((tiles: any[]) => tiles.slice(18, 145)) // TODO: check right boundary
     );
 
-  viewer: any;
+  viewer: Partial<{ addHandler: any, goToPage: any }>;
+  viewerId: string;
 
-  constructor(private http: HttpClient) {
-  }
-
-  ngAfterViewInit() {
-    this.div.nativeElement.id = `openseadragon-${Math.random()}`;
-    combineLatest(this.optionsChange, this.clippedTileSources)
-      .subscribe(([opts, tileSources]) => {
-        console.log('here', opts, tileSources);
-        if (!!tileSources) {
-          this.viewer = OpenSeadragon({
-            visibilityRatio: 1,
-            minZoomLevel: 0.5,
-            defaultZoomLevel: 1,
-            sequenceMode: true,
-            prefixUrl: 'assets/osd/images/',
-            id: this.div.nativeElement.id,
-            navigatorBackground: '#606060',
-            tileSources,
-          });
-        } else {
-          this.viewer = OpenSeadragon({
-            prefixUrl: 'assets/osd/images/',
-            ...this.options,
-            id: this.div.nativeElement.id,
-            navigatorBackground: '#606060',
-          });
+  constructor(
+    private http: HttpClient,
+  ) {
+    this.pageChange
+      .pipe(
+        distinctUntilChanged(),
+      )
+      .subscribe((x) => {
+        if (!!this.viewer) {
+          this.viewer.goToPage(x);
         }
       });
   }
 
+  ngAfterViewInit() {
+    this.viewerId = `openseadragon-${Math.random()}`;
+    this.div.nativeElement.id = this.viewerId;
+
+    const commonOptions = {
+      visibilityRatio: 1,
+      minZoomLevel: 0.5,
+      defaultZoomLevel: 1,
+      sequenceMode: true,
+      prefixUrl: 'assets/osd/images/',
+      id: this.div.nativeElement.id,
+      navigatorBackground: '#606060',
+      showNavigator: true,
+    };
+
+    combineLatest(this.optionsChange, this.clippedTileSources)
+      .subscribe(([_, tileSources]) => {
+        if (!!tileSources) {
+          this.viewer = OpenSeadragon({
+            ...commonOptions,
+            tileSources,
+          });
+        } else {
+          this.viewer = OpenSeadragon({
+            ...commonOptions,
+            ...this.options,
+          });
+        }
+
+        this.viewer.addHandler('page', (x) => {
+          this.pageChange.next(x.page);
+        });
+      });
+  }
 }
