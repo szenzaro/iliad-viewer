@@ -1,16 +1,14 @@
 <div class="d-flex">
   <app-interlinear-text 
     class="col"
-    [page]="currentPage" 
+    [(page)]="currentPage" 
     [chant]="currentChant" 
-    text="homeric" 
+    [text]="text"
     paraphrase="paraphrase">
   </app-interlinear-text>
   <app-openseadragon 
     class="col"
-    text="homeric"
-    (chantChange)="currentChant = $event"
-    (pageChange)="currentPage = $event"
+    [(page)]="manuscriptPage"
     manifestURL="./assets/manuscript/manifest.json">
   </app-openseadragon>
 </div>
