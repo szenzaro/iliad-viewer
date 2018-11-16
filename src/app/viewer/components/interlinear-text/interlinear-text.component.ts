@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { faListAlt, faThList } from '@fortawesome/free-solid-svg-icons';
 
 import { BehaviorSubject, combineLatest, forkJoin } from 'rxjs';
@@ -41,16 +41,16 @@ export class InterlinearTextComponent {
   showParaphfrase = true;
 
   @Input() @InSubject() page: number;
-  pageChange = new BehaviorSubject<number>(1);
+  @Output() pageChange = new BehaviorSubject<number>(1); // TODO: check why on next/prev page it triggers 2 times
 
   @Input() @InSubject() text: string;
-  textChange = new BehaviorSubject<string>(undefined);
+  @Output() textChange = new BehaviorSubject<string>(undefined);
 
   @Input() @InSubject() paraphrase: string;
-  paraphraseChange = new BehaviorSubject<string>(undefined);
+  @Output() paraphraseChange = new BehaviorSubject<string>(undefined);
 
   @Input() @InSubject() chant: number;
-  chantChange = new BehaviorSubject<number>(1);
+  @Output() chantChange = new BehaviorSubject<number>(1);
 
   versesChange = new BehaviorSubject<[number, number]>(undefined);
 
