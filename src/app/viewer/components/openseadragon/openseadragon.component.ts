@@ -89,6 +89,15 @@ export class OpenseadragonComponent implements AfterViewInit {
   constructor(
     private http: HttpClient,
   ) {
+    this.pageChange
+      .pipe(
+        distinctUntilChanged(),
+      )
+      .subscribe((x) => {
+        if (!!this.viewer) {
+          this.viewer.goToPage(x);
+        }
+      });
   }
 
   ngAfterViewInit() {
