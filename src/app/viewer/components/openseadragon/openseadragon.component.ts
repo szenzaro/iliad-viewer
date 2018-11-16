@@ -83,7 +83,8 @@ export class OpenseadragonComponent implements AfterViewInit {
       map((tiles: any[]) => tiles.slice(18, 145)) // TODO: check right boundary
     );
 
-  viewer: Partial<{ addHandler: any }>;
+  viewer: Partial<{ addHandler: any, goToPage: any }>;
+  viewerId: string;
 
   constructor(
     private http: HttpClient,
@@ -92,26 +93,31 @@ export class OpenseadragonComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.div.nativeElement.id = `openseadragon-${Math.random()}`;
+    this.viewerId = `openseadragon-${Math.random()}`;
+    this.div.nativeElement.id = this.viewerId;
+
+    const commonOptions = {
+      visibilityRatio: 1,
+      minZoomLevel: 0.5,
+      defaultZoomLevel: 1,
+      sequenceMode: true,
+      prefixUrl: 'assets/osd/images/',
+      id: this.div.nativeElement.id,
+      navigatorBackground: '#606060',
+      showNavigator: true,
+    };
+
     combineLatest(this.optionsChange, this.clippedTileSources)
       .subscribe(([_, tileSources]) => {
         if (!!tileSources) {
           this.viewer = OpenSeadragon({
-            visibilityRatio: 1,
-            minZoomLevel: 0.5,
-            defaultZoomLevel: 1,
-            sequenceMode: true,
-            prefixUrl: 'assets/osd/images/',
-            id: this.div.nativeElement.id,
-            navigatorBackground: '#606060',
+            ...commonOptions,
             tileSources,
           });
         } else {
           this.viewer = OpenSeadragon({
-            prefixUrl: 'assets/osd/images/',
+            ...commonOptions,
             ...this.options,
-            id: this.div.nativeElement.id,
-            navigatorBackground: '#606060',
           });
         }
 
