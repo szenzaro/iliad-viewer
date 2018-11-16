@@ -6,8 +6,7 @@ import OpenSeadragon from 'openseadragon';
 import { InSubject } from '../../utils/InSubject';
 
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
-import { TextService } from 'src/app/services/text.service';
+import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 /*
 
@@ -61,14 +60,15 @@ export class OpenseadragonComponent implements AfterViewInit {
   @Input() @InSubject() manifestURL: string;
   manifestURLChange = new BehaviorSubject(undefined);
 
+  @Input() @InSubject() page: number;
   @Output() pageChange = new EventEmitter<number>();
-  @Output() chantChange = new EventEmitter<number>();
 
   @Input() text: string;
 
   tileSources: Observable<{}[]> = this.manifestURLChange
     .pipe(
       filter((url) => !!url),
+      distinctUntilChanged(),
       switchMap((url) => this.http.get(url)),
       map((manifest: { sequences: any[] }) => manifest // get the resource fields in the manifest json structure
         .sequences.map((seq) => seq.canvases.map((canv) => canv.images).reduce((x, y) => x.concat(y), []))
@@ -88,7 +88,6 @@ export class OpenseadragonComponent implements AfterViewInit {
 
   constructor(
     private http: HttpClient,
-    private textService: TextService,
   ) {
   }
 
@@ -122,13 +121,8 @@ export class OpenseadragonComponent implements AfterViewInit {
         }
 
         this.viewer.addHandler('page', (x) => {
-          this.textService.getVersesNumberFromPage(this.text, x.page).toPromise()
-            .then((pageData) => {
-              this.pageChange.next(x.page + 1);
-              this.chantChange.next(pageData[0]);
-            });
+          this.pageChange.next(x.page);
         });
       });
   }
-
 }
