@@ -1,13 +1,13 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import OpenSeadragon from 'openseadragon';
 
 import { InSubject } from '../../utils/InSubject';
 
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
+declare var OpenSeadragon: any;
 /*
 
 From:
