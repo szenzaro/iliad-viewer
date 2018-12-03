@@ -1,0 +1,3 @@
+[submodule "src/assets/osd-html-elements"]
+	path = src/assets/osd-html-elements
+	url = https://github.com/antonioxdias/OpenSeadragonHTMLelements.git
