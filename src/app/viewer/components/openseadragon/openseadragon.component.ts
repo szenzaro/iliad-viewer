@@ -7,7 +7,44 @@ import { InSubject } from '../../utils/InSubject';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
+import { Map, uuid } from 'src/app/utils';
+
 declare var OpenSeadragon: any;
+
+interface OsdAnnotation {
+  id: string;
+  element: HTMLElement;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fontSize?: number;
+}
+
+interface OsdAnnotationAPI {
+  getElements: () => OsdAnnotation[];
+  getElementById: (id: string) => OsdAnnotation;
+  addElement: (e: OsdAnnotation) => OsdAnnotation[];
+  addElements: (es: OsdAnnotation[]) => OsdAnnotation[];
+  removeElementById: (id: string) => void;
+  removeElementsById: (ids: string[]) => void;
+  goToElementLocation: (id: string) => void;
+}
+
+function createAnnotation(text: string, x = 0, y = 0, width = 0, height = 0): OsdAnnotation {
+  const element = document.createElement('div');
+  element.classList.add('annotation');
+  element.innerHTML = text;
+  return {
+    id: uuid('annotation'),
+    element,
+    x,
+    y,
+    width,
+    height
+  };
+}
+
 /*
 
 From:
@@ -63,6 +100,10 @@ export class OpenseadragonComponent implements AfterViewInit {
   @Input() @InSubject() page: number;
   @Output() pageChange = new EventEmitter<number>();
 
+  @Input() annotationsData: Map<OsdAnnotation[]> = {
+    0: [createAnnotation('description', 630, 670, 1377, 100)],
+  };
+
   @Input() text: string;
 
   tileSources: Observable<{}[]> = this.manifestURLChange
@@ -83,8 +124,13 @@ export class OpenseadragonComponent implements AfterViewInit {
       map((tiles: any[]) => tiles.slice(18, 145)) // TODO: check right boundary
     );
 
-  viewer: Partial<{ addHandler: any, goToPage: any }>;
+  viewer: Partial<{ addHandler: Function, goToPage: Function, HTMLelements: Function, viewport: any }>;
   viewerId: string;
+  annotations: OsdAnnotationAPI;
+
+  get pageAnnotations() {
+    return (page: number) => !!this.annotationsData[page] ? this.annotationsData[page] : [];
+  }
 
   constructor(
     private http: HttpClient,
@@ -101,7 +147,7 @@ export class OpenseadragonComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.viewerId = `openseadragon-${Math.random()}`;
+    this.viewerId = uuid('openseadragon');
     this.div.nativeElement.id = this.viewerId;
 
     const commonOptions = {
@@ -129,9 +175,20 @@ export class OpenseadragonComponent implements AfterViewInit {
           });
         }
 
-        this.viewer.addHandler('page', (x) => {
-          this.pageChange.next(x.page);
+        this.viewer.addHandler('page', ({ page }) => {
+          this.pageChange.next(page);
+          this.clearAnnotations();
+          this.annotations.addElements(this.pageAnnotations(page));
         });
+
+        this.annotations = this.viewer.HTMLelements();
+
+        this.annotations.addElements(this.pageAnnotations(0));
       });
+  }
+
+  clearAnnotations() {
+    const ids = this.annotations.getElements().map(({ id }) => id);
+    this.annotations.removeElementsById(ids);
   }
 }
