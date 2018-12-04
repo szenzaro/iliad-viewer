@@ -31,7 +31,9 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/openseadragon/build/openseadragon/openseadragon.js",
+              "src/assets/osd-html-elements/OpenSeadragonHTMLelements.js"
             ]
           },
           "configurations": {

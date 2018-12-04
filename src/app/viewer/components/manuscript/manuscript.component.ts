@@ -3,8 +3,11 @@ import { InSubject } from '../../utils/InSubject';
 
 import { TextService } from 'src/app/services/text.service';
 
+import { Map } from 'src/app/utils/index';
+import { OsdAnnotation } from '../openseadragon/openseadragon.component';
+
 import { BehaviorSubject } from 'rxjs';
-import { combineLatest, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-manuscript',
@@ -22,6 +25,8 @@ export class ManuscriptComponent {
   manuscriptPageChange = new BehaviorSubject<number>(0);
 
   text = 'homeric';
+
+  annotations = this.textService.getAnnotations();
 
   constructor(
     private textService: TextService,

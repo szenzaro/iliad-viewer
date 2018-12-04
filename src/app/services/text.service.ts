@@ -2,6 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Chant, Verse, Word } from '../utils/models';
 
+import { Map } from '../utils/index';
+import { createAnnotation, OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
+
 import { map } from 'rxjs/operators';
 
 function jsonToModelVerses(chant: number, verses: string[][]) {
@@ -70,6 +73,22 @@ export class TextService {
         map((textManifest) => {
           const textInfo = textManifest.textsList.find((x) => x.id === text);
           return textInfo.chants;
+        }),
+      );
+  }
+
+  getAnnotations() {
+    return this.http.get(`./assets/manuscript/annotations.json`)
+      .pipe(
+        map((arr: { page: number, text: string, x: number, y: number, width: number, height: number }[]) => {
+          const annotations: Map<OsdAnnotation[]> = {};
+          arr.forEach(({ page, text, x, y, width, height }) => {
+            if (!annotations[page]) {
+              annotations[page] = [];
+            }
+            annotations[page].push(createAnnotation(text, x, y, width, height));
+          });
+          return annotations;
         }),
       );
   }

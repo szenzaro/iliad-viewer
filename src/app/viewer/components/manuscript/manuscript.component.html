@@ -9,6 +9,7 @@
   <app-openseadragon 
     class="col"
     [(page)]="manuscriptPage"
+    [annotations]="annotations | async"
     manifestURL="./assets/manuscript/manifest.json">
   </app-openseadragon>
 </div>
