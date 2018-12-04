@@ -1,17 +1,19 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-
-import { InSubject } from '../../utils/InSubject';
-
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Map, uuid } from 'src/app/utils';
+import { InSubject } from '../../utils/InSubject';
+import { AnnotationModalComponent } from '../annotation-modal/annotation-modal.component';
+
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+
 
 declare var OpenSeadragon: any;
 
-interface OsdAnnotation {
+export interface OsdAnnotation {
   id: string;
   element: HTMLElement;
   x: number;
@@ -19,6 +21,7 @@ interface OsdAnnotation {
   width: number;
   height: number;
   fontSize?: number;
+  text: string;
 }
 
 interface OsdAnnotationAPI {
@@ -31,17 +34,25 @@ interface OsdAnnotationAPI {
   goToElementLocation: (id: string) => void;
 }
 
-function createAnnotation(text: string, x = 0, y = 0, width = 0, height = 0): OsdAnnotation {
+interface OsdViewerAPI {
+  addHandler: Function;
+  goToPage: Function;
+  HTMLelements: Function;
+  viewport: any;
+  gestureSettingsMouse: any;
+}
+
+export function createAnnotation(text: string, x = 0, y = 0, width = 0, height = 0): OsdAnnotation {
   const element = document.createElement('div');
   element.classList.add('annotation');
-  element.innerHTML = text;
   return {
     id: uuid('annotation'),
     element,
     x,
     y,
     width,
-    height
+    height,
+    text
   };
 }
 
@@ -100,9 +111,7 @@ export class OpenseadragonComponent implements AfterViewInit {
   @Input() @InSubject() page: number;
   @Output() pageChange = new EventEmitter<number>();
 
-  @Input() annotationsData: Map<OsdAnnotation[]> = {
-    0: [createAnnotation('description', 630, 670, 1377, 100)],
-  };
+  @Input() annotations: Map<OsdAnnotation[]> = {};
 
   @Input() text: string;
 
@@ -121,19 +130,21 @@ export class OpenseadragonComponent implements AfterViewInit {
   // clip to project related images
   clippedTileSources = this.tileSources
     .pipe(
-      map((tiles: any[]) => tiles.slice(18, 145)) // TODO: check right boundary
+      map((tiles: any[]) => tiles.slice(18, 145)), // TODO: check right boundary
+      tap(console.log),
     );
 
-  viewer: Partial<{ addHandler: Function, goToPage: Function, HTMLelements: Function, viewport: any }>;
+  viewer: Partial<OsdViewerAPI>;
   viewerId: string;
-  annotations: OsdAnnotationAPI;
+  annotationsHandle: OsdAnnotationAPI;
 
   get pageAnnotations() {
-    return (page: number) => !!this.annotationsData[page] ? this.annotationsData[page] : [];
+    return (page: number) => !!this.annotations[page] ? this.annotations[page] : [];
   }
 
   constructor(
     private http: HttpClient,
+    private modalService: NgbModal,
   ) {
     this.pageChange
       .pipe(
@@ -159,6 +170,10 @@ export class OpenseadragonComponent implements AfterViewInit {
       id: this.div.nativeElement.id,
       navigatorBackground: '#606060',
       showNavigator: true,
+      gestureSettingsMouse: {
+        clickToZoom: false,
+        dblClickToZoom: true,
+      },
     };
 
     combineLatest(this.optionsChange, this.clippedTileSources)
@@ -178,17 +193,54 @@ export class OpenseadragonComponent implements AfterViewInit {
         this.viewer.addHandler('page', ({ page }) => {
           this.pageChange.next(page);
           this.clearAnnotations();
-          this.annotations.addElements(this.pageAnnotations(page));
+          this.annotationsHandle.addElements(this.pageAnnotations(page));
         });
 
-        this.annotations = this.viewer.HTMLelements();
+        this.annotationsHandle = this.viewer.HTMLelements();
 
-        this.annotations.addElements(this.pageAnnotations(0));
+        this.viewer.addHandler('open', (e) => { // TODO: remove after getting all the coordinates for the annotations
+          const viewer = e.eventSource;
+          const tracker = new OpenSeadragon.MouseTracker({
+            element: viewer.container,
+            moveHandler: (event) => {
+              const webPoint = event.position;
+              const viewportPoint = this.viewer.viewport.pointFromPixel(webPoint);
+              const imagePoint = this.viewer.viewport.viewportToImageCoordinates(viewportPoint);
+              const zoom = this.viewer.viewport.getZoom(true);
+              const imageZoom = this.viewer.viewport.viewportToImageZoom(zoom);
+
+              console.log(
+                'Web', webPoint.toString(),
+                'Viewport', viewportPoint.toString(),
+                'Image' + imagePoint.toString(),
+                'imageZoom', imageZoom.toString()
+              );
+
+            }
+          });
+        });
+        this.initAnnotationsEventSource();
+        this.annotationsHandle.addElements(this.pageAnnotations(0));
       });
   }
 
   clearAnnotations() {
-    const ids = this.annotations.getElements().map(({ id }) => id);
-    this.annotations.removeElementsById(ids);
+    const ids = this.annotationsHandle.getElements().map(({ id }) => id);
+    this.annotationsHandle.removeElementsById(ids);
+  }
+
+  initAnnotationsEventSource() {
+    const keys = Object.keys(this.annotations);
+
+    keys.forEach((k) => {
+      this.pageAnnotations(+k).forEach((a) => {
+        a.element.onclick = () => this.openAnnotation(a.text);
+      });
+    });
+  }
+
+  openAnnotation(text: string) {
+    const modalRef = this.modalService.open(AnnotationModalComponent);
+    (modalRef.componentInstance as AnnotationModalComponent).text = text;
   }
 }
