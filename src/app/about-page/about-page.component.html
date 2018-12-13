@@ -1,3 +1,7 @@
-<p>
-  about-page works!
-</p>
+<div *ngIf="tags | async as tags">
+<p>{{ tags.n }}</p>
+<p>{{ tags.tags.length }}</p>
+<span *ngFor="let t of tags.tags">
+  {{ t.i }} - {{ t.tag }}<br>
+</span>
+</div>

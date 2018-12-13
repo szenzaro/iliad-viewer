@@ -126,6 +126,11 @@ export function tagToDescription(tag: string): string {
     if (parts.length > 1) {
         description += inflectionalTagToDescription(parts[1]);
     }
+
+    if (description.includes('ERROR')) {
+        description = `${tag} => ${description}`;
+    }
+
     return description;
 }
 
