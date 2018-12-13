@@ -57,11 +57,6 @@ function inflectionalTagToDescription(tag: string): string {
 
 function morphologicalTagToDescription(tag: string): string {
     let description = '';
-    const crasis = tag.split('@');
-    if (crasis.length > 1) {
-        return crasis.map((v) => morphologicalTagToDescription(v))
-            .reduce((x, y) => x + y, '');
-    }
 
     switch (tag) {
         case 'A': description += ' Adjective'; break;
@@ -115,6 +110,11 @@ function morphologicalTagToDescription(tag: string): string {
 }
 
 export function tagToDescription(tag: string): string {
+    const crasis = tag.split('@');
+    if (crasis.length > 1) {
+        return crasis.map((v) => tagToDescription(v))
+            .reduce((x, y) => x + y, '');
+    }
     const parts = tag.split(':');
     let description = '';
     if (parts.length > 0) {
