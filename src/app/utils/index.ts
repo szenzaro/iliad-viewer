@@ -57,6 +57,12 @@ function inflectionalTagToDescription(tag: string): string {
 
 function morphologicalTagToDescription(tag: string): string {
     let description = '';
+    const crasis = tag.split('@');
+    if (crasis.length > 1) {
+        return crasis.map((v) => morphologicalTagToDescription(v))
+            .reduce((x, y) => x + y, '');
+    }
+
     switch (tag) {
         case 'A': description += ' Adjective'; break;
         case 'AMORPH': description += ' Element of Morphological Analysis'; break;
