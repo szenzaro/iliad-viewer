@@ -131,7 +131,6 @@ export class OpenseadragonComponent implements AfterViewInit {
   clippedTileSources = this.tileSources
     .pipe(
       map((tiles: any[]) => tiles.slice(18, 145)), // TODO: check right boundary
-      tap(console.log),
     );
 
   viewer: Partial<OsdViewerAPI>;
