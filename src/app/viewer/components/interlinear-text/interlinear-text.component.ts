@@ -1,8 +1,8 @@
 import { Component, Input, Output } from '@angular/core';
 import { faListAlt, faThList } from '@fortawesome/free-solid-svg-icons';
 
-import { BehaviorSubject, combineLatest, forkJoin } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, forkJoin, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
 import { InSubject } from '../../utils/InSubject';
 
@@ -40,8 +40,10 @@ export class InterlinearTextComponent {
   showHomeric = true;
   showParaphfrase = true;
 
+  private firstPage = 1;
+
   @Input() @InSubject() page: number;
-  @Output() pageChange = new BehaviorSubject<number>(1); // TODO: check why on next/prev page it triggers 2 times
+  @Output() pageChange = new BehaviorSubject<number>(this.firstPage); // TODO: check why on next/prev page it triggers 2 times
 
   @Input() @InSubject() text: string;
   @Output() textChange = new BehaviorSubject<string>(undefined);
@@ -54,32 +56,57 @@ export class InterlinearTextComponent {
 
   versesChange = new BehaviorSubject<[number, number]>(undefined);
 
-  verses = combineLatest(this.textChange, this.paraphraseChange, this.chantChange, this.pageChange.pipe(distinctUntilChanged()))
+  chantPages = combineLatest(this.textChange.pipe(filter((x) => !!x)), this.chantChange)
     .pipe(
-      switchMap(([text, paraphrase, chant, n]) =>
-        this.textService.getVersesNumberFromPage(text, n - 1, chant)
-          .pipe(
-            switchMap((range) => forkJoin(
-              this.textService.getVerses(text, chant, [range[1][0] - 1, range[1][1]]),
-              this.textService.getVerses(paraphrase, chant, [range[1][0] - 1, range[1][1]]),
-            ).pipe(
-              map(([greek, paraph]) => pairwiseMerge(greek, paraph)),
-            ),
-            ),
-          ),
-      )
+      switchMap(([text, chant]) => this.textService.getPageNumbers(text, chant)),
+      map((pages) => pages.map(numberToOption)),
     );
+
+  selectedPage = merge(
+    this.pageChange
+      .pipe(
+        distinctUntilChanged()
+      ),
+    this.chantPages
+      .pipe(
+        map((x) => +x[0].id),
+        tap((p) => {
+          if (p !== this.pageChange.value) {
+            this.pageChange.next(p);
+          }
+          return p;
+        }),
+      ),
+  ).pipe(
+    distinctUntilChanged(),
+  );
+
+  verses = combineLatest(
+    this.textChange.pipe(filter((x) => !!x)),
+    this.paraphraseChange.pipe(filter((x) => !!x)),
+    this.chantChange.pipe(filter((x) => x !== undefined)),
+    this.selectedPage.pipe(filter((x) => x !== undefined)),
+  ).pipe(
+    debounceTime(100),
+    switchMap(([text, paraphrase, chant, n]) =>
+      this.textService.getVersesNumberFromPage(text, n - 1, chant)
+        .pipe(
+          filter((x) => !!x),
+          switchMap((range) => forkJoin(
+            this.textService.getVerses(text, chant, [range[1][0] - 1, range[1][1]]),
+            this.textService.getVerses(paraphrase, chant, [range[1][0] - 1, range[1][1]]),
+          ).pipe(
+            map(([greek, paraph]) => pairwiseMerge(greek, paraph)),
+          ),
+          ),
+        ),
+    )
+  );
 
   chantsNumber = this.textChange
     .pipe(
       switchMap((text) => this.textService.getNumberOfChants(text)),
       map(numberToOptions),
-    );
-
-  chantPages = combineLatest(this.textChange, this.chantChange)
-    .pipe(
-      switchMap(([text, chant]) => this.textService.getPageNumbers(text, chant)),
-      map((pages) => pages.map(numberToOption)),
     );
 
   constructor(private textService: TextService) {
