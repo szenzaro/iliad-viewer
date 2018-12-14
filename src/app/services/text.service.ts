@@ -1,17 +1,34 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Chant, Verse, Word } from '../utils/models';
 
 import { Map } from '../utils/index';
+import { Chant, Verse, VerseRowType, Word } from '../utils/models';
+
 import { createAnnotation, OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 
 import { map } from 'rxjs/operators';
 
-function jsonToModelVerses(chant: number, verses: string[][]) {
+function mapWords(chant: number, position: number, verse: VerseRowType): Word[] {
+  let id = `${chant}.${position}`;
+  switch (verse[0]) {
+    case 'o':
+      id = `${id}.1`;
+      return [{ id, lemma: 'OMISIT' } as Word];
+    case 'f':
+      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, lemma } as Word));
+    case 't':
+      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, lemma } as Word));
+    default: // "v"
+      return verse[2].map((lemma, j) => ({ id: `${id}.${j + 1}`, lemma } as Word));
+  }
+}
+
+function jsonToModelVerses(chant: number, verses: VerseRowType[]) {
   return verses
     .map((verse, i) => ({
-      n: i + 1,
-      words: verse.map((lemma, j) => ({ id: `${chant}.${i + 1}.${j + 1}`, lemma } as Word)),
+      id: i + 1,
+      n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
+      words: mapWords(chant, i + 1, verse),
     } as Verse));
 }
 
