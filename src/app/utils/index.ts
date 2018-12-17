@@ -59,6 +59,7 @@ function morphologicalTagToDescription(tag: string): string {
     let description = '';
 
     switch (tag) {
+        case '': break;
         case 'A': description += ' Adjective'; break;
         case 'AMORPH': description += ' Element of Morphological Analysis'; break;
         case 'DET': description += ' Article'; break;
