@@ -37,8 +37,11 @@ export class InterlinearTextComponent {
   faThList = faThList;
   faListAlt = faListAlt;
 
-  showHomeric = true;
-  showParaphfrase = true;
+  @InSubject() showHomeric;
+  showHomericChange = new BehaviorSubject<boolean>(true);
+
+  @InSubject() showParaphfrase;
+  showParaphfraseChange = new BehaviorSubject<boolean>(true);
 
   private firstPage = 1;
 
@@ -86,9 +89,11 @@ export class InterlinearTextComponent {
     this.paraphraseChange.pipe(filter((x) => !!x)),
     this.chantChange.pipe(filter((x) => x !== undefined)),
     this.selectedPage.pipe(filter((x) => x !== undefined)),
+    this.showHomericChange,
+    this.showParaphfraseChange,
   ).pipe(
     debounceTime(100),
-    switchMap(([text, paraphrase, chant, n]) =>
+    switchMap(([text, paraphrase, chant, n, showHomeric, showParaphfrase]) =>
       this.textService.getVersesNumberFromPage(text, n - 1, chant)
         .pipe(
           filter((x) => !!x),
@@ -96,11 +101,11 @@ export class InterlinearTextComponent {
             this.textService.getVerses(text, chant, [range[1][0] - 1, range[1][1]]),
             this.textService.getVerses(paraphrase, chant, [range[1][0] - 1, range[1][1]]),
           ).pipe(
-            map(([greek, paraph]) => pairwiseMerge(greek, paraph)),
+            map(([greek, paraph]) => pairwiseMerge(showHomeric ? greek : [], showParaphfrase ? paraph : [])),
           ),
           ),
         ),
-    )
+    ),
   );
 
   chantsNumber = this.textChange
