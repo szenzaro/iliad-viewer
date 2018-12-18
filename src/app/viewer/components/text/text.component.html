@@ -1,0 +1,8 @@
+<app-verse
+    *ngFor="let verse of verses; let index = index"
+    (openWordId)="openedWordId = $event"
+    [attr.data-index]="index"
+    [wordDetailsId]="openedWordId"
+    [highlight]="highlight && index % 2 !== 0"
+    [verse]="verse">
+</app-verse>
