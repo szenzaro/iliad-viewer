@@ -1,6 +1,6 @@
 export interface Word {
     id: string;
-    lemma: string;
+    text: string;
     data: any; // FIXME: use correct type
 }
 
@@ -19,9 +19,16 @@ export type TitleType = ['t', string[]];
 
 export type VerseRowType = VerseType | OmisitTypeType | FinType | TitleType;
 
-
 export interface Chant {
     title: string;
     n: number;
     verses: VerseRowType[];
 }
+
+export interface WordData {
+    lemma: string;
+    normalized: string;
+    tag: string;
+}
+
+export type ChantData = WordData[];
