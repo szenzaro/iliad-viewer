@@ -10,6 +10,7 @@ import { Verse } from 'src/app/utils/models';
 export class TextComponent {
   @Input() verses: Verse[] = [];
   @Input() highlight = false; // Highlight alternate verses
+  @Input() showData = true;
 
   openedWordId: string;
 }
