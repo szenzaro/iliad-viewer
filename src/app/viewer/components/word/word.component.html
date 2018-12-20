@@ -1,6 +1,7 @@
 <span
     [attr.data-word-id]="word.id"
     class="word"
+    [class.highlighted]="highlighted"
     (click)="!!word.data ? openWordId.next(word.id) : 0">
     {{ word.text }}
 </span>

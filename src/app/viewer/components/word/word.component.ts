@@ -8,6 +8,7 @@ import { Word, WordData } from 'src/app/utils/models';
 })
 export class WordComponent {
 
+  @Input() highlighted = false;
   @Input() word: Word;
   @Output() openWordId = new EventEmitter<string>();
 }

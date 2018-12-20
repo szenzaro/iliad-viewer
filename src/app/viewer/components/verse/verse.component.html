@@ -6,6 +6,7 @@
         class="p-1"
         *ngFor="let w of verse.words"
         [word]="w"
+        [highlighted]="w.id === wordDetailsId"
         (openWordId)="openWordId.next($event)"></app-word>
     <div *ngIf="dataPanelIsOpen(wordDetailsId) as w">
         <ul>
