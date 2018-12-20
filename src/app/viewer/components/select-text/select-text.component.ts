@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 
+import { InSubject } from '../../utils/InSubject';
+
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -10,12 +13,15 @@ import { map } from 'rxjs/operators';
 })
 export class SelectTextComponent {
 
+  @Input() inline = true;
+
   textsList = this.textService.getTextsList()
     .pipe(
-      map(({textsList}) => textsList),
+      map(({ textsList }) => textsList),
     );
 
-  @Output() textChange = new EventEmitter<string>();
+  @Input() @InSubject() text: string;
+  @Output() textChange = new BehaviorSubject<string>(undefined);
 
   constructor(private textService: TextService) {
   }

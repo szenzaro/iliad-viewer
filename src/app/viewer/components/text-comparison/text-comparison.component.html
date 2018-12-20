@@ -1,17 +1,13 @@
 <div class="d-flex flex-grow-1 full-height justify-content-around">
+    <app-comparable-text
+        class="container"
+        [text]="'homeric'"
+        [chant]="1">
+    </app-comparable-text>
 
-    <div class="col d-flex flex-column">
-        <app-select-text (textChange)="textChanges.next($event)"></app-select-text>
-        <div class="overflow-scroll border-right">
-            <app-text [verses]="text | async"></app-text>
-        </div>
-    </div>
-
-    <div class="col d-flex flex-column">
-        <app-select-text (textChange)="comparisonTextChanges.next($event)"></app-select-text>
-        <div class="overflow-scroll border-right">
-            <app-text [verses]="comparisonText | async"></app-text>
-        </div>
-    </div>
-
+    <app-comparable-text
+        class="container"
+        [text]="'paraphrase'"
+        [chant]="1">
+    </app-comparable-text>
 </div>

@@ -3,7 +3,9 @@ import { faListAlt, faThList } from '@fortawesome/free-solid-svg-icons';
 
 import { BehaviorSubject, combineLatest, forkJoin, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+
 import { TextService } from 'src/app/services/text.service';
+import { numberToOption, numberToOptions } from 'src/app/utils';
 import { InSubject } from '../../utils/InSubject';
 
 function pairwiseMerge<T>(arr: T[], arr2: T[], initial: T[] = []): T[] {
@@ -17,14 +19,6 @@ function pairwiseMerge<T>(arr: T[], arr2: T[], initial: T[] = []): T[] {
   const i = initial.concat([arr[0], arr2[0]]);
 
   return pairwiseMerge(arr.slice(1), arr2.slice(1), i);
-}
-
-function numberToOption(n) {
-  return { id: `${n}`, label: `${n}` };
-}
-
-function numberToOptions(n: number) {
-  return new Array(n).fill(undefined).map((_, i) => numberToOption(i + 1));
 }
 
 @Component({

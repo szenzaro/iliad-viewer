@@ -7,7 +7,7 @@
     <option 
       *ngFor="let opt of options; let first = first" 
       [value]="opt.id" 
-      [selected]="first">
+      [selected]="!!selectedId ? selectedId === opt.id : first">
       {{ opt.label }}
     </option>
   </select>

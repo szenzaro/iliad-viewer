@@ -1,5 +1,7 @@
 <app-select 
   label="Text"
+  [inline]="inline"
   [options]="textsList | async" 
+  [selectedId]="text"
   (selectionChange)="textChange.next($event) ">
 </app-select>
