@@ -71,6 +71,7 @@ function morphologicalTagToDescription(tag: string): string {
         case 'I+Neg': description += ' Negation'; break;
         case 'I+Part': description += ' Particle'; break;
         case 'I+Prep': description += ' Preposition'; break;
+        // tslint:disable-next-line:max-line-length
         case 'LF': description += ' If it is impossible to analyse a form, this form itself is chosen as lemma, called a lemma-form2'; break;
         case 'N+Ant': description += ' Anthroponymic Name'; break;
         case 'N+Com': description += ' Common Name'; break;
@@ -86,6 +87,7 @@ function morphologicalTagToDescription(tag: string): string {
         case 'PRO+Dem': description += ' Demonstrative Pronoun'; break;
         case 'PRO+Ind': description += ' Indefinite Pronoun'; break;
         case 'PRO+Int': description += ' Interrogative Pronoun'; break;
+        case 'PRO+Per': description += ' Personal Pronoun'; break;
         case 'PRO+Per1p': description += ' Personal Pronoun 1st Person Plural'; break;
         case 'PRO+Per1s': description += ' Personal Pronoun 1st Person Singular'; break;
         case 'PRO+Per2p': description += ' Personal Pronoun 2nd Person Plural'; break;
