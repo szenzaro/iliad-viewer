@@ -30,11 +30,5 @@
     (selectionChange)="pageChange.next($event)">
   </app-select-number>
 </div>
+<app-text [verses]="verses | async" [highlight]="showParaphfrase || showHomeric" [showData]="false"></app-text>
 
-<app-verse 
-  *ngFor="let verse of verses | async; let index = index"  
-  [attr.data-index]="index"
-  [highlight]="showParaphfrase && index % 2 !== 0"
-  [class.d-none]="showHomeric && !showParaphfrase && index % 2 === 0 || !showHomeric && showParaphfrase && index % 2 === 1"
-  [verse]="verse">
-</app-verse>

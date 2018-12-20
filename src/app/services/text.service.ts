@@ -2,36 +2,43 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Map } from '../utils/index';
-import { Chant, Verse, VerseRowType, Word } from '../utils/models';
+import { Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
 
 import { createAnnotation, OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 
+import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-function mapWords(chant: number, position: number, verse: VerseRowType): Word[] {
-  let id = `${chant}.${position}`;
+function mapWords(text: string, chant: number, position: number, verse: VerseRowType, data: WordData[]): Word[] {
+  let id = `${text}.${chant}.${position}`;
   switch (verse[0]) {
     case 'o':
       id = `${id}.1`;
-      return [{ id, lemma: 'OMISIT' } as Word];
+      return [{ id, text: 'OMISIT', data } as Word];
     case 'f':
-      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, lemma } as Word));
+      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
     case 't':
-      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, lemma } as Word));
+      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
     default: // "v"
-      return verse[2].map((lemma, j) => ({ id: `${id}.${j + 1}`, lemma } as Word));
+      return verse[2].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
   }
 }
 
-function jsonToModelVerses(chant: number, verses: VerseRowType[]) {
+function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], data: WordData[][]) {
   return verses
     .map((verse, i) => ({
       id: i + 1,
       n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
-      words: mapWords(chant, i + 1, verse),
+      words: mapWords(text, chant, i + 1, verse, data[i]),
     } as Verse));
 }
 
+function toWordData(versesData: [string, string, string][][]): WordData[][] {
+  return versesData.map((verse) => verse
+    .map((x) => x[0] === '' || x[1] === '' || x[2] === ''
+      ? undefined
+      : { normalized: x[0], lemma: x[1], tag: x[2] }));
+}
 
 interface TextItem {
   id: string;
@@ -56,11 +63,13 @@ export class TextService {
   }
 
   getVerses(text: string, chant: number, range?: [number, number]) {
-    return this.http.get(`./assets/texts/${text}/${chant}/verses.json`)
-      .pipe(
-        map(({ verses }: Chant) => jsonToModelVerses(chant, verses)),
-        map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
-      );
+    return forkJoin(
+      this.http.get<Chant>(`./assets/texts/${text}/${chant}/verses.json`),
+      this.http.get<[string, string, string][][]>(`./assets/texts/${text}/${chant}/data.json`),
+    ).pipe(
+      map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
+      map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
+    );
   }
 
   getVersesNumberFromPage(text: string, n: number, chant?: number, ) {

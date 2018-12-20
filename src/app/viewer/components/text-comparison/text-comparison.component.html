@@ -1,17 +1,17 @@
 <div class="d-flex flex-grow-1 full-height justify-content-around">
 
-  <div class="col d-flex flex-column">
-    <app-select-text (textChange)="textChanges.next($event)"></app-select-text>
-    <div class="overflow-scroll border-right">
-      <app-verse *ngFor="let verse of text | async" [verse]="verse"></app-verse>
+    <div class="col d-flex flex-column">
+        <app-select-text (textChange)="textChanges.next($event)"></app-select-text>
+        <div class="overflow-scroll border-right">
+            <app-text [verses]="text | async"></app-text>
+        </div>
     </div>
-  </div>
 
-  <div class="col d-flex flex-column">
-    <app-select-text (textChange)="comparisonTextChanges.next($event)"></app-select-text>
-    <div class="overflow-scroll border-right">
-      <app-verse *ngFor="let verse of comparisonText | async" [verse]="verse"></app-verse>
+    <div class="col d-flex flex-column">
+        <app-select-text (textChange)="comparisonTextChanges.next($event)"></app-select-text>
+        <div class="overflow-scroll border-right">
+            <app-text [verses]="comparisonText | async"></app-text>
+        </div>
     </div>
-  </div>
 
 </div>

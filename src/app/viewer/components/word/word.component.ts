@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { Word } from 'src/app/utils/models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Word, WordData } from 'src/app/utils/models';
 
 @Component({
   selector: 'app-word',
@@ -9,5 +9,5 @@ import { Word } from 'src/app/utils/models';
 export class WordComponent {
 
   @Input() word: Word;
-
+  @Output() openWordId = new EventEmitter<string>();
 }

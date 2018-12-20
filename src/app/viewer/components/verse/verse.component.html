@@ -1,9 +1,18 @@
-<div class="verse" [class.verse-highlight]="highlight" >
-  <span class="p-1 pr-3 text-secondary">[{{ verse.n }}]</span>
-  <app-word class="p-1" *ngFor="let w of verse.words" [word]="w"></app-word>
-  <!-- TODO: add data visualization on word click
-<div>
-  Data
-</div> 
--->
+<div
+    class="verse"
+    [class.verse-highlight]="highlight">
+    <span class="p-1 pr-3 text-secondary">[{{ verse.n }}]</span>
+    <app-word
+        class="p-1"
+        *ngFor="let w of verse.words"
+        [word]="w"
+        (openWordId)="openWordId.next($event)"></app-word>
+    <div *ngIf="dataPanelIsOpen(wordDetailsId) as w">
+        <ul>
+            <li>Lemma: {{ w.data.lemma}}</li>
+            <li>Cleaned Form: {{ w.data.normalized }}</li>
+            <li>Tag: {{ w.data.tag }}</li>
+            <li>Description: {{ tagToDescription(w.data.tag) }}</li>
+        </ul>
+    </div>
 </div>

@@ -18,6 +18,7 @@ import { VerseComponent } from './components/verse/verse.component';
 import { WordComponent } from './components/word/word.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ViewerRoutingModule } from './viewer-routing.module';
+import { TextComponent } from './components/text/text.component';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     VerseComponent,
     ViewerPageComponent,
     WordComponent,
+    TextComponent,
   ],
   entryComponents: [
     AnnotationModalComponent,
