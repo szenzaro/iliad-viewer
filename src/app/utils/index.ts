@@ -126,3 +126,11 @@ export function tagToDescription(tag: string): string {
     }
     return description;
 }
+
+export function numberToOption(n) {
+    return { id: `${n}`, label: `${n}` };
+}
+
+export function numberToOptions(n: number) {
+    return new Array(n).fill(undefined).map((_, i) => numberToOption(i + 1));
+}
