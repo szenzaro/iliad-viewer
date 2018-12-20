@@ -3,7 +3,6 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "../node_modules/bootstrap/scss/variables";
 @import "scss/colors.scss";
-
 .full-height {
     height: 100vh;
 }
@@ -32,7 +31,8 @@
     min-height: 46px;
 }
 
-.verse:hover, .verse-highlight {
+.verse:hover,
+.verse-highlight {
     background-color: $c-light-grey;
 }
 
@@ -47,6 +47,36 @@
     transition: all 0.3s;
 }
 
-.annotation:hover{
+.annotation:hover {
     opacity: 0.7;
+}
+
+.highlighted {
+    background-color: white;
+    border: solid 1px #cecece;
+    border-bottom: none;
+    padding: 2px 2px 4px 2px;
+    color: #8e8ee5;
+}
+
+.word-data-panel {
+    background-color: white;
+    border: solid 1px #cecece;
+    border-radius: 4px;
+    margin-bottom: 2px;
+}
+
+.word-data-panel>ul {
+    list-style-type: none;
+    padding-top: 10px;
+}
+
+.word-data-panel {
+    ul {
+        li {
+            span {
+                font-weight: bold;
+            }
+        }
+    }
 }
