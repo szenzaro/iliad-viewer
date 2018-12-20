@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 
 import { map } from 'rxjs/operators';
@@ -9,6 +10,8 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./select-text.component.scss'],
 })
 export class SelectTextComponent {
+
+  @Input() inline = true;
 
   textsList = this.textService.getTextsList()
     .pipe(
