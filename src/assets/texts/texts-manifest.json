@@ -2,6 +2,6 @@
     "mainText": ".texts/homeric/verses.json",
     "textsList": [
         { "id": "homeric", "label": "Homeric", "chants": 3  },
-        { "id": "paraphrase", "label": "Paraphrase", "chants": 1 }
+        { "id": "paraphrase", "label": "Paraphrase", "chants": 3 }
     ]
 }
