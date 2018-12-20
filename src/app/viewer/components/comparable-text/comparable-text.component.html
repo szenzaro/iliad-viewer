@@ -1,0 +1,15 @@
+<div class="d-flex">
+    <app-select-text
+        [(text)]="text"
+        class="flex-grow-1">
+    </app-select-text>
+    <app-select-number
+        [options]="chantsNumber | async"
+        label="Book"
+        class="flex-grow-1"
+        (selectionChange)="chantChange.next($event)">
+    </app-select-number>
+</div>
+<div class="overflow-scroll mt-1">
+    <app-text [verses]="verses | async"></app-text>
+</div>
