@@ -9,7 +9,7 @@
         [highlighted]="w.id === wordDetailsId"
         (openWordId)="openWordId.next($event)"></app-word>
     <div
-        *ngIf="dataPanelIsOpen(wordDetailsId) as w"
+        *ngIf="openedDataPanel(wordDetailsId) as w"
         class="word-data-panel">
         <ul>
             <li><span>Lemma:</span> {{ w.data.lemma}}</li>

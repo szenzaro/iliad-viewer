@@ -17,7 +17,7 @@ export class VerseComponent {
   @Input() wordDetailsId: string;
   @Output() openWordId = new EventEmitter<string>();
 
-  dataPanelIsOpen(id: string) {
-    return this.verse.words.find((w) => w.id === id);
+  openedDataPanel(id: string) {
+    return !!id && this.verse.words.find((w) => w.id === id);
   }
 }
