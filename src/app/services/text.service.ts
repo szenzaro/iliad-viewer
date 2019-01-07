@@ -24,6 +24,14 @@ function mapWords(text: string, chant: number, position: number, verse: VerseRow
   }
 }
 
+function getVerse(id: number, text: string, chant: number, verse: VerseRowType, data: WordData[]): Verse {
+  return {
+    id,
+    n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
+    words: mapWords(text, chant, id, verse, data),
+  };
+}
+
 function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], data: WordData[][]) {
   return verses
     .map((verse, i) => ({
