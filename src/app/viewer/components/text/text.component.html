@@ -3,6 +3,6 @@
     (openWordId)="showData ? openedWordId = $event : 0"
     [attr.data-index]="index"
     [wordDetailsId]="openedWordId"
-    [highlight]="highlight && index % 2 !== 0"
+    [highlight]="shouldHighlight(index, verse)"
     [verse]="verse">
 </app-verse>

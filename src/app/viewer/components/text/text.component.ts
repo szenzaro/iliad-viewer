@@ -15,4 +15,8 @@ export class TextComponent {
   private _openedWordId: string;
   get openedWordId() { return this._openedWordId; }
   set openedWordId(v: string) { this._openedWordId = v === this._openedWordId ? undefined : v; }
+
+  shouldHighlight(index: number, verse: Verse) {
+    return this.highlight && index % 2 === 0 && verse.n !== 't';
+  }
 }
