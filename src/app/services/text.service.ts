@@ -34,11 +34,7 @@ function getVerse(id: number, text: string, chant: number, verse: VerseRowType, 
 
 function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], data: WordData[][]) {
   return verses
-    .map((verse, i) => ({
-      id: i + 1,
-      n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
-      words: mapWords(text, chant, i + 1, verse, data[i]),
-    } as Verse));
+    .map((verse, i) => getVerse(verses[0][0] === 't' ? i : i + 1, text, chant, verse, data[i]));
 }
 
 function toWordData(versesData: [string, string, string][][]): WordData[][] {
