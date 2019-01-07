@@ -16,21 +16,25 @@ function mapWords(text: string, chant: number, position: number, verse: VerseRow
       id = `${id}.1`;
       return [{ id, text: 'OMISIT', data } as Word];
     case 'f':
-      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
+      return verse[1].map((lemma, j) => ({ text: lemma } as Word));
     case 't':
-      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
+      return verse[1].map((lemma, j) => ({ text: lemma } as Word));
     default: // "v"
       return verse[2].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
   }
 }
 
+function getVerse(id: number, text: string, chant: number, verse: VerseRowType, data: WordData[]): Verse {
+  return {
+    id,
+    n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
+    words: mapWords(text, chant, id, verse, data),
+  };
+}
+
 function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], data: WordData[][]) {
   return verses
-    .map((verse, i) => ({
-      id: i + 1,
-      n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
-      words: mapWords(text, chant, i + 1, verse, data[i]),
-    } as Verse));
+    .map((verse, i) => getVerse(verses[0][0] === 't' ? i : i + 1, text, chant, verse, data[i]));
 }
 
 function toWordData(versesData: [string, string, string][][]): WordData[][] {

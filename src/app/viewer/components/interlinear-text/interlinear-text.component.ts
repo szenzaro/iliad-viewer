@@ -95,7 +95,15 @@ export class InterlinearTextComponent {
             this.textService.getVerses(text, chant, [range[1][0] - 1, range[1][1]]),
             this.textService.getVerses(paraphrase, chant, [range[1][0] - 1, range[1][1]]),
           ).pipe(
-            map(([greek, paraph]) => pairwiseMerge(showHomeric ? greek : [], showParaphfrase ? paraph : [])),
+            map(([greek, paraph]) => {
+              const greekVerses = showHomeric
+                ? greek.length > 0 && greek[0].n === 't' ? greek.slice(1) : greek
+                : [];
+              const paraphVerses = showParaphfrase ? paraph : [];
+
+              const merged = pairwiseMerge(greekVerses, paraphVerses);
+              return  greek.length > 0 && greek[0].n === 't' ? [greek[0]].concat(merged) : merged;
+            }),
           ),
           ),
         ),

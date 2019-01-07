@@ -1,12 +1,12 @@
 export interface Word {
-    id: string;
+    id?: string;
     text: string;
-    data: any; // FIXME: use correct type
+    data?: any; // FIXME: use correct type
 }
 
 export interface Verse {
     id: number;
-    n: number;
+    n: number | 't' | 'f';
     words: Word[];
 }
 
