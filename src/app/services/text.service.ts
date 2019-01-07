@@ -16,9 +16,9 @@ function mapWords(text: string, chant: number, position: number, verse: VerseRow
       id = `${id}.1`;
       return [{ id, text: 'OMISIT', data } as Word];
     case 'f':
-      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
+      return verse[1].map((lemma, j) => ({ text: lemma } as Word));
     case 't':
-      return verse[1].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
+      return verse[1].map((lemma, j) => ({ text: lemma } as Word));
     default: // "v"
       return verse[2].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
   }
