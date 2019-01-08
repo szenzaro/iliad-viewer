@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { filter, map, skip, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { numberToOptions } from 'src/app/utils';
 import { InSubject } from '../../utils/InSubject';
@@ -25,10 +25,14 @@ export class ComparableTextComponent {
       map(({ textsList }) => textsList),
     );
 
+  loading = new BehaviorSubject<boolean>(true);
+
   verses = combineLatest(this.textChange, this.chantChange)
     .pipe(
+      tap(() => this.loading.next(true)),
       filter(([text]) => !!text),
       switchMap(([text, chant]) => this.textService.getVerses(text, chant)),
+      tap(() => this.loading.next(false)),
     );
 
   chantsNumber = this.textChange
