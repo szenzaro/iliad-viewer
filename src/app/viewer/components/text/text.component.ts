@@ -11,6 +11,7 @@ export class TextComponent {
   @Input() verses: Verse[] = [];
   @Input() highlight = false; // Highlight alternate verses
   @Input() showData = true;
+  @Input() loading = true;
 
   private _openedWordId: string;
   get openedWordId() { return this._openedWordId; }

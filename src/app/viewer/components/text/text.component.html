@@ -1,4 +1,6 @@
+<app-spinner *ngIf="loading"></app-spinner>
 <cdk-virtual-scroll-viewport
+    *ngIf="!loading"
     class="full-height"
     itemSize="30">
     <ng-container *cdkVirtualFor="let verse of verses; let index = index">
