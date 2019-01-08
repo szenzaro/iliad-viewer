@@ -1,34 +1,37 @@
 <div class="d-flex">
-  <div class="btn-group" role="group" aria-label="Basic example">
-    <button 
-      (click)="clickParaphrase()" 
-      type="button" 
-      class="btn btn-secondary btn-sm" 
-      [class.active]="showParaphfrase">
-      <fa-icon [icon]="faThList"></fa-icon>
-    </button>
-    <button 
-      (click)="clickHomeric()" 
-      type="button" 
-      class="btn btn-secondary btn-sm" 
-      [class.active]="showHomeric">
-      <fa-icon [icon]="faListAlt"></fa-icon>
-    </button>
-  </div>
+    <div class="btn-group">
+        <button
+            (click)="clickParaphrase()"
+            type="button"
+            class="btn btn-secondary btn-sm"
+            [class.active]="showParaphfrase">
+            <fa-icon [icon]="faThList"></fa-icon>
+        </button>
+        <button
+            (click)="clickHomeric()"
+            type="button"
+            class="btn btn-secondary btn-sm"
+            [class.active]="showHomeric">
+            <fa-icon [icon]="faListAlt"></fa-icon>
+        </button>
+    </div>
 
-  <app-select-number 
-    [options]="chantsNumber | async"
-    label="Book" 
-    class="flex-grow-1"
-    (selectionChange)="chantChange.next($event)">
-  </app-select-number>
-  <app-select-number 
-    [options]="chantPages | async"
-    label="Page" 
-    class="flex-grow-1"
-    [selection]="page"
-    (selectionChange)="pageChange.next($event)">
-  </app-select-number>
+    <app-select-number
+        [options]="chantsNumber | async"
+        label="Book"
+        class="flex-grow-1"
+        (selectionChange)="chantChange.next($event)">
+    </app-select-number>
+    <app-select-number
+        [options]="chantPages | async"
+        label="Page"
+        class="flex-grow-1"
+        [selection]="page"
+        (selectionChange)="pageChange.next($event)">
+    </app-select-number>
 </div>
-<app-text [verses]="verses | async" [highlight]="showParaphfrase || showHomeric" [showData]="false"></app-text>
-
+<app-text
+    [loading]="loading | async"
+    [verses]="verses | async"
+    [highlight]="showParaphfrase || showHomeric"
+    [showData]="false"></app-text>
