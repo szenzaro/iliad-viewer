@@ -1,8 +1,13 @@
-<app-verse
-    *ngFor="let verse of verses; let index = index"
-    (openWordId)="showData ? openedWordId = $event : 0"
-    [attr.data-index]="index"
-    [wordDetailsId]="openedWordId"
-    [highlight]="shouldHighlight(index, verse)"
-    [verse]="verse">
-</app-verse>
+<cdk-virtual-scroll-viewport
+    class="full-height"
+    itemSize="30">
+    <ng-container *cdkVirtualFor="let verse of verses; let index = index">
+        <app-verse
+            (openWordId)="showData ? openedWordId = $event : 0"
+            [attr.data-index]="index"
+            [wordDetailsId]="openedWordId"
+            [highlight]="shouldHighlight(index, verse)"
+            [verse]="verse">
+        </app-verse>
+    </ng-container>
+</cdk-virtual-scroll-viewport>

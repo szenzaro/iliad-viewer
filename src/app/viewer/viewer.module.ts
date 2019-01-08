@@ -1,3 +1,4 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +27,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     CommonModule,
     FontAwesomeModule,
     ReactiveFormsModule,
+    ScrollingModule,
     ViewerRoutingModule,
   ],
   declarations: [
