@@ -1,3 +1,4 @@
+<app-word-filters (filterChange)=posFilter.next($event)></app-word-filters>
 <div class="d-flex">
     <app-select-text
         [(text)]="text"
@@ -12,6 +13,7 @@
 </div>
 <div class="overflow-scroll mt-1">
     <app-text
+        [posHighlight] = "posFilter | async"
         [verses]="verses | async"
         [loading]="loading | async"></app-text>
 </div>
