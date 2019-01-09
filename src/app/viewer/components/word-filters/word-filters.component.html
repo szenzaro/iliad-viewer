@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-center">
+    <app-pill
+        kind="badge-primary"
+        label="Adjective"
+        (selectedChange)="adjectiveFilter.next($event)"></app-pill>
+    <app-pill
+        kind="badge-warning"
+        label="Article"
+        (selectedChange)="articleFilter.next($event)"></app-pill>
+    <app-pill
+        kind="badge-secondary"
+        label="Adverb"
+        (selectedChange)="adverbFilter.next($event)"></app-pill>
+    <app-pill
+        kind="badge-success"
+        label="Name"
+        (selectedChange)="nameFilter.next($event)"></app-pill>
+    <app-pill
+        kind="badge-danger"
+        label="Verb"
+        (selectedChange)="verbFilter.next($event)"></app-pill>
+    <app-pill
+        kind="badge-info"
+        label="Pronoun"
+        (selectedChange)="pronounFilter.next($event)"></app-pill>
+    <app-pill
+        kind="badge-dark"
+        label="Num"
+        (selectedChange)="numFilter.next($event)"></app-pill>
+</div>

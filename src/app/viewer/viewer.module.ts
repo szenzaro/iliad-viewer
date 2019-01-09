@@ -20,6 +20,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
 import { TextComponent } from './components/text/text.component';
 import { VerseComponent } from './components/verse/verse.component';
+import { WordFiltersComponent } from './components/word-filters/word-filters.component';
 import { WordComponent } from './components/word/word.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ViewerRoutingModule } from './viewer-routing.module';
@@ -51,6 +52,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     VerseComponent,
     ViewerPageComponent,
     WordComponent,
+    WordFiltersComponent,
   ],
   entryComponents: [
     AnnotationModalComponent,
