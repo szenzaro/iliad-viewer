@@ -29,6 +29,7 @@ export class ComparableTextComponent {
 
   verses = combineLatest(this.textChange, this.chantChange)
     .pipe(
+      debounceTime(100),
       tap(() => this.loading.next(true)),
       filter(([text]) => !!text),
       switchMap(([text, chant]) => this.textService.getVerses(text, chant)),

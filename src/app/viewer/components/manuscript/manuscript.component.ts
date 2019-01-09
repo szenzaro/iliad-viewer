@@ -34,7 +34,7 @@ export class ManuscriptComponent {
     combineLatest(this.currentChantChange, this.manuscriptPageChange)
       .pipe(
         distinctUntilChanged(),
-        debounceTime(100),
+        debounceTime(150),
         switchMap(([chant, page]) => this.textService.getVersesNumberFromPage(this.text, page, chant)),
         map((pageData) => ({ chant: pageData[0], page: this.manuscriptPage + 1 })),
       )

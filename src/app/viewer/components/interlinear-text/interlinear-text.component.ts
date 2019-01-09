@@ -56,6 +56,7 @@ export class InterlinearTextComponent {
   chantPages = combineLatest(this.textChange.pipe(filter((x) => !!x)), this.chantChange)
     .pipe(
       switchMap(([text, chant]) => this.textService.getPageNumbers(text, chant)),
+      debounceTime(100),
       map((pages) => pages.map(numberToOption)),
     );
 
