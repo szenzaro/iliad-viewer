@@ -10,6 +10,7 @@ import { InterlinearTextComponent } from './components/interlinear-text/interlin
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { ModeSelectorComponent } from './components/mode-selector/mode-selector.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
+import { PillComponent } from './components/pill/pill.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
 import { SearchComponent } from './components/search/search.component';
 import { SelectNumberComponent } from './components/select-number/select-number.component';
@@ -38,6 +39,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     ManuscriptComponent,
     ModeSelectorComponent,
     OpenseadragonComponent,
+    PillComponent,
     SearchComponent,
     SearchResultComponent,
     SelectComponent,
