@@ -136,3 +136,36 @@ export function numberToOption(n) {
 export function numberToOptions(n: number) {
     return new Array(n).fill(undefined).map((_, i) => numberToOption(i + 1));
 }
+
+export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num';
+
+export function isAdjective(tag: string): boolean {
+    return !!tag && tag.startsWith('A');
+}
+export function isArticle(tag: string): boolean {
+    return !!tag && tag.startsWith('DET');
+}
+export function isAdverb(tag: string): boolean {
+    return !!tag && tag.startsWith('I+Adv');
+}
+export function isName(tag: string): boolean {
+    return !!tag && tag.startsWith('N+');
+}
+export function isVerb(tag: string): boolean {
+    return !!tag && tag.startsWith('V');
+}
+export function isPronoun(tag: string): boolean {
+    return !!tag && tag.startsWith('PRO+');
+}
+export function isNum(tag: string): boolean {
+    return !!tag && tag.startsWith('NUM');
+}
+export function containsPOStoHighlight(tag: string, ph: POS[]): boolean {
+    return ph.includes('Article') && isArticle(tag) ||
+        ph.includes('Adjective') && isAdjective(tag) ||
+        ph.includes('Adverb') && isAdverb(tag) ||
+        ph.includes('Name') && isName(tag) ||
+        ph.includes('Num') && isNum(tag) ||
+        ph.includes('Pronoun') && isPronoun(tag) ||
+        ph.includes('Verb') && isVerb(tag);
+}
