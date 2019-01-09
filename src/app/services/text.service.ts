@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Map } from '../utils/index';
-import { Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
+import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
 
 import { createAnnotation, OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 
-import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 function mapWords(text: string, chant: number, position: number, verse: VerseRowType, data: WordData[]): Word[] {
   let id = `${text}.${chant}.${position}`;
@@ -16,9 +16,9 @@ function mapWords(text: string, chant: number, position: number, verse: VerseRow
       id = `${id}.1`;
       return [{ id, text: 'OMISIT', data } as Word];
     case 'f':
-      return verse[1].map((lemma, j) => ({ text: lemma } as Word));
+      return verse[1].map((lemma) => ({ text: lemma } as Word));
     case 't':
-      return verse[1].map((lemma, j) => ({ text: lemma } as Word));
+      return verse[1].map((lemma) => ({ text: lemma } as Word));
     default: // "v"
       return verse[2].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
   }
@@ -62,14 +62,15 @@ type PageInfo = [number, [number, number]];
 })
 export class TextService {
 
+  cache: Map<any> = {};
 
   constructor(private readonly http: HttpClient) {
   }
 
   getVerses(text: string, chant: number, range?: [number, number]) {
     return forkJoin(
-      this.http.get<Chant>(`./assets/texts/${text}/${chant}/verses.json`),
-      this.http.get<[string, string, string][][]>(`./assets/texts/${text}/${chant}/data.json`),
+      this.cachedGet<Chant>(`./assets/texts/${text}/${chant}/verses.json`),
+      this.cachedGet<[string, string, string][][]>(`./assets/texts/${text}/${chant}/data.json`),
     ).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
       map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
@@ -77,22 +78,22 @@ export class TextService {
   }
 
   getVersesNumberFromPage(text: string, n: number, chant?: number, ) {
-    return this.http.get(`./assets/texts/${text}/pagesToVerses.json`)
+    return this.cachedGet<PageInfo[]>(`./assets/texts/${text}/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[]) => chant !== undefined
-          ? pages[n].find((x) => x[0] === chant) // TODO check correctness
+          ? pages[n].find((x) => x[0] === chant) // TODO check type correctness
           : pages[n][pages[n].length - 1]),
       );
   }
 
   getTextsList() {
-    return this.http.get<TextManifest>(`./assets/texts/texts-manifest.json`);
+    return this.cachedGet<TextManifest>(`./assets/texts/texts-manifest.json`);
   }
 
   getPageNumbers(text: string, chant: number) {
-    return this.http.get(`./assets/texts/${text}/booksToPages.json`)
+    return this.cachedGet<number[][]>(`./assets/texts/${text}/booksToPages.json`)
       .pipe(
-        map((pages: number[][]) => pages[chant - 1]),
+        map((pages) => pages[chant - 1]),
       );
   }
 
@@ -108,9 +109,9 @@ export class TextService {
   }
 
   getAnnotations() {
-    return this.http.get(`./assets/manuscript/annotations.json`)
+    return this.cachedGet<Annotation[]>(`./assets/manuscript/annotations.json`)
       .pipe(
-        map((arr: { page: number, text: string, x: number, y: number, width: number, height: number }[]) => {
+        map((arr) => {
           const annotations: Map<OsdAnnotation[]> = {};
           arr.forEach(({ page, text, x, y, width, height }) => {
             if (!annotations[page]) {
@@ -121,5 +122,11 @@ export class TextService {
           return annotations;
         }),
       );
+  }
+
+  private cachedGet<T>(path: string) {
+    return !!this.cache[path]
+      ? of<T>(this.cache[path])
+      : this.http.get<T>(path).pipe(tap((x) => this.cache[path] = x));
   }
 }
