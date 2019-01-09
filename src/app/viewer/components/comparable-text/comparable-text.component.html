@@ -11,5 +11,7 @@
     </app-select-number>
 </div>
 <div class="overflow-scroll mt-1">
-    <app-text [verses]="verses | async"></app-text>
+    <app-text
+        [verses]="verses | async"
+        [loading]="loading | async"></app-text>
 </div>

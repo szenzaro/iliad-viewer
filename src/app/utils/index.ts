@@ -26,7 +26,7 @@ function inflectionalTagToDescription(tag: string): string {
             case 'D': description += ' Dative'; break;
             case 'd': description += ' Dual'; break;
             case 'E': description += ' Active'; break;
-            case 'f': description += ' Feeminine'; break;
+            case 'f': description += ' Feminine'; break;
             case 'F': description += ' Future'; break;
             case 'G': description += ' Genitive'; break;
             case 'I': description += ' Imperfect'; break;

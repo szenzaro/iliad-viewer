@@ -56,6 +56,7 @@ export class InterlinearTextComponent {
   chantPages = combineLatest(this.textChange.pipe(filter((x) => !!x)), this.chantChange)
     .pipe(
       switchMap(([text, chant]) => this.textService.getPageNumbers(text, chant)),
+      debounceTime(100),
       map((pages) => pages.map(numberToOption)),
     );
 
@@ -78,6 +79,8 @@ export class InterlinearTextComponent {
     distinctUntilChanged(),
   );
 
+  loading = new BehaviorSubject<boolean>(true);
+
   verses = combineLatest(
     this.textChange.pipe(filter((x) => !!x)),
     this.paraphraseChange.pipe(filter((x) => !!x)),
@@ -90,6 +93,7 @@ export class InterlinearTextComponent {
     switchMap(([text, paraphrase, chant, n, showHomeric, showParaphfrase]) =>
       this.textService.getVersesNumberFromPage(text, n - 1, chant)
         .pipe(
+          tap(() => this.loading.next(true)),
           filter((x) => !!x),
           switchMap((range) => forkJoin(
             this.textService.getVerses(text, chant, [range[1][0] - 1, range[1][1]]),
@@ -102,10 +106,11 @@ export class InterlinearTextComponent {
               const paraphVerses = showParaphfrase ? paraph : [];
 
               const merged = pairwiseMerge(greekVerses, paraphVerses);
-              return  greek.length > 0 && greek[0].n === 't' ? [greek[0]].concat(merged) : merged;
+              return greek.length > 0 && greek[0].n === 't' ? [greek[0]].concat(merged) : merged;
             }),
           ),
           ),
+          tap(() => this.loading.next(false)),
         ),
     ),
   );

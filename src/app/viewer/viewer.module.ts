@@ -15,6 +15,7 @@ import { SearchComponent } from './components/search/search.component';
 import { SelectNumberComponent } from './components/select-number/select-number.component';
 import { SelectTextComponent } from './components/select-text/select-text.component';
 import { SelectComponent } from './components/select/select.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
 import { TextComponent } from './components/text/text.component';
 import { VerseComponent } from './components/verse/verse.component';
@@ -42,6 +43,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     SelectComponent,
     SelectNumberComponent,
     SelectTextComponent,
+    SpinnerComponent,
     TextComparisonComponent,
     TextComponent,
     VerseComponent,
