@@ -5,6 +5,7 @@
     itemSize="30">
     <ng-container *cdkVirtualFor="let verse of verses; let index = index">
         <app-verse
+            [posHighlight]="posHighlight"
             (openWordId)="showData ? openedWordId = $event : 0"
             [attr.data-index]="index"
             [wordDetailsId]="openedWordId"
