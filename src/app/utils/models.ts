@@ -32,3 +32,12 @@ export interface WordData {
 }
 
 export type ChantData = WordData[];
+
+export interface Annotation {
+    page: number;
+    text: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
