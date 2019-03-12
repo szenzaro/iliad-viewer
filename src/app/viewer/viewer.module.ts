@@ -10,6 +10,7 @@ import { InterlinearTextComponent } from './components/interlinear-text/interlin
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { ModeSelectorComponent } from './components/mode-selector/mode-selector.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
+import { PillComponent } from './components/pill/pill.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
 import { SearchComponent } from './components/search/search.component';
 import { SelectNumberComponent } from './components/select-number/select-number.component';
@@ -19,6 +20,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
 import { TextComponent } from './components/text/text.component';
 import { VerseComponent } from './components/verse/verse.component';
+import { WordFiltersComponent } from './components/word-filters/word-filters.component';
 import { WordComponent } from './components/word/word.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ViewerRoutingModule } from './viewer-routing.module';
@@ -38,6 +40,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     ManuscriptComponent,
     ModeSelectorComponent,
     OpenseadragonComponent,
+    PillComponent,
     SearchComponent,
     SearchResultComponent,
     SelectComponent,
@@ -49,6 +52,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     VerseComponent,
     ViewerPageComponent,
     WordComponent,
+    WordFiltersComponent,
   ],
   entryComponents: [
     AnnotationModalComponent,

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { tagToDescription } from 'src/app/utils';
+import { POS, tagToDescription } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
 
 
@@ -15,6 +15,7 @@ export class VerseComponent {
   @Input() verse: Verse;
   @Input() highlight = false;
   @Input() wordDetailsId: string;
+  @Input() posHighlight: POS[] = [];
   @Output() openWordId = new EventEmitter<string>();
 
   openedDataPanel(id: string) {

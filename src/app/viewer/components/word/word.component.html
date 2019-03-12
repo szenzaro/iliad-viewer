@@ -2,6 +2,14 @@
     [attr.data-word-id]="word.id"
     class="word"
     [class.highlighted]="highlighted"
+    [class.badge]="posHighlighted"
+    [class.badge-primary]="posHighlighted && posAdjective"
+    [class.badge-warning]="posHighlighted && posArticle"
+    [class.badge-secondary]="posHighlighted && posAdverb"
+    [class.badge-success]="posHighlighted && posName"
+    [class.badge-danger]="posHighlighted && posVerb"
+    [class.badge-info]="posHighlighted && posPronoun"
+    [class.badge-dark]="posHighlighted && posNum"
     (click)="!!word.data ? openWordId.next(word.id) : 0">
     {{ word.text }}
 </span>

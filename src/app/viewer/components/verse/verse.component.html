@@ -6,6 +6,7 @@
         class="p-1"
         *ngFor="let w of verse.words"
         [word]="w"
+        [posHighlight] = "posHighlight"
         [highlighted]="!!wordDetailsId && w.id === wordDetailsId"
         (openWordId)="openWordId.next($event)"></app-word>
     <div
