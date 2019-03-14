@@ -287,5 +287,17 @@ export function containsPOStoHighlight(tag: string, ph: POS[]): boolean {
         ph.includes('Name') && isName(tag) ||
         ph.includes('Num') && isNum(tag) ||
         ph.includes('Pronoun') && isPronoun(tag) ||
-        ph.includes('Verb') && isVerb(tag);
+        ph.includes('Verb') && isVerb(tag) ||
+        ph.includes('Singular') && isSingular(tag) ||
+        ph.includes('Plural') && isPlural(tag) ||
+        ph.includes('Dual') && isDual(tag) ||
+        ph.includes('Masculine') && isMasculine(tag) ||
+        ph.includes('Feminine') && isFeminine(tag) ||
+        ph.includes('Neutral') && isNeutral(tag) ||
+        ph.includes('Nominative') && isNominative(tag) ||
+        ph.includes('Vocative') && isVocative(tag) ||
+        ph.includes('Accusative') && isAccusative(tag) ||
+        ph.includes('Genitive') && isGenitive(tag) ||
+        ph.includes('Dative') && isDative(tag)
+        ;
 }
