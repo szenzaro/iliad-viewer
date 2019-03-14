@@ -4,14 +4,16 @@
             (click)="clickParaphrase()"
             type="button"
             class="btn btn-secondary btn-sm"
-            [class.active]="showParaphfrase">
+            [class.active]="showParaphfrase"
+        >
             <fa-icon [icon]="faThList"></fa-icon>
         </button>
         <button
             (click)="clickHomeric()"
             type="button"
             class="btn btn-secondary btn-sm"
-            [class.active]="showHomeric">
+            [class.active]="showHomeric"
+        >
             <fa-icon [icon]="faListAlt"></fa-icon>
         </button>
     </div>
@@ -20,18 +22,29 @@
         [options]="chantsNumber | async"
         label="Book"
         class="flex-grow-1"
-        (selectionChange)="chantChange.next($event)">
+        (selectionChange)="chantChange.next($event)"
+    >
     </app-select-number>
     <app-select-number
         [options]="chantPages | async"
         label="Page"
         class="flex-grow-1"
         [selection]="page"
-        (selectionChange)="pageChange.next($event)">
+        (selectionChange)="pageChange.next($event)"
+    >
+    </app-select-number>
+    <app-select-number
+        [options]="verseNumbers | async"
+        label="Verse"
+        class="flex-grow-1"
+        [selection]="verse"
+        (selectionChange)="verseChange.next($event)"
+    >
     </app-select-number>
 </div>
 <app-text
     [loading]="loading | async"
     [verses]="verses | async"
     [highlight]="showParaphfrase || showHomeric"
-    [showData]="false"></app-text>
+    [showData]="false"
+></app-text>

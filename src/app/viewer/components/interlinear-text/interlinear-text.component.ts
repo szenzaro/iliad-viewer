@@ -51,6 +51,9 @@ export class InterlinearTextComponent {
   @Input() @InSubject() chant: number;
   @Output() chantChange = new BehaviorSubject<number>(1);
 
+  @Input() @InSubject() verse: number;
+  @Output() verseChange = new BehaviorSubject<number>(1);
+
   versesChange = new BehaviorSubject<[number, number]>(undefined);
 
   chantPages = combineLatest(this.textChange.pipe(filter((x) => !!x)), this.chantChange)
@@ -60,7 +63,28 @@ export class InterlinearTextComponent {
       map((pages) => pages.map(numberToOption)),
     );
 
+  verseNumbers = this.chantChange
+    .pipe(
+      map((c) => {
+        switch (c) {
+          case 1: return 611;
+          case 2: return 877;
+          case 3: return 461;
+        }
+      }),
+      distinctUntilChanged(),
+      map(numberToOptions),
+    );
+
   selectedPage = merge(
+    combineLatest(
+      this.textChange.pipe(filter((x) => !!x)),
+      this.chantChange.pipe(filter((x) => x !== undefined)),
+      this.verseChange.pipe(filter((x) => x !== undefined)),
+    ).pipe(
+      switchMap(([text, chant, verse]) => this.textService.getPageFromVerse(text, chant, verse)),
+      tap((p) => this.pageChange.next(p)),
+    ),
     this.pageChange
       .pipe(
         distinctUntilChanged()
@@ -122,6 +146,8 @@ export class InterlinearTextComponent {
     );
 
   constructor(private textService: TextService) {
+    // on chant change reset verse and page filter
+    // on page change reset verse filter
   }
 
   clickHomeric() {
