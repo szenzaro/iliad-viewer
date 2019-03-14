@@ -160,6 +160,17 @@ export function isPronoun(tag: string): boolean {
 export function isNum(tag: string): boolean {
     return !!tag && tag.startsWith('NUM');
 }
+function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[]) => T, defaultValue: T): T {
+    if (!tag) { return defaultValue; }
+    const crasis = tag.split('@');
+    if (crasis.length > 1) {
+        return f(crasis);
+    }
+    const parts = tag.split(':');
+    if (parts.length < 2) { return defaultValue; }
+    return g(parts);
+}
+
 export function containsPOStoHighlight(tag: string, ph: POS[]): boolean {
     return ph.includes('Article') && isArticle(tag) ||
         ph.includes('Adjective') && isAdjective(tag) ||
