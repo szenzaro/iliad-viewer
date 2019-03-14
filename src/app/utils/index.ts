@@ -113,20 +113,21 @@ function morphologicalTagToDescription(tag: string): string {
 }
 
 export function tagToDescription(tag: string): string {
-    const crasis = tag.split('@');
-    if (crasis.length > 1) {
-        return crasis.map((v) => tagToDescription(v))
-            .reduce((x, y) => x + y, '');
-    }
-    const parts = tag.split(':');
-    let description = '';
-    if (parts.length > 0) {
-        description += morphologicalTagToDescription(parts[0]);
-    }
-    if (parts.length > 1) {
-        description += inflectionalTagToDescription(parts[1]);
-    }
-    return description;
+    return checkTag(
+        tag,
+        (crasis: string[]) => crasis.map((v) => tagToDescription(v)).reduce((x, y) => x + y, ''),
+        (parts: string[]) => {
+            let description = '';
+            if (parts.length > 0) {
+                description += morphologicalTagToDescription(parts[0]);
+            }
+            if (parts.length > 1) {
+                description += inflectionalTagToDescription(parts[1]);
+            }
+            return description;
+        },
+        '',
+    );
 }
 
 export function numberToOption(n) {
