@@ -67,6 +67,13 @@ export class TextService {
   constructor(private readonly http: HttpClient) {
   }
 
+  getPageFromVerse(text: string, chant: number, verse: number) {
+    return this.cachedGet<PageInfo[]>(`./assets/texts/${text}/pagesToVerses.json`)
+      .pipe(
+        map((pages: PageInfo[]) => (pages.findIndex((x) => x[0][0] === chant && verse <= x[0][1][1] && verse >= x[0][1][0]) + 1)),
+      );
+  }
+
   getVerses(text: string, chant: number, range?: [number, number]) {
     return forkJoin(
       this.cachedGet<Chant>(`./assets/texts/${text}/${chant}/verses.json`),
