@@ -164,6 +164,111 @@ export function isPronoun(tag: string): boolean {
 export function isNum(tag: string): boolean {
     return !!tag && tag.startsWith('NUM');
 }
+
+export function isMasculine(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isMasculine(crasis[0]) || isMasculine(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'm'),
+        false,
+    );
+}
+
+export function isFeminine(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isFeminine(crasis[0]) || isFeminine(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'f'),
+        false,
+    );
+}
+
+export function isNeutral(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isNeutral(crasis[0]) || isNeutral(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'n'),
+        false,
+    );
+}
+
+export function isSingular(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isSingular(crasis[0]) || isSingular(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 's') || parts[0].endsWith('s'),
+        false,
+    );
+}
+
+export function isPlural(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isPlural(crasis[0]) || isPlural(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'p') || parts[0].endsWith('p'),
+        false,
+    );
+}
+
+export function isDual(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isDual(crasis[0]) || isDual(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'd'),
+        false,
+    );
+}
+
+export function isNominative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isNominative(crasis[0]) || isNominative(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'N'),
+        false,
+    );
+}
+
+export function isVocative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isVocative(crasis[0]) || isVocative(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'V'),
+        false,
+    );
+}
+
+export function isAccusative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isAccusative(crasis[0]) || isAccusative(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'A'),
+        false,
+    );
+}
+
+export function isGenitive(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isGenitive(crasis[0]) || isGenitive(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'G'),
+        false,
+    );
+}
+
+export function isDative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isDative(crasis[0]) || isDative(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'D'),
+        false,
+    );
+}
+
+
+function includesChar(str: string, c: string): boolean {
+    return str.includes(c);
+}
+
 function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[]) => T, defaultValue: T): T {
     if (!tag) { return defaultValue; }
     const crasis = tag.split('@');
