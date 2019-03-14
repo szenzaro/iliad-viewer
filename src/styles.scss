@@ -84,3 +84,93 @@
 .cursor {
     cursor: pointer;
 }
+
+.highlighted-word {
+    border: solid 3px lightgrey;
+    background-color: grey;
+    color: white;
+}
+
+.article {
+    background-color: #6184d8;
+    color: white;    
+}
+
+.adjective {
+    background-color: #b07bac;
+    color: white;    
+}
+
+.adverb {
+    background-color: #ff7847; 
+    color: white;
+}
+
+.name {
+    background-color: #639a88;
+    color: white;
+}
+
+.verb {
+    background-color: #ffa630;
+    color: white;
+}
+
+.pronoun {
+    background-color: #9faf90;
+    color: white;
+}
+
+.num {
+    background-color: #000;
+    color: white;
+}
+
+.nominative {
+    border-style: solid;
+    border-color: #3a3042;
+}
+
+.vocative {
+    border-style: solid;
+    border-color: #db9d47;
+}
+
+.accusative {
+    border-style: solid;
+    border-color: #ff784f;
+}
+
+.genitive {
+    border-style: solid;
+    border-color: #9ba2ff;
+}
+
+.dative {
+    border-style: solid;
+    border-color: #786f52;
+}
+
+.singular {
+    border-style: solid;
+}
+
+.plural {
+    border-style: dashed;
+}
+
+.dual {
+    border-style: double;
+}
+
+.feminine {
+    color: #ea526f;
+}
+
+.masculine {
+    color: #6184d8;
+}
+
+.neutral {
+    color: #353A47;
+}
