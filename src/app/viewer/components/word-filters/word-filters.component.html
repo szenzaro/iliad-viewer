@@ -1,30 +1,115 @@
-<div class="d-flex justify-content-center">
-    <app-pill
-        kind="badge-primary"
-        label="Adjective"
-        (selectedChange)="adjectiveFilter.next($event)"></app-pill>
-    <app-pill
-        kind="badge-warning"
-        label="Article"
-        (selectedChange)="articleFilter.next($event)"></app-pill>
-    <app-pill
-        kind="badge-secondary"
-        label="Adverb"
-        (selectedChange)="adverbFilter.next($event)"></app-pill>
-    <app-pill
-        kind="badge-success"
-        label="Name"
-        (selectedChange)="nameFilter.next($event)"></app-pill>
-    <app-pill
-        kind="badge-danger"
-        label="Verb"
-        (selectedChange)="verbFilter.next($event)"></app-pill>
-    <app-pill
-        kind="badge-info"
-        label="Pronoun"
-        (selectedChange)="pronounFilter.next($event)"></app-pill>
-    <app-pill
-        kind="badge-dark"
-        label="Num"
-        (selectedChange)="numFilter.next($event)"></app-pill>
+{{ filterChange | async | json }}
+<div class="d-flex">
+    <ngb-tabset [destroyOnHide]="false" type="pills">
+        <ngb-tab title="General categories">
+            <ng-template ngbTabContent>
+                <app-pill
+                    kind="adjective"
+                    label="Adjective"
+                    (selectedChange)="adjectiveFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="article"
+                    label="Article"
+                    (selectedChange)="articleFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="adverb"
+                    label="Adverb"
+                    (selectedChange)="adverbFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="name"
+                    label="Name"
+                    (selectedChange)="nameFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="verb"
+                    label="Verb"
+                    (selectedChange)="verbFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="pronoun"
+                    label="Pronoun"
+                    (selectedChange)="pronounFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="num"
+                    label="Num"
+                    (selectedChange)="numFilter.next($event)"
+                ></app-pill>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Gender">
+            <ng-template ngbTabContent>
+                <app-pill
+                    kind="masculine"
+                    label="Masculine"
+                    gender="M"
+                    (selectedChange)="masculineFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="feminine"
+                    label="Feminine"
+                    gender="F"
+                    (selectedChange)="feminineFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="neutral"
+                    label="Neutral"
+                    gender="N"
+                    (selectedChange)="neutralFilter.next($event)"
+                ></app-pill>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Cardinality">
+            <ng-template ngbTabContent>
+                <app-pill
+                    kind="singular"
+                    label="Singular"
+                    (selectedChange)="singularFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="plural"
+                    label="Plural"
+                    (selectedChange)="pluralFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="dual"
+                    label="Dual"
+                    (selectedChange)="dualFilter.next($event)"
+                ></app-pill>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Cases">
+            <ng-template ngbTabContent>
+                <app-pill
+                    kind="nominative"
+                    label="Nominative"
+                    (selectedChange)="nominativeFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="vocative"
+                    label="Vocative"
+                    (selectedChange)="vocativeFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="accusative"
+                    label="Accusative"
+                    (selectedChange)="accusativeFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="genitive"
+                    label="Genitive"
+                    (selectedChange)="genitiveFilter.next($event)"
+                ></app-pill>
+                <app-pill
+                    kind="dative"
+                    label="Dative"
+                    (selectedChange)="dativeFilter.next($event)"
+                ></app-pill>
+            </ng-template>
+        </ngb-tab>
+
+    </ngb-tabset>
 </div>
