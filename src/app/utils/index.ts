@@ -113,20 +113,21 @@ function morphologicalTagToDescription(tag: string): string {
 }
 
 export function tagToDescription(tag: string): string {
-    const crasis = tag.split('@');
-    if (crasis.length > 1) {
-        return crasis.map((v) => tagToDescription(v))
-            .reduce((x, y) => x + y, '');
-    }
-    const parts = tag.split(':');
-    let description = '';
-    if (parts.length > 0) {
-        description += morphologicalTagToDescription(parts[0]);
-    }
-    if (parts.length > 1) {
-        description += inflectionalTagToDescription(parts[1]);
-    }
-    return description;
+    return checkTag(
+        tag,
+        (crasis: string[]) => crasis.map((v) => tagToDescription(v)).reduce((x, y) => x + y, ''),
+        (parts: string[]) => {
+            let description = '';
+            if (parts.length > 0) {
+                description += morphologicalTagToDescription(parts[0]);
+            }
+            if (parts.length > 1) {
+                description += inflectionalTagToDescription(parts[1]);
+            }
+            return description;
+        },
+        '',
+    );
 }
 
 export function numberToOption(n) {
@@ -137,7 +138,16 @@ export function numberToOptions(n: number) {
     return new Array(n).fill(undefined).map((_, i) => numberToOption(i + 1));
 }
 
-export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num';
+export type POS_OP = 'or' | 'and';
+export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num'
+    | 'Masculine' | 'Feminine' | 'Neutral'
+    | 'Singular' | 'Plural' | 'Dual'
+    | 'Nominative' | 'Vocative' | 'Accusative' | 'Genitive' | 'Dative';
+
+export interface PosFilter {
+    op: POS_OP;
+    pos: POS[];
+}
 
 export function isAdjective(tag: string): boolean {
     return !!tag && tag.startsWith('A');
@@ -160,12 +170,147 @@ export function isPronoun(tag: string): boolean {
 export function isNum(tag: string): boolean {
     return !!tag && tag.startsWith('NUM');
 }
-export function containsPOStoHighlight(tag: string, ph: POS[]): boolean {
-    return ph.includes('Article') && isArticle(tag) ||
-        ph.includes('Adjective') && isAdjective(tag) ||
-        ph.includes('Adverb') && isAdverb(tag) ||
-        ph.includes('Name') && isName(tag) ||
-        ph.includes('Num') && isNum(tag) ||
-        ph.includes('Pronoun') && isPronoun(tag) ||
-        ph.includes('Verb') && isVerb(tag);
+
+export function isMasculine(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isMasculine(crasis[0]) || isMasculine(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'm'),
+        false,
+    );
+}
+
+export function isFeminine(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isFeminine(crasis[0]) || isFeminine(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'f'),
+        false,
+    );
+}
+
+export function isNeutral(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isNeutral(crasis[0]) || isNeutral(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'n'),
+        false,
+    );
+}
+
+export function isSingular(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isSingular(crasis[0]) || isSingular(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 's') || parts[0].endsWith('s'),
+        false,
+    );
+}
+
+export function isPlural(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isPlural(crasis[0]) || isPlural(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'p') || parts[0].endsWith('p'),
+        false,
+    );
+}
+
+export function isDual(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isDual(crasis[0]) || isDual(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'd'),
+        false,
+    );
+}
+
+export function isNominative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isNominative(crasis[0]) || isNominative(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'N'),
+        false,
+    );
+}
+
+export function isVocative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isVocative(crasis[0]) || isVocative(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'V'),
+        false,
+    );
+}
+
+export function isAccusative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isAccusative(crasis[0]) || isAccusative(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'A'),
+        false,
+    );
+}
+
+export function isGenitive(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isGenitive(crasis[0]) || isGenitive(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'G'),
+        false,
+    );
+}
+
+export function isDative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isDative(crasis[0]) || isDative(crasis[1]),
+        (parts: string[]) => includesChar(parts[1], 'D'),
+        false,
+    );
+}
+
+
+function includesChar(str: string, c: string): boolean {
+    return str.includes(c);
+}
+
+function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[]) => T, defaultValue: T): T {
+    if (!tag) { return defaultValue; }
+    const crasis = tag.split('@');
+    if (crasis.length > 1) {
+        return f(crasis);
+    }
+    const parts = tag.split(':');
+    if (parts.length < 2) { return defaultValue; }
+    return g(parts);
+}
+
+export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): boolean {
+
+    const pos = [];
+
+    ph.forEach((x) => {
+        switch (x) {
+            case 'Article': pos.push(isArticle(tag)); break;
+            case 'Adjective': pos.push(isAdjective(tag)); break;
+            case 'Adverb': pos.push(isAdverb(tag)); break;
+            case 'Name': pos.push(isName(tag)); break;
+            case 'Num': pos.push(isNum(tag)); break;
+            case 'Pronoun': pos.push(isPronoun(tag)); break;
+            case 'Verb': pos.push(isVerb(tag)); break;
+            case 'Singular': pos.push(isSingular(tag)); break;
+            case 'Plural': pos.push(isPlural(tag)); break;
+            case 'Dual': pos.push(isDual(tag)); break;
+            case 'Masculine': pos.push(isMasculine(tag)); break;
+            case 'Feminine': pos.push(isFeminine(tag)); break;
+            case 'Neutral': pos.push(isNeutral(tag)); break;
+            case 'Nominative': pos.push(isNominative(tag)); break;
+            case 'Vocative': pos.push(isVocative(tag)); break;
+            case 'Accusative': pos.push(isAccusative(tag)); break;
+            case 'Genitive': pos.push(isGenitive(tag)); break;
+            case 'Dative': pos.push(isDative(tag)); break;
+        }
+    });
+    return pos.reduce((x, y) => op === 'and' ? x && y : x || y, op === 'and' ? true : false);
 }

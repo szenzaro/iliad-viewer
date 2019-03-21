@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 import { AnnotationModalComponent } from './components/annotation-modal/annotation-modal.component';
 import { ComparableTextComponent } from './components/comparable-text/comparable-text.component';
@@ -29,8 +31,10 @@ import { ViewerRoutingModule } from './viewer-routing.module';
   imports: [
     CommonModule,
     FontAwesomeModule,
+    NgbModule,
     ReactiveFormsModule,
     ScrollingModule,
+    UiSwitchModule,
     ViewerRoutingModule,
   ],
   declarations: [

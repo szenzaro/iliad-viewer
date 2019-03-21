@@ -1,6 +1,8 @@
+<app-word-filters class="m-1" (filterChange)="filter = $event"></app-word-filters>
 <div class="d-flex flex-grow-1 full-height justify-content-around">
     <app-comparable-text
         [(scrollIndex)]="scrollIndex"
+        [posFilter]="filter"
         class="container"
         [text]="'homeric'"
         [chant]="1">
@@ -8,6 +10,7 @@
 
     <app-comparable-text
         [(scrollIndex)]="scrollIndex"
+        [posFilter]="filter"
         class="container"
         [text]="'paraphrase'"
         [chant]="1">

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { PosFilter } from 'src/app/utils';
 
 @Component({
   selector: 'app-text-comparison',
@@ -7,4 +8,5 @@ import { Component, Input } from '@angular/core';
 })
 export class TextComparisonComponent {
   @Input() scrollIndex = 0;
+  filter: PosFilter;
 }

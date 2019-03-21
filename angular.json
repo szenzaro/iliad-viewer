@@ -27,7 +27,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/ngx-ui-switch/ui-switch.component.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

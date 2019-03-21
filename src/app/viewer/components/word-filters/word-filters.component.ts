@@ -1,9 +1,11 @@
-import { Component, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
-import { POS } from 'src/app/utils';
+import { Map, POS, POS_OP, PosFilter } from 'src/app/utils';
 
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, scan, shareReplay, startWith } from 'rxjs/operators';
+
+import { faBroom } from '@fortawesome/free-solid-svg-icons';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-word-filters',
@@ -12,38 +14,55 @@ import { debounceTime, map } from 'rxjs/operators';
 })
 export class WordFiltersComponent {
 
-  adjectiveFilter = new BehaviorSubject<boolean>(false);
-  articleFilter = new BehaviorSubject<boolean>(false);
-  adverbFilter = new BehaviorSubject<boolean>(false);
-  nameFilter = new BehaviorSubject<boolean>(false);
-  verbFilter = new BehaviorSubject<boolean>(false);
-  pronounFilter = new BehaviorSubject<boolean>(false);
-  numFilter = new BehaviorSubject<boolean>(false);
-
-  @Output() filterChange = combineLatest(
-    this.adjectiveFilter,
-    this.articleFilter,
-    this.adverbFilter,
-    this.nameFilter,
-    this.verbFilter,
-    this.pronounFilter,
-    this.numFilter,
-  ).pipe(
-    debounceTime(100),
-    map(([adjectiveFilter, articleFilter, adverbFilter, nameFilter, verbFilter, pronounFilter, numFilter]) => {
-      const posMap = {
-        'Adjective': adjectiveFilter,
-        'Article': articleFilter,
-        'Adverb': adverbFilter,
-        'Name': nameFilter,
-        'Verb': verbFilter,
-        'Pronoun': pronounFilter,
-        'Num': numFilter,
-      };
-
-      return Object.keys(posMap).filter((k) => posMap[k]) as POS[];
-    })
+  faBroom = faBroom;
+  filterItem = new EventEmitter<Map<boolean>>();
+  currentFilter = this.filterItem.pipe(
+    scan((x, y) => (Object.keys(y).length === 0 ? {} : { ...x, ...y })),
   );
 
+  switchChange = new EventEmitter<boolean>();
+  opChange = this.switchChange.pipe(
+    map<boolean, POS_OP>((v) => (v ? 'and' : 'or')),
+    startWith<POS_OP>('or')
+  );
 
+  @Output() filterChange = combineLatest(
+    this.currentFilter,
+    this.opChange,
+  ).pipe(
+    debounceTime(100),
+    map(([currentFilter, op]) => {
+      const pos = Object.keys(currentFilter).filter((k) => currentFilter[k]) as POS[];
+      return { op, pos } as PosFilter;
+    }),
+    shareReplay(1),
+  );
+
+  filterSelected = (label: POS) => {
+    return this.filterChange.pipe(
+      distinctUntilChanged(),
+      map((x) => x.pos.includes(label)),
+      startWith(false),
+      shareReplay(1),
+    );
+  }
+
+  filterFromLabel(label: string, value: boolean): Map<boolean> {
+    const obj = {};
+    obj[label] = value;
+    return obj;
+  }
+
+  genderFromLabel(label: string) {
+    switch (label) {
+      case 'Masculine':
+        return 'M';
+      case 'Feminine':
+        return 'F';
+      case 'Neutral':
+        return 'N';
+      default:
+        return undefined;
+    }
+  }
 }

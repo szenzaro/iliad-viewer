@@ -1,15 +1,35 @@
 <span
     [attr.data-word-id]="word.id"
     class="word"
-    [class.highlighted]="highlighted"
+    [class.highlighted-word]="highlighted"
     [class.badge]="posHighlighted"
-    [class.badge-primary]="posHighlighted && posAdjective"
-    [class.badge-warning]="posHighlighted && posArticle"
-    [class.badge-secondary]="posHighlighted && posAdverb"
-    [class.badge-success]="posHighlighted && posName"
-    [class.badge-danger]="posHighlighted && posVerb"
-    [class.badge-info]="posHighlighted && posPronoun"
-    [class.badge-dark]="posHighlighted && posNum"
+    [class.adjective]="posAdjective && posHighlighted"
+    [class.article]="posArticle && posHighlighted"
+    [class.adverb]="posAdverb && posHighlighted"
+    [class.name]="posName && posHighlighted"
+    [class.verb]="posVerb && posHighlighted"
+    [class.pronoun]="posPronoun && posHighlighted"
+    [class.num]="posNum && posHighlighted"
+    [class.singular]="posSingular && posHighlighted"
+    [class.plural]="posPlural && posHighlighted"
+    [class.dual]="posDual && posHighlighted"
+    [class.nominative]="posNominative && posHighlighted"
+    [class.vocative]="posVocative && posHighlighted"
+    [class.accusative]="posAccusative && posHighlighted"
+    [class.genitive]="posGenitive && posHighlighted"
+    [class.dative]="posDative && posHighlighted"
     (click)="!!word.data ? openWordId.next(word.id) : 0">
     {{ word.text }}
+    <fa-icon
+        *ngIf="posNeutral && posHighlighted"
+        class="neutral"
+        [icon]="faNeuter"></fa-icon>
+    <fa-icon
+        *ngIf="posMasculine && posHighlighted"
+        class="masculine"
+        [icon]="faMars"></fa-icon>
+    <fa-icon
+        *ngIf="posFeminine && posHighlighted"
+        class="feminine"
+        [icon]="faVenus"></fa-icon>
 </span>
