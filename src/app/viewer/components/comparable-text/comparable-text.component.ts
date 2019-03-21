@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -19,6 +19,9 @@ export class ComparableTextComponent {
 
   @Input() @InSubject() chant: number;
   chantChange = new BehaviorSubject<number>(1);
+
+  @Input() @InSubject() scrollIndex: number;
+  @Output() scrollIndexChange = new BehaviorSubject<number>(0);
 
   textsList = this.textService.getTextsList()
     .pipe(

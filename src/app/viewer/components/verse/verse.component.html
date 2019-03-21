@@ -1,22 +1,38 @@
 <div
-    class="verse"
+    class="verse d-flex flex-nowrap"
     [class.verse-highlight]="highlight">
-    <span class="p-1 pr-3 text-secondary">[{{ verse.n }}]</span>
+    <span
+        class="p-1 pr-3 text-secondary"
+        (click)="verseClicked.next(verse.n)">
+        [{{ verse.n }}]
+    </span>
     <app-word
         class="p-1"
         *ngFor="let w of verse.words"
         [word]="w"
-        [posHighlight] = "posHighlight"
+        [posHighlight]="posHighlight"
         [highlighted]="!!wordDetailsId && w.id === wordDetailsId"
         (openWordId)="openWordId.next($event)"></app-word>
-    <div
-        *ngIf="openedDataPanel(wordDetailsId) as w"
-        class="word-data-panel">
-        <ul *ngIf="!!w.data">
-            <li><span>Lemma:</span> {{ w.data.lemma}}</li>
-            <li><span>Cleaned Form:</span> {{ w.data.normalized }}</li>
-            <li><span>Tag:</span> {{ w.data.tag }}</li>
-            <li><span>Description:</span> {{ tagToDescription(w.data.tag) }}</li>
-        </ul>
-    </div>
+</div>
+<div
+    *ngIf="openedDataPanel(wordDetailsId) as w"
+    class="word-data-panel">
+    <ul *ngIf="!!w.data">
+        <li>
+            <span>Lemma:</span>
+            {{ w.data.lemma}}
+        </li>
+        <li>
+            <span>Cleaned Form:</span>
+            {{ w.data.normalized }}
+        </li>
+        <li>
+            <span>Tag:</span>
+            {{ w.data.tag }}
+        </li>
+        <li>
+            <span>Description:</span>
+            {{ tagToDescription(w.data.tag) }}
+        </li>
+    </ul>
 </div>

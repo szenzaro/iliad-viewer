@@ -13,6 +13,7 @@
 </div>
 <div class="overflow-scroll mt-1">
     <app-text
+        [(scrollIndex)]="scrollIndex"
         [posHighlight] = "posFilter | async"
         [verses]="verses | async"
         [loading]="loading | async"></app-text>

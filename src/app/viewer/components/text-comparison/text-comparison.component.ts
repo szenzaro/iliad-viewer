@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-text-comparison',
@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./text-comparison.component.scss'],
 })
 export class TextComparisonComponent {
+  @Input() scrollIndex = 0;
 }
