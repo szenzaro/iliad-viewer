@@ -3,6 +3,23 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "../node_modules/bootstrap/scss/variables";
 @import "scss/colors.scss";
+$primary-color: #333;
+$article-color: #6184d8;
+$adjective-color: #b07bac;
+$adverb-color: #ff7847;
+$name-color: #639a88;
+$verb-color: #ffa630;
+$pronoun-color: #9faf90;
+$num-color: #000;
+$singular-color: red;
+$nominative-color: #3a3042;
+$vocative-color: #db9d47;
+$accusative-color: #ff784f;
+$genitive-color: #9ba2ff;
+$dative-color: #786f52;
+$feminin-color: #ea526f;
+$masculine-color: #6184d8;
+$neutral-color: #353A47;
 .full-height {
     height: 100vh;
 }
@@ -92,66 +109,42 @@
 }
 
 .article {
-    background-color: #6184d8;
-    color: white;    
+    background-color: $article-color;
+    color: white;
 }
 
 .adjective {
-    background-color: #b07bac;
-    color: white;    
+    background-color: $adjective-color;
+    color: white;
 }
 
 .adverb {
-    background-color: #ff7847; 
+    background-color: $adverb-color;
     color: white;
 }
 
 .name {
-    background-color: #639a88;
+    background-color: $name-color;
     color: white;
 }
 
 .verb {
-    background-color: #ffa630;
+    background-color: $verb-color;
     color: white;
 }
 
 .pronoun {
-    background-color: #9faf90;
+    background-color: $pronoun-color;
     color: white;
 }
 
 .num {
-    background-color: #000;
+    background-color: $num-color;
     color: white;
 }
 
-.nominative {
-    border-style: solid;
-    border-color: #3a3042;
-}
-
-.vocative {
-    border-style: solid;
-    border-color: #db9d47;
-}
-
-.accusative {
-    border-style: solid;
-    border-color: #ff784f;
-}
-
-.genitive {
-    border-style: solid;
-    border-color: #9ba2ff;
-}
-
-.dative {
-    border-style: solid;
-    border-color: #786f52;
-}
-
 .singular {
+    border-color: $singular-color;
     border-style: solid;
 }
 
@@ -163,14 +156,34 @@
     border-style: double;
 }
 
+.nominative {
+    border-color: $nominative-color;
+}
+
+.vocative {
+    border-color: $vocative-color;
+}
+
+.accusative {
+    border-color: $accusative-color;
+}
+
+.genitive {
+    border-color: $genitive-color;
+}
+
+.dative {
+    border-color: $dative-color;
+}
+
 .feminine {
-    color: #ea526f;
+    color: $feminin-color;
 }
 
 .masculine {
-    color: #6184d8;
+    color: $masculine-color;
 }
 
 .neutral {
-    color: #353A47;
+    color: $neutral-color;
 }
