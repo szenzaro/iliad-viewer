@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -42,7 +42,8 @@ export class ComparableTextComponent {
       map(numberToOptions),
     );
 
-  posFilter = new BehaviorSubject<PosFilter>({ op: 'or', pos: []});
+  @Input() @InSubject() posFilter: PosFilter;
+  @Output() posFilterChange = new BehaviorSubject<PosFilter>({ op: 'or', pos: [] });
 
   constructor(private textService: TextService) {
   }
