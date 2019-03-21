@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { InSubject } from '../../utils/InSubject';
 
 import { faMars, faNeuter, faVenus } from '@fortawesome/free-solid-svg-icons';
