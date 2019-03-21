@@ -4,7 +4,7 @@ import { TextService } from 'src/app/services/text.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 
-import { numberToOptions, POS } from 'src/app/utils';
+import { numberToOptions, POS, PosFilter } from 'src/app/utils';
 import { InSubject } from '../../utils/InSubject';
 
 @Component({
@@ -42,7 +42,7 @@ export class ComparableTextComponent {
       map(numberToOptions),
     );
 
-  posFilter = new BehaviorSubject<POS[]>([]);
+  posFilter = new BehaviorSubject<PosFilter>({ op: 'or', pos: []});
 
   constructor(private textService: TextService) {
   }

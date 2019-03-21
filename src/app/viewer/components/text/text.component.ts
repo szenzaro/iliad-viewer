@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { POS } from 'src/app/utils';
+import { POS, PosFilter } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
 
 @Component({
@@ -13,7 +13,7 @@ export class TextComponent {
   @Input() highlight = false; // Highlight alternate verses
   @Input() showData = true;
   @Input() loading = true;
-  @Input() posHighlight: POS[] = [];
+  @Input() posHighlight: PosFilter;
 
   private _openedWordId: string;
   get openedWordId() { return this._openedWordId; }

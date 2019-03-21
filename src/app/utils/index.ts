@@ -144,6 +144,11 @@ export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb
     | 'Singular' | 'Plural' | 'Dual'
     | 'Nominative' | 'Vocative' | 'Accusative' | 'Genitive' | 'Dative';
 
+export interface PosFilter {
+    op: POS_OP;
+    pos: POS[];
+}
+
 export function isAdjective(tag: string): boolean {
     return !!tag && tag.startsWith('A');
 }
