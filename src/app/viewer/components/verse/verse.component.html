@@ -6,17 +6,29 @@
         class="p-1"
         *ngFor="let w of verse.words"
         [word]="w"
-        [posHighlight] = "posHighlight"
+        [posHighlight]="posHighlight"
         [highlighted]="!!wordDetailsId && w.id === wordDetailsId"
         (openWordId)="openWordId.next($event)"></app-word>
     <div
         *ngIf="openedDataPanel(wordDetailsId) as w"
         class="word-data-panel">
         <ul *ngIf="!!w.data">
-            <li><span>Lemma:</span> {{ w.data.lemma}}</li>
-            <li><span>Cleaned Form:</span> {{ w.data.normalized }}</li>
-            <li><span>Tag:</span> {{ w.data.tag }}</li>
-            <li><span>Description:</span> {{ tagToDescription(w.data.tag) }}</li>
+            <li>
+                <span>Lemma:</span>
+                {{ w.data.lemma}}
+            </li>
+            <li>
+                <span>Cleaned Form:</span>
+                {{ w.data.normalized }}
+            </li>
+            <li>
+                <span>Tag:</span>
+                {{ w.data.tag }}
+            </li>
+            <li>
+                <span>Description:</span>
+                {{ tagToDescription(w.data.tag) }}
+            </li>
         </ul>
     </div>
 </div>
