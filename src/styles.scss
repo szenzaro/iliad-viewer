@@ -4,6 +4,7 @@
 @import "../node_modules/bootstrap/scss/variables";
 @import "scss/colors.scss";
 $primary-color: #333;
+$badge-color: #9aaece;
 $article-color: #6184d8;
 $adjective-color: #b07bac;
 $adverb-color: #ff7847;
@@ -102,6 +103,11 @@ $neutral-color: #353A47;
     cursor: pointer;
 }
 
+.badge {
+    border-style: solid;
+    border-color: $badge-color;
+}
+
 .highlighted-word {
     border: solid 3px lightgrey;
     background-color: grey;
@@ -144,7 +150,6 @@ $neutral-color: #353A47;
 }
 
 .singular {
-    border-color: $singular-color;
     border-style: solid;
 }
 
@@ -157,22 +162,27 @@ $neutral-color: #353A47;
 }
 
 .nominative {
+    border-width: 3px;
     border-color: $nominative-color;
 }
 
 .vocative {
+    border-width: 3px;
     border-color: $vocative-color;
 }
 
 .accusative {
+    border-width: 3px;
     border-color: $accusative-color;
 }
 
 .genitive {
+    border-width: 3px;
     border-color: $genitive-color;
 }
 
 .dative {
+    border-width: 3px;
     border-color: $dative-color;
 }
 

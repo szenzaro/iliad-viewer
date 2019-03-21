@@ -18,22 +18,18 @@
     [class.accusative]="posAccusative && posHighlighted"
     [class.genitive]="posGenitive && posHighlighted"
     [class.dative]="posDative && posHighlighted"
-    (click)="!!word.data ? openWordId.next(word.id) : 0"
->
-    {{ word.text + posHighlighted}}
+    (click)="!!word.data ? openWordId.next(word.id) : 0">
+    {{ word.text }}
     <fa-icon
         *ngIf="posNeutral && posHighlighted"
         class="neutral"
-        [icon]="faNeuter"
-    ></fa-icon>
+        [icon]="faNeuter"></fa-icon>
     <fa-icon
         *ngIf="posMasculine && posHighlighted"
         class="masculine"
-        [icon]="faMars"
-    ></fa-icon>
+        [icon]="faMars"></fa-icon>
     <fa-icon
         *ngIf="posFeminine && posHighlighted"
         class="feminine"
-        [icon]="faVenus"
-    ></fa-icon>
+        [icon]="faVenus"></fa-icon>
 </span>
