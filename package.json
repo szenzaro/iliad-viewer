@@ -28,6 +28,7 @@
     "bootstrap": "^4.3.1",
     "core-js": "^2.6.5",
     "jquery": "^3.3.1",
+    "ngx-ui-switch": "^8.0.0",
     "openseadragon": "^2.4.0",
     "popper.js": "^1.14.7",
     "rxjs": "^6.4.0",
