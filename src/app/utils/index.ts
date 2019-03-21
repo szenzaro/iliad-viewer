@@ -138,6 +138,7 @@ export function numberToOptions(n: number) {
     return new Array(n).fill(undefined).map((_, i) => numberToOption(i + 1));
 }
 
+export type POS_OP = 'or' | 'and';
 export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num'
     | 'Masculine' | 'Feminine' | 'Neutral'
     | 'Singular' | 'Plural' | 'Dual'
