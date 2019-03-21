@@ -38,31 +38,31 @@ export class WordFiltersComponent {
     shareReplay(1),
   );
 
-filterSelected = (label: POS) => {
-  return this.filterChange.pipe(
-    distinctUntilChanged(),
-    map((x) => x.pos.includes(label)),
-    startWith(false),
-    shareReplay(1),
-  );
-}
-
-filterFromLabel(label: string, value: boolean): Map < boolean > {
-  const obj = {};
-  obj[label] = value;
-  return obj;
-}
-
-genderFromLabel(label: string) {
-  switch (label) {
-    case 'Masculine':
-      return 'M';
-    case 'Feminine':
-      return 'F';
-    case 'Neutral':
-      return 'N';
-    default:
-      return undefined;
+  filterSelected = (label: POS) => {
+    return this.filterChange.pipe(
+      distinctUntilChanged(),
+      map((x) => x.pos.includes(label)),
+      startWith(false),
+      shareReplay(1),
+    );
   }
-}
+
+  filterFromLabel(label: string, value: boolean): Map<boolean> {
+    const obj = {};
+    obj[label] = value;
+    return obj;
+  }
+
+  genderFromLabel(label: string) {
+    switch (label) {
+      case 'Masculine':
+        return 'M';
+      case 'Feminine':
+        return 'F';
+      case 'Neutral':
+        return 'N';
+      default:
+        return undefined;
+    }
+  }
 }
