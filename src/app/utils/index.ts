@@ -286,24 +286,31 @@ function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[
     return g(parts);
 }
 
-export function containsPOStoHighlight(tag: string, ph: POS[]): boolean {
-    return ph.includes('Article') && isArticle(tag) ||
-        ph.includes('Adjective') && isAdjective(tag) ||
-        ph.includes('Adverb') && isAdverb(tag) ||
-        ph.includes('Name') && isName(tag) ||
-        ph.includes('Num') && isNum(tag) ||
-        ph.includes('Pronoun') && isPronoun(tag) ||
-        ph.includes('Verb') && isVerb(tag) ||
-        ph.includes('Singular') && isSingular(tag) ||
-        ph.includes('Plural') && isPlural(tag) ||
-        ph.includes('Dual') && isDual(tag) ||
-        ph.includes('Masculine') && isMasculine(tag) ||
-        ph.includes('Feminine') && isFeminine(tag) ||
-        ph.includes('Neutral') && isNeutral(tag) ||
-        ph.includes('Nominative') && isNominative(tag) ||
-        ph.includes('Vocative') && isVocative(tag) ||
-        ph.includes('Accusative') && isAccusative(tag) ||
-        ph.includes('Genitive') && isGenitive(tag) ||
-        ph.includes('Dative') && isDative(tag)
-        ;
+export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): boolean {
+
+    const pos = [];
+
+    ph.forEach((x) => {
+        switch (x) {
+            case 'Article': pos.push(isArticle(tag)); break;
+            case 'Adjective': pos.push(isAdjective(tag)); break;
+            case 'Adverb': pos.push(isAdverb(tag)); break;
+            case 'Name': pos.push(isName(tag)); break;
+            case 'Num': pos.push(isNum(tag)); break;
+            case 'Pronoun': pos.push(isPronoun(tag)); break;
+            case 'Verb': pos.push(isVerb(tag)); break;
+            case 'Singular': pos.push(isSingular(tag)); break;
+            case 'Plural': pos.push(isPlural(tag)); break;
+            case 'Dual': pos.push(isDual(tag)); break;
+            case 'Masculine': pos.push(isMasculine(tag)); break;
+            case 'Feminine': pos.push(isFeminine(tag)); break;
+            case 'Neutral': pos.push(isNeutral(tag)); break;
+            case 'Nominative': pos.push(isNominative(tag)); break;
+            case 'Vocative': pos.push(isVocative(tag)); break;
+            case 'Accusative': pos.push(isAccusative(tag)); break;
+            case 'Genitive': pos.push(isGenitive(tag)); break;
+            case 'Dative': pos.push(isDative(tag)); break;
+        }
+    });
+    return pos.reduce((x, y) => op === 'and' ? x && y : x || y, op === 'and' ? true : false);
 }
