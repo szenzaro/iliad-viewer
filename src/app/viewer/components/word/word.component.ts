@@ -41,7 +41,7 @@ export class WordComponent {
   faVenus = faVenus;
 
   get posHighlighted() {
-    return this.posHighlight.pos.length > 0 &&
+    return !!this.posHighlight && !!this.posHighlight.pos && this.posHighlight.pos.length > 0 &&
       !!this.word &&
       !!this.word.data &&
       !!this.word.data.tag &&
@@ -51,69 +51,69 @@ export class WordComponent {
   get tagIsDefined() { return !!this.word && !!this.word.data && !!this.word.data.tag; }
 
   get posAdjective() {
-    return this.tagIsDefined && isAdjective(this.word.data.tag) && this.posHighlight.pos.includes('Adjective');
+    return this.tagIsDefined && isAdjective(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Adjective');
   }
   get posArticle() {
-    return this.tagIsDefined && isArticle(this.word.data.tag) && this.posHighlight.pos.includes('Article');
+    return this.tagIsDefined && isArticle(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Article');
   }
   get posAdverb() {
-    return this.tagIsDefined && isAdverb(this.word.data.tag) && this.posHighlight.pos.includes('Adverb');
+    return this.tagIsDefined && isAdverb(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Adverb');
   }
   get posName() {
-    return this.tagIsDefined && isName(this.word.data.tag) && this.posHighlight.pos.includes('Name');
+    return this.tagIsDefined && isName(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Name');
   }
   get posVerb() {
-    return this.tagIsDefined && isVerb(this.word.data.tag) && this.posHighlight.pos.includes('Verb');
+    return this.tagIsDefined && isVerb(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Verb');
   }
   get posPronoun() {
-    return this.tagIsDefined && isPronoun(this.word.data.tag) && this.posHighlight.pos.includes('Pronoun');
+    return this.tagIsDefined && isPronoun(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Pronoun');
   }
   get posNum() {
-    return this.tagIsDefined && isNum(this.word.data.tag) && this.posHighlight.pos.includes('Num');
+    return this.tagIsDefined && isNum(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Num');
   }
 
   get posMasculine() {
-    return this.tagIsDefined && isMasculine(this.word.data.tag) && this.posHighlight.pos.includes('Masculine');
+    return this.tagIsDefined && isMasculine(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Masculine');
   }
 
   get posFeminine() {
-    return this.tagIsDefined && isFeminine(this.word.data.tag) && this.posHighlight.pos.includes('Feminine');
+    return this.tagIsDefined && isFeminine(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Feminine');
   }
 
   get posNeutral() {
-    return this.tagIsDefined && isNeutral(this.word.data.tag) && this.posHighlight.pos.includes('Neutral');
+    return this.tagIsDefined && isNeutral(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Neutral');
   }
 
   get posSingular() {
-    return this.tagIsDefined && isSingular(this.word.data.tag) && this.posHighlight.pos.includes('Singular');
+    return this.tagIsDefined && isSingular(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Singular');
   }
 
   get posPlural() {
-    return this.tagIsDefined && isPlural(this.word.data.tag) && this.posHighlight.pos.includes('Plural');
+    return this.tagIsDefined && isPlural(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Plural');
   }
 
   get posDual() {
-    return this.tagIsDefined && isDual(this.word.data.tag) && this.posHighlight.pos.includes('Dual');
+    return this.tagIsDefined && isDual(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Dual');
   }
 
   get posNominative() {
-    return this.tagIsDefined && isNominative(this.word.data.tag) && this.posHighlight.pos.includes('Nominative');
+    return this.tagIsDefined && isNominative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Nominative');
   }
 
   get posVocative() {
-    return this.tagIsDefined && isVocative(this.word.data.tag) && this.posHighlight.pos.includes('Vocative');
+    return this.tagIsDefined && isVocative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Vocative');
   }
 
   get posAccusative() {
-    return this.tagIsDefined && isAccusative(this.word.data.tag) && this.posHighlight.pos.includes('Accusative');
+    return this.tagIsDefined && isAccusative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Accusative');
   }
 
   get posGenitive() {
-    return this.tagIsDefined && isGenitive(this.word.data.tag) && this.posHighlight.pos.includes('Genitive');
+    return this.tagIsDefined && isGenitive(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Genitive');
   }
 
   get posDative() {
-    return this.tagIsDefined && isDative(this.word.data.tag) && this.posHighlight.pos.includes('Dative');
+    return this.tagIsDefined && isDative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Dative');
   }
 }
 
