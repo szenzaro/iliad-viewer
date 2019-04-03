@@ -58,8 +58,9 @@ export class InterlinearTextComponent {
 
   chantPages = combineLatest(this.textChange.pipe(filter((x) => !!x)), this.chantChange)
     .pipe(
+      debounceTime(150),
       switchMap(([text, chant]) => this.textService.getPageNumbers(text, chant)),
-      debounceTime(100),
+      tap((p) => this.pageChange.next(p[0])),
       map((pages) => pages.map(numberToOption)),
     );
 
@@ -74,6 +75,7 @@ export class InterlinearTextComponent {
       }),
       distinctUntilChanged(),
       map(numberToOptions),
+      tap((v) => this.verseChange.next(+v[0].id)),
     );
 
   selectedPage = merge(
@@ -82,25 +84,31 @@ export class InterlinearTextComponent {
       this.chantChange.pipe(filter((x) => x !== undefined)),
       this.verseChange.pipe(filter((x) => x !== undefined)),
     ).pipe(
+      debounceTime(150),
       switchMap(([text, chant, verse]) => this.textService.getPageFromVerse(text, chant, verse)),
+      filter((p) => p !== 0),
       tap((p) => this.pageChange.next(p)),
     ),
-    this.pageChange
-      .pipe(
-        distinctUntilChanged()
-      ),
-    this.chantPages
-      .pipe(
-        map((x) => +x[0].id),
-        tap((p) => {
-          if (p !== this.pageChange.value) {
-            this.pageChange.next(p);
-          }
-          return p;
-        }),
-      ),
+    this.pageChange,
+    this.chantPages.pipe(map((x) => +x[0].id)),
   ).pipe(
     distinctUntilChanged(),
+  );
+
+  selectedVerse = merge(
+    this.verseChange,
+    combineLatest(
+      this.textChange.pipe(filter((x) => !!x)),
+      this.chantChange.pipe(filter((x) => x !== undefined)),
+      this.selectedPage.pipe(filter((x) => !!x)),
+    ).pipe(
+      distinctUntilChanged(),
+      switchMap(([text, chant, page]) => this.textService.getVersesNumberFromPage(text, page - 1, chant)),
+      filter((x) => !!x),
+      map((data) => +data[1][0]),
+      distinctUntilChanged(),
+      tap((x) => this.verse = x),
+    )
   );
 
   loading = new BehaviorSubject<boolean>(true);
@@ -146,8 +154,6 @@ export class InterlinearTextComponent {
     );
 
   constructor(private textService: TextService) {
-    // on chant change reset verse and page filter
-    // on page change reset verse filter
   }
 
   clickHomeric() {

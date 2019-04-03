@@ -29,7 +29,7 @@
         [options]="chantPages | async"
         label="Page"
         class="flex-grow-1"
-        [selection]="page"
+        [selection]="selectedPage | async"
         (selectionChange)="pageChange.next($event)"
     >
     </app-select-number>
@@ -37,7 +37,7 @@
         [options]="verseNumbers | async"
         label="Verse"
         class="flex-grow-1"
-        [selection]="verse"
+        [selection]="selectedVerse | async"
         (selectionChange)="verseChange.next($event)"
     >
     </app-select-number>

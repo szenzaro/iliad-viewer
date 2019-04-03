@@ -7,7 +7,7 @@ import { Map } from 'src/app/utils/index';
 import { OsdAnnotation } from '../openseadragon/openseadragon.component';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-manuscript',
@@ -36,6 +36,7 @@ export class ManuscriptComponent {
         distinctUntilChanged(),
         debounceTime(150),
         switchMap(([chant, page]) => this.textService.getVersesNumberFromPage(this.text, page, chant)),
+        filter((x) => !!x),
         map((pageData) => ({ chant: pageData[0], page: this.manuscriptPage + 1 })),
       )
       .subscribe(({ chant, page }) => {
