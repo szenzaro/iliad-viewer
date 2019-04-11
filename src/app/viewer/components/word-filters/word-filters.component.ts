@@ -5,7 +5,7 @@ import { Map, POS, POS_OP, PosFilter } from 'src/app/utils';
 import { debounceTime, distinctUntilChanged, map, scan, shareReplay, startWith } from 'rxjs/operators';
 
 import { faBroom } from '@fortawesome/free-solid-svg-icons';
-import { combineLatest } from 'rxjs';
+import { combineLatest, never } from 'rxjs';
 
 @Component({
   selector: 'app-word-filters',
@@ -43,7 +43,6 @@ export class WordFiltersComponent {
       distinctUntilChanged(),
       map((x) => x.pos.includes(label)),
       startWith(false),
-      shareReplay(1),
     );
   }
 
