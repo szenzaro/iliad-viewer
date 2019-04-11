@@ -39,7 +39,7 @@ export class TextComponent {
     this.scrollIndexChange.pipe(
       skip(1),
       tap(() => this.openedWordId = undefined),
-      distinctUntilChanged(),
+      // distinctUntilChanged(),
     ).subscribe((x: number) => this.scrollToIndex(x - 1));
   }
 }
