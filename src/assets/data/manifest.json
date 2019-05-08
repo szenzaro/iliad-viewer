@@ -5,6 +5,6 @@
         { "id": "paraphrase", "label": "Paraphrase", "chants": 3 }
     ],
     "alignments": [
-        { "texts": ["homeric", "paraphrase"], "file": "h-p.json" }
+        { "texts": ["homeric", "paraphrase"], "folder": "h-p" }
     ]
 }
