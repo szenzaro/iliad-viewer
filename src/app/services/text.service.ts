@@ -68,7 +68,7 @@ export class TextService {
   }
 
   getPageFromVerse(text: string, chant: number, verse: number) {
-    return this.cachedGet<PageInfo[]>(`./assets/texts/${text}/pagesToVerses.json`)
+    return this.cachedGet<PageInfo[]>(`./assets/data/texts/${text}/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[]) => (pages.findIndex((x) => x[0][0] === chant && verse <= x[0][1][1] && verse >= x[0][1][0]) + 1)),
       );
@@ -76,8 +76,8 @@ export class TextService {
 
   getVerses(text: string, chant: number, range?: [number, number]) {
     return forkJoin(
-      this.cachedGet<Chant>(`./assets/texts/${text}/${chant}/verses.json`),
-      this.cachedGet<[string, string, string][][]>(`./assets/texts/${text}/${chant}/data.json`),
+      this.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
+      this.cachedGet<[string, string, string][][]>(`./assets/data/texts/${text}/${chant}/data.json`),
     ).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
       map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
@@ -85,7 +85,7 @@ export class TextService {
   }
 
   getVersesNumberFromPage(text: string, n: number, chant?: number, ) {
-    return this.cachedGet<PageInfo[]>(`./assets/texts/${text}/pagesToVerses.json`)
+    return this.cachedGet<PageInfo[]>(`./assets/data/texts/${text}/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[]) => chant !== undefined
           ? pages[n].find((x) => x[0] === chant) // TODO check type correctness
@@ -94,11 +94,11 @@ export class TextService {
   }
 
   getTextsList() {
-    return this.cachedGet<TextManifest>(`./assets/texts/texts-manifest.json`);
+    return this.cachedGet<TextManifest>(`./assets/data/manifest.json`);
   }
 
   getPageNumbers(text: string, chant: number) {
-    return this.cachedGet<number[][]>(`./assets/texts/${text}/booksToPages.json`)
+    return this.cachedGet<number[][]>(`./assets/data/texts/${text}/booksToPages.json`)
       .pipe(
         map((pages) => pages[chant - 1]),
       );
