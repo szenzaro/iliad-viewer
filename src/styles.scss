@@ -18,9 +18,10 @@ $vocative-color: #db9d47;
 $accusative-color: #ff784f;
 $genitive-color: #9ba2ff;
 $dative-color: #786f52;
-$feminin-color: #ea526f;
+$feminine-color: #ea526f;
 $masculine-color: #6184d8;
 $neutral-color: #353A47;
+
 .full-height {
     height: 100vh;
 }
@@ -184,16 +185,4 @@ $neutral-color: #353A47;
 .dative {
     border-width: 3px;
     border-color: $dative-color;
-}
-
-.feminine {
-    color: $feminin-color;
-}
-
-.masculine {
-    color: $masculine-color;
-}
-
-.neutral {
-    color: $neutral-color;
 }
