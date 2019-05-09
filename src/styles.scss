@@ -37,6 +37,10 @@
     background-color: $c-light-grey;
 }
 
+.word {
+    font-family: sans-serif;
+}
+
 .word:hover {
     cursor: pointer;
     color: $word-over-color;
