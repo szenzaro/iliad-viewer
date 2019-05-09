@@ -26,7 +26,7 @@
         <ngb-tabset
             [destroyOnHide]="false"
             type="pills">
-            <ngb-tab title="General categories">
+            <ngb-tab title="Category">
                 <ng-template ngbTabContent>
                     <app-pill
                         kind="adjective"
@@ -49,15 +49,20 @@
                         [selected]="filterSelected('Name') | async"
                         (selectedChange)="filterItem.next({'Name': $event})"></app-pill>
                     <app-pill
-                        kind="verb"
-                        label="Verb"
-                        [selected]="filterSelected('Verb') | async"
-                        (selectedChange)="filterItem.next({'Verb': $event})"></app-pill>
+                        kind="anthroponymic"
+                        label="Anthroponymic"
+                        [selected]="filterSelected('Anthroponymic') | async"
+                        (selectedChange)="filterItem.next({'Anthroponymic': $event})"></app-pill>
                     <app-pill
                         kind="pronoun"
                         label="Pronoun"
                         [selected]="filterSelected('Pronoun') | async"
                         (selectedChange)="filterItem.next({'Pronoun': $event})"></app-pill>
+                    <app-pill
+                        kind="verb"
+                        label="Verb"
+                        [selected]="filterSelected('Verb') | async"
+                        (selectedChange)="filterItem.next({'Verb': $event})"></app-pill>
                     <app-pill
                         kind="num"
                         label="Num"

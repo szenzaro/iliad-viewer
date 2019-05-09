@@ -5,6 +5,7 @@ import {
   isAccusative,
   isAdjective,
   isAdverb,
+  isAnthroponymic,
   isArticle,
   isDative,
   isDual,
@@ -61,6 +62,10 @@ export class WordComponent {
   }
   get posName() {
     return this.tagIsDefined && isName(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Name');
+  }
+  get posAnthroponymic() {
+    return this.tagIsDefined && isAnthroponymic(this.word.data.tag) &&
+      !!this.posHighlight && this.posHighlight.pos.includes('Anthroponymic');
   }
   get posVerb() {
     return this.tagIsDefined && isVerb(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Verb');

@@ -7,6 +7,7 @@
     [class.article]="posArticle && posHighlighted"
     [class.adverb]="posAdverb && posHighlighted"
     [class.name]="posName && posHighlighted"
+    [class.anthroponymic]="posAnthroponymic && posHighlighted"
     [class.verb]="posVerb && posHighlighted"
     [class.pronoun]="posPronoun && posHighlighted"
     [class.num]="posNum && posHighlighted"
@@ -19,7 +20,7 @@
     [class.genitive]="posGenitive && posHighlighted"
     [class.dative]="posDative && posHighlighted"
     (click)="!!word.data ? openWordId.next(word.id) : 0">
-    {{ word.text }}
+    {{ word.text }} 
     <fa-icon
         *ngIf="posNeutral && posHighlighted"
         class="neutral"

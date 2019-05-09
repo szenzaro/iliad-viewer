@@ -142,6 +142,7 @@ export type POS_OP = 'or' | 'and';
 export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num'
     | 'Masculine' | 'Feminine' | 'Neutral'
     | 'Singular' | 'Plural' | 'Dual'
+    | 'Anthroponymic'
     | 'Nominative' | 'Vocative' | 'Accusative' | 'Genitive' | 'Dative';
 
 export interface PosFilter {
@@ -160,6 +161,9 @@ export function isAdverb(tag: string): boolean {
 }
 export function isName(tag: string): boolean {
     return !!tag && tag.startsWith('N+');
+}
+export function isAnthroponymic(tag: string): boolean {
+    return !!tag && tag.startsWith('N+Ant');
 }
 export function isVerb(tag: string): boolean {
     return !!tag && tag.startsWith('V');
@@ -296,6 +300,7 @@ export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): bool
             case 'Adjective': pos.push(isAdjective(tag)); break;
             case 'Adverb': pos.push(isAdverb(tag)); break;
             case 'Name': pos.push(isName(tag)); break;
+            case 'Anthroponymic': pos.push(isAnthroponymic(tag)); break;
             case 'Num': pos.push(isNum(tag)); break;
             case 'Pronoun': pos.push(isPronoun(tag)); break;
             case 'Verb': pos.push(isVerb(tag)); break;
