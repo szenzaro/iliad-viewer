@@ -39,7 +39,8 @@
 
 .word:hover {
     cursor: pointer;
-    color: $info;
+    color: $word-over-color;
+    background-color: $word-over-bg-color;
 }
 
 .annotation {
