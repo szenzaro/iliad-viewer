@@ -142,7 +142,11 @@ export type POS_OP = 'or' | 'and';
 export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num'
     | 'Masculine' | 'Feminine' | 'Neutral'
     | 'Singular' | 'Plural' | 'Dual'
-    | 'Anthroponymic'
+    | 'Anthroponymic' | 'Toponym'
+    | 'Present' | 'Imperfect' | 'Future' | 'Aorist' | 'Perfect' | 'Pluperfect' | 'Future perfect'
+    | 'Indicative' | 'Subjunctive' | 'Imperative' | 'Optative' | 'Infinitive' | 'Participle'
+    | '1st' | '2nd' | '3rd'
+    | 'Active' | 'Middle' | 'Passive'
     | 'Nominative' | 'Vocative' | 'Accusative' | 'Genitive' | 'Dative';
 
 export interface PosFilter {
@@ -174,12 +178,171 @@ export function isPronoun(tag: string): boolean {
 export function isNum(tag: string): boolean {
     return !!tag && tag.startsWith('NUM');
 }
-
+export function isPresent(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isPresent(crasis[0]) || isPresent(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('P'),
+        false,
+    );
+}
+export function isImperfect(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isImperfect(crasis[0]) || isImperfect(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('I'),
+        false,
+    );
+}
+export function isFuture(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isFuture(crasis[0]) || isFuture(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('F'),
+        false,
+    );
+}
+export function isAorist(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isAorist(crasis[0]) || isAorist(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('J'),
+        false,
+    );
+}
+export function isPerfect(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isPerfect(crasis[0]) || isPerfect(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('R'),
+        false,
+    );
+}
+export function isPluperfect(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isPluperfect(crasis[0]) || isPluperfect(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('Q'),
+        false,
+    );
+}
+export function isFuturePerfect(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isFuturePerfect(crasis[0]) || isFuturePerfect(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('L'),
+        false,
+    );
+}
+export function isIndicative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isIndicative(crasis[0]) || isIndicative(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('Î'),
+        false,
+    );
+}
+export function isSubjunctive(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isSubjunctive(crasis[0]) || isSubjunctive(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('S'),
+        false,
+    );
+}
+export function isImperative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isImperative(crasis[0]) || isImperative(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('Y'),
+        false,
+    );
+}
+export function isOptative(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isOptative(crasis[0]) || isOptative(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('O'),
+        false,
+    );
+}
+export function isInfinitive(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isInfinitive(crasis[0]) || isInfinitive(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('W'),
+        false,
+    );
+}
+export function isParticiple(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isParticiple(crasis[0]) || isParticiple(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('K'),
+        false,
+    );
+}
+export function is1st(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => is1st(crasis[0]) || is1st(crasis[1]),
+        (parts: string[]) => /^PRO\+...1/.test(tag) || (parts[1] || '').includes('1'),
+        false,
+    );
+}
+export function is2nd(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => is2nd(crasis[0]) || is2nd(crasis[1]),
+        (parts: string[]) => /^PRO\+...2/.test(tag) || (parts[1] || '').includes('2'),
+        false,
+    );
+}
+export function is3rd(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => is3rd(crasis[0]) || is3rd(crasis[1]),
+        (parts: string[]) => /^PRO\+...3/.test(tag) || (parts[1] || '').includes('3'),
+        false,
+    );
+}
+export function isActive(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isActive(crasis[0]) || isActive(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('E'),
+        false,
+    );
+}
+export function isMiddle(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isMiddle(crasis[0]) || isMiddle(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('M'),
+        false,
+    );
+}
+export function isPassive(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isPassive(crasis[0]) || isPassive(crasis[1]),
+        (parts: string[]) => (parts[1] || '').includes('B'),
+        false,
+    );
+}
+export function isToponym(tag: string): boolean {
+    return checkTag(
+        tag,
+        (crasis: string[]) => isToponym(crasis[0]) || isToponym(crasis[1]),
+        (parts: string[]) => (parts[0] || '').startsWith('N+Top'),
+        false,
+    );
+}
 export function isMasculine(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isMasculine(crasis[0]) || isMasculine(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'm'),
+        (parts: string[]) => (parts[1] || '').includes('m'),
         false,
     );
 }
@@ -188,7 +351,7 @@ export function isFeminine(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isFeminine(crasis[0]) || isFeminine(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'f'),
+        (parts: string[]) => (parts[1] || '').includes('f'),
         false,
     );
 }
@@ -197,7 +360,7 @@ export function isNeutral(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isNeutral(crasis[0]) || isNeutral(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'n'),
+        (parts: string[]) => (parts[1] || '').includes('n'),
         false,
     );
 }
@@ -206,7 +369,7 @@ export function isSingular(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isSingular(crasis[0]) || isSingular(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 's') || parts[0].endsWith('s'),
+        (parts: string[]) => (parts[1] || '').includes('s') || parts[0].endsWith('s'),
         false,
     );
 }
@@ -215,7 +378,7 @@ export function isPlural(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isPlural(crasis[0]) || isPlural(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'p') || parts[0].endsWith('p'),
+        (parts: string[]) => (parts[1] || '').includes('p') || parts[0].endsWith('p'),
         false,
     );
 }
@@ -224,7 +387,7 @@ export function isDual(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isDual(crasis[0]) || isDual(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'd'),
+        (parts: string[]) => (parts[1] || '').includes('d'),
         false,
     );
 }
@@ -233,7 +396,7 @@ export function isNominative(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isNominative(crasis[0]) || isNominative(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'N'),
+        (parts: string[]) => (parts[1] || '').includes('N'),
         false,
     );
 }
@@ -242,7 +405,7 @@ export function isVocative(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isVocative(crasis[0]) || isVocative(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'V'),
+        (parts: string[]) => (parts[1] || '').includes('V'),
         false,
     );
 }
@@ -251,7 +414,7 @@ export function isAccusative(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isAccusative(crasis[0]) || isAccusative(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'A'),
+        (parts: string[]) => (parts[1] || '').includes('A'),
         false,
     );
 }
@@ -260,7 +423,7 @@ export function isGenitive(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isGenitive(crasis[0]) || isGenitive(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'G'),
+        (parts: string[]) => (parts[1] || '').includes('G'),
         false,
     );
 }
@@ -269,14 +432,9 @@ export function isDative(tag: string): boolean {
     return checkTag(
         tag,
         (crasis: string[]) => isDative(crasis[0]) || isDative(crasis[1]),
-        (parts: string[]) => includesChar(parts[1] || '', 'D'),
+        (parts: string[]) => (parts[1] || '').includes('D'),
         false,
     );
-}
-
-
-function includesChar(str: string, c: string): boolean {
-    return str.includes(c);
 }
 
 function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[]) => T, defaultValue: T): T {
@@ -315,6 +473,26 @@ export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): bool
             case 'Accusative': pos.push(isAccusative(tag)); break;
             case 'Genitive': pos.push(isGenitive(tag)); break;
             case 'Dative': pos.push(isDative(tag)); break;
+            case 'Present': pos.push(isPresent(tag)); break;
+            case 'Imperfect': pos.push(isImperfect(tag)); break;
+            case 'Future': pos.push(isFuture(tag)); break;
+            case 'Aorist': pos.push(isAorist(tag)); break;
+            case 'Perfect': pos.push(isPerfect(tag)); break;
+            case 'Pluperfect': pos.push(isPluperfect(tag)); break;
+            case 'Future perfect': pos.push(isFuturePerfect(tag)); break;
+            case 'Indicative': pos.push(isIndicative(tag)); break;
+            case 'Subjunctive': pos.push(isSubjunctive(tag)); break;
+            case 'Imperative': pos.push(isImperative(tag)); break;
+            case 'Optative': pos.push(isOptative(tag)); break;
+            case 'Infinitive': pos.push(isInfinitive(tag)); break;
+            case 'Participle': pos.push(isParticiple(tag)); break;
+            case '1st': pos.push(is1st(tag)); break;
+            case '2nd': pos.push(is2nd(tag)); break;
+            case '3rd': pos.push(is3rd(tag)); break;
+            case 'Active': pos.push(isActive(tag)); break;
+            case 'Middle': pos.push(isMiddle(tag)); break;
+            case 'Passive': pos.push(isPassive(tag)); break;
+            case 'Toponym': pos.push(isToponym(tag)); break;
         }
     });
     return pos.reduce((x, y) => op === 'and' ? x && y : x || y, op === 'and' ? true : false);

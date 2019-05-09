@@ -2,23 +2,43 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faMars, faNeuter, faVenus } from '@fortawesome/free-solid-svg-icons';
 import {
   containsPOStoHighlight,
+  is1st,
+  is2nd,
+  is3rd,
   isAccusative,
+  isActive,
   isAdjective,
   isAdverb,
   isAnthroponymic,
+  isAorist,
   isArticle,
   isDative,
   isDual,
   isFeminine,
+  isFuture,
+  isFuturePerfect,
   isGenitive,
+  isImperative,
+  isImperfect,
+  isIndicative,
+  isInfinitive,
   isMasculine,
+  isMiddle,
   isName,
   isNeutral,
   isNominative,
   isNum,
+  isOptative,
+  isParticiple,
+  isPassive,
+  isPerfect,
+  isPluperfect,
   isPlural,
+  isPresent,
   isPronoun,
   isSingular,
+  isSubjunctive,
+  isToponym,
   isVerb,
   isVocative,
   PosFilter,
@@ -119,6 +139,68 @@ export class WordComponent {
 
   get posDative() {
     return this.tagIsDefined && isDative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Dative');
+  }
+
+  get posPresent() {
+    return this.tagIsDefined && isPresent(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Present');
+  }
+  get posImperfect() {
+    return this.tagIsDefined && isImperfect(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Imperfect');
+  }
+  get posFuture() {
+    return this.tagIsDefined && isFuture(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Future');
+  }
+  get posAorist() {
+    return this.tagIsDefined && isAorist(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Aorist');
+  }
+  get posPerfect() {
+    return this.tagIsDefined && isPerfect(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Perfect');
+  }
+  get posPluperfect() {
+    return this.tagIsDefined && isPluperfect(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Pluperfect');
+  }
+  get posFuturePerfect() {
+    return this.tagIsDefined && isFuturePerfect(this.word.data.tag) && !
+      !this.posHighlight && this.posHighlight.pos.includes('Future perfect');
+  }
+  get posIndicative() {
+    return this.tagIsDefined && isIndicative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Indicative');
+  }
+  get posSubjunctive() {
+    return this.tagIsDefined && isSubjunctive(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Subjunctive');
+  }
+  get posImperative() {
+    return this.tagIsDefined && isImperative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Imperative');
+  }
+  get posOptative() {
+    return this.tagIsDefined && isOptative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Optative');
+  }
+  get posInfinitive() {
+    return this.tagIsDefined && isInfinitive(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Infinitive');
+  }
+  get posParticiple() {
+    return this.tagIsDefined && isParticiple(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Participle');
+  }
+  get pos1st() {
+    return this.tagIsDefined && is1st(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('1st');
+  }
+  get pos2nd() {
+    return this.tagIsDefined && is2nd(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('2nd');
+  }
+  get pos3rd() {
+    return this.tagIsDefined && is3rd(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('3rd');
+  }
+  get posToponym() {
+    return this.tagIsDefined && isToponym(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Toponym');
+  }
+  get posActive() {
+    return this.tagIsDefined && isActive(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Active');
+  }
+  get posMiddle() {
+    return this.tagIsDefined && isMiddle(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Middle');
+  }
+  get posPassive() {
+    return this.tagIsDefined && isPassive(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Passive');
   }
 }
 
