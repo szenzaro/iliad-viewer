@@ -117,7 +117,9 @@
     color: white;
 }
 
-.name {
+.name,
+.anthroponymic,
+.toponym {
     background-color: $name-color;
     color: white;
 }
@@ -173,3 +175,41 @@
     border-width: 3px;
     border-color: $dative-color;
 }
+
+.present {}
+
+.imperfect {}
+
+.future {}
+
+.aorist {}
+
+.perfect {}
+
+.pluperfect {}
+
+.future-perfect {}
+
+.indicative {}
+
+.subjunctive {}
+
+.imperative {}
+
+.optative {}
+
+.infinitive {}
+
+.participle {}
+
+.first-person {}
+
+.second-person {}
+
+.third-person {}
+
+.active {}
+
+.middle {}
+
+.passive {}
