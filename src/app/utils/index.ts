@@ -164,7 +164,7 @@ export function isAdverb(tag: string): boolean {
     return !!tag && tag.startsWith('I+Adv');
 }
 export function isName(tag: string): boolean {
-    return !!tag && tag.startsWith('N+');
+    return !!tag && tag.startsWith('N+') && !isAnthroponymic(tag) && !isToponym(tag);
 }
 export function isAnthroponymic(tag: string): boolean {
     return !!tag && tag.startsWith('N+Ant');
