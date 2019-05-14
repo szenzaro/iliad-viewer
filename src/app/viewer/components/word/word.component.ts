@@ -30,6 +30,7 @@ import {
   isNum,
   isOptative,
   isParticiple,
+  isParticle,
   isPassive,
   isPatronymic,
   isPerfect,
@@ -75,6 +76,9 @@ export class WordComponent {
 
   get posAdjective() {
     return this.tagIsDefined && isAdjective(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Adjective');
+  }
+  get posParticle() {
+    return this.tagIsDefined && isParticle(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Particle');
   }
   get posPreposition() {
     return this.tagIsDefined && isPreposition(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Preposition');

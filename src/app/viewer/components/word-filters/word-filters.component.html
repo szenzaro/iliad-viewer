@@ -39,6 +39,11 @@
                         [selected]="filterSelected('Article') | async"
                         (selectedChange)="filterItem.next({'Article': $event})"></app-pill>
                     <app-pill
+                        kind="particle"
+                        label="Particle"
+                        [selected]="filterSelected('Particle') | async"
+                        (selectedChange)="filterItem.next({'Particle': $event})"></app-pill>
+                    <app-pill
                         kind="preposition"
                         label="Preposition"
                         [selected]="filterSelected('Preposition') | async"

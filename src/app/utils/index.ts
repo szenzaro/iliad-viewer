@@ -140,6 +140,7 @@ export function numberToOptions(n: number) {
 
 export type POS_OP = 'or' | 'and';
 export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num'
+    | 'Particle'
     | 'Preposition'
     | 'Masculine' | 'Feminine' | 'Neutral'
     | 'Singular' | 'Plural' | 'Dual'
@@ -163,6 +164,9 @@ export function isArticle(tag: string): boolean {
 }
 export function isAdverb(tag: string): boolean {
     return !!tag && tag.startsWith('I+Adv');
+}
+export function isParticle(tag: string): boolean {
+    return !!tag && tag.startsWith('I+Part');
 }
 export function isPreposition(tag: string): boolean {
     return !!tag && tag.startsWith('I+Prep');
