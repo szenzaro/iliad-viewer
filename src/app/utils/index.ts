@@ -143,7 +143,7 @@ export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb
     | 'Masculine' | 'Feminine' | 'Neutral'
     | 'Singular' | 'Plural' | 'Dual'
     | 'Anthroponymic' | 'Toponym' | 'Patronymic'
-    | 'Present' | 'Imperfect' | 'Future' | 'Aorist' | 'Perfect' | 'Pluperfect' | 'Future perfect'
+    | 'Present' | 'Imperfect' | 'Future' | 'Aorist' | 'Perfect' | 'Pluperfect' | 'FuturePerfect'
     | 'Indicative' | 'Subjunctive' | 'Imperative' | 'Optative' | 'Infinitive' | 'Participle'
     | '1st' | '2nd' | '3rd'
     | 'Active' | 'Middle' | 'Passive'
@@ -453,51 +453,11 @@ function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[
 
 export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): boolean {
 
-    const pos = [];
+    const pos: boolean[] = [];
 
     ph.forEach((x) => {
-        switch (x) {
-            case 'Article': pos.push(isArticle(tag)); break;
-            case 'Adjective': pos.push(isAdjective(tag)); break;
-            case 'Adverb': pos.push(isAdverb(tag)); break;
-            case 'Name': pos.push(isName(tag)); break;
-            case 'Anthroponymic': pos.push(isAnthroponymic(tag)); break;
-            case 'Num': pos.push(isNum(tag)); break;
-            case 'Pronoun': pos.push(isPronoun(tag)); break;
-            case 'Verb': pos.push(isVerb(tag)); break;
-            case 'Singular': pos.push(isSingular(tag)); break;
-            case 'Plural': pos.push(isPlural(tag)); break;
-            case 'Dual': pos.push(isDual(tag)); break;
-            case 'Masculine': pos.push(isMasculine(tag)); break;
-            case 'Feminine': pos.push(isFeminine(tag)); break;
-            case 'Neutral': pos.push(isNeutral(tag)); break;
-            case 'Nominative': pos.push(isNominative(tag)); break;
-            case 'Vocative': pos.push(isVocative(tag)); break;
-            case 'Accusative': pos.push(isAccusative(tag)); break;
-            case 'Genitive': pos.push(isGenitive(tag)); break;
-            case 'Dative': pos.push(isDative(tag)); break;
-            case 'Present': pos.push(isPresent(tag)); break;
-            case 'Imperfect': pos.push(isImperfect(tag)); break;
-            case 'Future': pos.push(isFuture(tag)); break;
-            case 'Aorist': pos.push(isAorist(tag)); break;
-            case 'Perfect': pos.push(isPerfect(tag)); break;
-            case 'Pluperfect': pos.push(isPluperfect(tag)); break;
-            case 'Future perfect': pos.push(isFuturePerfect(tag)); break;
-            case 'Indicative': pos.push(isIndicative(tag)); break;
-            case 'Subjunctive': pos.push(isSubjunctive(tag)); break;
-            case 'Imperative': pos.push(isImperative(tag)); break;
-            case 'Optative': pos.push(isOptative(tag)); break;
-            case 'Infinitive': pos.push(isInfinitive(tag)); break;
-            case 'Participle': pos.push(isParticiple(tag)); break;
-            case '1st': pos.push(is1st(tag)); break;
-            case '2nd': pos.push(is2nd(tag)); break;
-            case '3rd': pos.push(is3rd(tag)); break;
-            case 'Active': pos.push(isActive(tag)); break;
-            case 'Middle': pos.push(isMiddle(tag)); break;
-            case 'Passive': pos.push(isPassive(tag)); break;
-            case 'Toponym': pos.push(isToponym(tag)); break;
-            case 'Patronymic': pos.push(isPatronymic(tag)); break;
-        }
+        // tslint:disable-next-line:no-eval
+        pos.push(eval(`is${x}(tag)`) as boolean);
     });
     return pos.reduce((x, y) => op === 'and' ? x && y : x || y, op === 'and' ? true : false);
 }

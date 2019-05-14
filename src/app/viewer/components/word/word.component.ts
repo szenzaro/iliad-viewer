@@ -162,7 +162,7 @@ export class WordComponent {
   }
   get posFuturePerfect() {
     return this.tagIsDefined && isFuturePerfect(this.word.data.tag) && !
-      !this.posHighlight && this.posHighlight.pos.includes('Future perfect');
+      !this.posHighlight && this.posHighlight.pos.includes('FuturePerfect');
   }
   get posIndicative() {
     return this.tagIsDefined && isIndicative(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Indicative');
