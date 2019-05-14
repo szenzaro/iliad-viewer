@@ -31,6 +31,7 @@ import {
   isOptative,
   isParticiple,
   isPassive,
+  isPatronymic,
   isPerfect,
   isPluperfect,
   isPlural,
@@ -192,6 +193,9 @@ export class WordComponent {
   }
   get posToponym() {
     return this.tagIsDefined && isToponym(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Toponym');
+  }
+  get posPatronymic() {
+    return this.tagIsDefined && isPatronymic(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Patronymic');
   }
   get posActive() {
     return this.tagIsDefined && isActive(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Active');

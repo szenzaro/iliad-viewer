@@ -142,7 +142,7 @@ export type POS_OP = 'or' | 'and';
 export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num'
     | 'Masculine' | 'Feminine' | 'Neutral'
     | 'Singular' | 'Plural' | 'Dual'
-    | 'Anthroponymic' | 'Toponym'
+    | 'Anthroponymic' | 'Toponym' | 'Patronymic'
     | 'Present' | 'Imperfect' | 'Future' | 'Aorist' | 'Perfect' | 'Pluperfect' | 'Future perfect'
     | 'Indicative' | 'Subjunctive' | 'Imperative' | 'Optative' | 'Infinitive' | 'Participle'
     | '1st' | '2nd' | '3rd'
@@ -164,10 +164,13 @@ export function isAdverb(tag: string): boolean {
     return !!tag && tag.startsWith('I+Adv');
 }
 export function isName(tag: string): boolean {
-    return !!tag && tag.startsWith('N+') && !isAnthroponymic(tag) && !isToponym(tag);
+    return !!tag && tag.startsWith('N+') && !isAnthroponymic(tag) && !isToponym(tag) && !isPatronymic(tag);
 }
 export function isAnthroponymic(tag: string): boolean {
     return !!tag && tag.startsWith('N+Ant');
+}
+export function isPatronymic(tag: string): boolean {
+    return !!tag && tag.startsWith('N+Pat');
 }
 export function isVerb(tag: string): boolean {
     return !!tag && tag.startsWith('V');
@@ -493,6 +496,7 @@ export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): bool
             case 'Middle': pos.push(isMiddle(tag)); break;
             case 'Passive': pos.push(isPassive(tag)); break;
             case 'Toponym': pos.push(isToponym(tag)); break;
+            case 'Patronymic': pos.push(isPatronymic(tag)); break;
         }
     });
     return pos.reduce((x, y) => op === 'and' ? x && y : x || y, op === 'and' ? true : false);

@@ -59,6 +59,11 @@
                         [selected]="filterSelected('Toponym') | async"
                         (selectedChange)="filterItem.next({'Toponym': $event})"></app-pill>
                     <app-pill
+                        kind="patronymic"
+                        label="Patronymic"
+                        [selected]="filterSelected('Patronymic') | async"
+                        (selectedChange)="filterItem.next({'Patronymic': $event})"></app-pill>
+                    <app-pill
                         kind="pronoun"
                         label="Pronoun"
                         [selected]="filterSelected('Pronoun') | async"

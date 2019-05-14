@@ -39,6 +39,7 @@
     [class.middle]="posMiddle && posHighlighted"
     [class.passive]="posPassive && posHighlighted"
     [class.toponym]="posToponym && posHighlighted"
+    [class.patronymic]="posPatronymic && posHighlighted"
     (click)="!!word.data ? openWordId.next(word.id) : 0">
     {{ word.text }}
     <fa-icon
