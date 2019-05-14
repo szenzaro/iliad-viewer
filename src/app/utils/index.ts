@@ -140,6 +140,7 @@ export function numberToOptions(n: number) {
 
 export type POS_OP = 'or' | 'and';
 export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num'
+    | 'Preposition'
     | 'Masculine' | 'Feminine' | 'Neutral'
     | 'Singular' | 'Plural' | 'Dual'
     | 'Anthroponymic' | 'Toponym' | 'Patronymic'
@@ -162,6 +163,9 @@ export function isArticle(tag: string): boolean {
 }
 export function isAdverb(tag: string): boolean {
     return !!tag && tag.startsWith('I+Adv');
+}
+export function isPreposition(tag: string): boolean {
+    return !!tag && tag.startsWith('I+Prep');
 }
 export function isName(tag: string): boolean {
     return !!tag && tag.startsWith('N+') && !isAnthroponymic(tag) && !isToponym(tag) && !isPatronymic(tag);

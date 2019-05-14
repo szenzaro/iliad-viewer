@@ -35,6 +35,7 @@ import {
   isPerfect,
   isPluperfect,
   isPlural,
+  isPreposition,
   isPresent,
   isPronoun,
   isSingular,
@@ -74,6 +75,9 @@ export class WordComponent {
 
   get posAdjective() {
     return this.tagIsDefined && isAdjective(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Adjective');
+  }
+  get posPreposition() {
+    return this.tagIsDefined && isPreposition(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Preposition');
   }
   get posArticle() {
     return this.tagIsDefined && isArticle(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Article');
