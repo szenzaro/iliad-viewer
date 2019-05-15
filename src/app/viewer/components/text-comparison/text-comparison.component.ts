@@ -9,4 +9,5 @@ import { PosFilter } from 'src/app/utils';
 export class TextComparisonComponent {
   @Input() scrollIndex = 0;
   filter: PosFilter;
+  showText = true;
 }
