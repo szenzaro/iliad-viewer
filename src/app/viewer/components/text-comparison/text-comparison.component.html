@@ -1,5 +1,16 @@
-<app-word-filters class="m-1" (filterChange)="filter = $event"></app-word-filters>
-<div class="d-flex flex-grow-1 full-height justify-content-around">
+<div class="d-flex justify-content-between align-items-start">
+    <app-word-filters
+        class="m-1 flex-grow-1"
+        (filterChange)="filter = $event"></app-word-filters>
+    <ui-switch
+        (change)="showText = !showText"
+        checkedLabel="Show text"
+        uncheckedLabel="Hide text"
+        class="m-1"></ui-switch>
+</div>
+<div
+    [class.d-flex]="showText"
+    class=" flex-grow-1 full-height justify-content-around">
     <app-comparable-text
         [(scrollIndex)]="scrollIndex"
         [posFilter]="filter"
@@ -9,6 +20,7 @@
     </app-comparable-text>
 
     <app-comparable-text
+        *ngIf="showText"
         [(scrollIndex)]="scrollIndex"
         [posFilter]="filter"
         class="container"
