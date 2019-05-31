@@ -1,7 +1,10 @@
 [
     {
         "page": 0,
-        "text": "description",
+        "verse": "1", "book": 1, 
+        "description": "bla bla bla bla",
+        "type": "homeric",
+        "text": "Titre",
         "x": 630,
         "y": 670,
         "width": 1337,
@@ -9,7 +12,7 @@
     },
     {
         "page": 0,
-        "text": "description",
+        "text": "h.1.1",
         "x": 532,
         "y": 1014,
         "width": 1438,
@@ -17,7 +20,7 @@
     },
     {
         "page": 0,
-        "text": "description",
+        "text": "Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος",
         "x": 644,
         "y": 1148,
         "width": 1499,

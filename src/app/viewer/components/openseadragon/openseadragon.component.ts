@@ -40,11 +40,22 @@ interface OsdViewerAPI {
   HTMLelements: Function;
   viewport: any;
   gestureSettingsMouse: any;
+  raiseEvent: Function;
 }
 
 export function createAnnotation(text: string, x = 0, y = 0, width = 0, height = 0): OsdAnnotation {
   const element = document.createElement('div');
   element.classList.add('annotation');
+  const span = document.createElement('span');
+  span.innerHTML = text;
+  element.appendChild(span);
+  span.classList.add('invisible');
+
+  element.addEventListener('annev', (e) => {
+    console.log(e.srcElement);
+    (e.srcElement as HTMLElement).classList.add('invisible');
+  });
+
   return {
     id: uuid('annotation'),
     element,
@@ -208,12 +219,12 @@ export class OpenseadragonComponent implements AfterViewInit {
               const zoom = this.viewer.viewport.getZoom(true);
               const imageZoom = this.viewer.viewport.viewportToImageZoom(zoom);
 
-              console.log(
-                'Web', webPoint.toString(),
-                'Viewport', viewportPoint.toString(),
-                'Image' + imagePoint.toString(),
-                'imageZoom', imageZoom.toString()
-              );
+              // console.log(
+              //   'Web', webPoint.toString(),
+              //   'Viewport', viewportPoint.toString(),
+              //   'Image' + imagePoint.toString(),
+              //   'imageZoom', imageZoom.toString()
+              // );
 
             }
           });
@@ -221,6 +232,23 @@ export class OpenseadragonComponent implements AfterViewInit {
         this.initAnnotationsEventSource();
         this.annotationsHandle.addElements(this.pageAnnotations(0));
       });
+  }
+
+  addAnnotation() {
+    this.annotationsHandle.addElements(this.pageAnnotations(0));
+    this.viewer['raiseEvent']('resize');
+  }
+
+  updateAnnotations(data: OsdAnnotation[]) {
+    this.clearAnnotations();
+    this.annotationsHandle.addElements(data);
+    this.viewer.raiseEvent('resize');
+  }
+
+  hideAnnotation() {
+    (this.viewer.HTMLelements().elements as OsdAnnotation[]).forEach((e) => {
+      e.element.children[0].dispatchEvent(new Event('annev'));
+    });
   }
 
   clearAnnotations() {
@@ -234,6 +262,14 @@ export class OpenseadragonComponent implements AfterViewInit {
     keys.forEach((k) => {
       this.pageAnnotations(+k).forEach((a) => {
         a.element.onclick = () => this.openAnnotation(a.text);
+        a.element.onmouseenter = (e) => {
+          const elem = e.srcElement;
+          (elem as HTMLElement).children[0].classList.remove('invisible');
+        };
+        a.element.onmouseleave = (e) => {
+          const elem = e.srcElement;
+          (elem as HTMLElement).children[0].classList.add('invisible');
+        };
       });
     });
   }
