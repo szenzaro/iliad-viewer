@@ -4,8 +4,8 @@ import { InSubject } from '../../utils/InSubject';
 import { TextService } from 'src/app/services/text.service';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap, skip } from 'rxjs/operators';
-import { Annotation, RecursivePartial } from 'src/app/utils/models';
+import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, tap } from 'rxjs/operators';
+import { Annotation, RecursivePartial, satisfies } from 'src/app/utils/models';
 
 @Component({
   selector: 'app-manuscript',
@@ -28,19 +28,25 @@ export class ManuscriptComponent {
   @Input() @InSubject() annotationsFilter: RecursivePartial<Annotation>[];
   annotationsFilterChange = new BehaviorSubject<RecursivePartial<Annotation>[]>([]);
 
+  @Input() @InSubject() showAnnotations: boolean;
+  showAnnotationsChange = new BehaviorSubject<boolean>(false);
+
   filteredAnnotations = combineLatest([
     this.annotations.pipe(filter((x) => !!x)),
     this.annotationsFilterChange.pipe(filter((x) => !!x)),
+    this.showAnnotationsChange,
   ]).pipe(
-    tap((x) => console.log(x)),
-    map(([a, f]) => {
-      if ( f.length === 0) { return a; }
+    map(([a, fs, show]) => {
+      if (!show) { return {}; }
+      if (fs.length === 0) { return { ...a }; }
+      const toRet = {};
       const keys = Object.keys(a);
       keys.forEach((k) => {
-        a[k] = a[k].filter((x) => x.annotation.type === 'verse');
+        toRet[k] = a[k].filter((x) => fs.some((f) => satisfies(x.annotation, f)));
       });
-      return a;
+      return toRet;
     }),
+    tap((x) => console.log('filtered', x)),
   );
 
   constructor(

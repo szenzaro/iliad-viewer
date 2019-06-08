@@ -65,10 +65,8 @@ export type RecursivePartial<T> = {
 };
 
 export function satisfies(a: Annotation, f: RecursivePartial<Annotation>): boolean {
-    // Object.keys(f).every((v) => {
-    //     if (v !== 'data') { return a[v] === f[v]; }
-    //     const dataKeys =
-    //     return false;
-    // });
-    return false;
+
+    const firstLevel = Object.keys(f).filter((x) => x !== 'data').every((k) => a[k] === f[k]);
+    const dataLevel = Object.keys(f.data || {}).every((k) => !!a.data && a.data[k] === f.data[k]);
+    return firstLevel && dataLevel;
 }

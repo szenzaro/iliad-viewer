@@ -18,7 +18,24 @@ export class AnnotationFilterComponent {
   @InSubject() showParaphrase: boolean;
   @Output() showParaphraseChange = new BehaviorSubject<boolean>(true);
 
+  @InSubject() showScholie: boolean;
+  showScholieChange = new BehaviorSubject<boolean>(true);
+
+  @InSubject() showRef: boolean;
+  showRefChange = new BehaviorSubject<boolean>(true);
+
+  @InSubject() showOrnament: boolean;
+  showOrnamentChange = new BehaviorSubject<boolean>(true);
+
+  @InSubject() showVaria: boolean;
+  showVariaChange = new BehaviorSubject<boolean>(true);
+
+  @InSubject() showTitle: boolean;
+  showTitleChange = new BehaviorSubject<boolean>(true);
+
   @Output() filterChange = new EventEmitter<RecursivePartial<Annotation>[]>();
+
+  @Output() showAnnotationChange = new BehaviorSubject<boolean>(false);
 
   @Input() verseSelected;
 
@@ -26,11 +43,21 @@ export class AnnotationFilterComponent {
     combineLatest([
       this.showHomerChange,
       this.showParaphraseChange,
+      this.showScholieChange,
+      this.showRefChange,
+      this.showOrnamentChange,
+      this.showVariaChange,
+      this.showTitleChange,
     ]).pipe(
-      map(([h, p]) => {
+      map(([h, p, s, r, o, v, t]) => {
         const filters: RecursivePartial<Annotation>[] = [
           h ? { type: 'verse', data: { type: 'homeric' } } as RecursivePartial<Annotation> : undefined,
           p ? { type: 'verse', data: { type: 'paraphrase' } } as RecursivePartial<Annotation> : undefined,
+          s ? { type: 'scholie' } as RecursivePartial<Annotation> : undefined,
+          r ? { type: 'ref' } as RecursivePartial<Annotation> : undefined,
+          o ? { type: 'ornament' } as RecursivePartial<Annotation> : undefined,
+          v ? { type: 'varia' } as RecursivePartial<Annotation> : undefined,
+          t ? { type: 'title' } as RecursivePartial<Annotation> : undefined,
         ].filter((x) => !!x);
         return filters;
       })

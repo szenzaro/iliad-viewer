@@ -1,4 +1,11 @@
 <div class="d-flex justify-content-center m-2">
+    <ui-switch
+        checkedLabel="Hide annotations"
+        uncheckedLabel="Show annotations"
+        (change)="showAnnotationChange.next($event)"
+        size="small"
+        class="m-1">
+    </ui-switch>
     <div class="btn-group">
         <button
             (click)="showHomer = !showHomer"
@@ -17,9 +24,44 @@
             <!-- <fa-icon [icon]="faListAlt"></fa-icon> -->
         </button>
         <button
+            (click)="showScholie = !showScholie"
+            [class.active]="showScholie"
+            [disabled]="!(showAnnotationChange | async)"
             type="button"
             class="btn btn-secondary btn-sm">
             Scholie
+        </button>
+        <button
+            (click)="showOrnament = !showOrnament"
+            [class.active]="showOrnament"
+            [disabled]="!(showAnnotationChange | async)"
+            type="button"
+            class="btn btn-secondary btn-sm">
+            Ornament
+        </button>
+        <button
+            (click)="showRef = !showRef"
+            [class.active]="showRef"
+            [disabled]="!(showAnnotationChange | async)"
+            type="button"
+            class="btn btn-secondary btn-sm">
+            Ref
+        </button>
+        <button
+            (click)="showVaria = !showVaria"
+            [class.active]="showVaria"
+            [disabled]="!(showAnnotationChange | async)"
+            type="button"
+            class="btn btn-secondary btn-sm">
+            Varia
+        </button>
+        <button
+            (click)="showTitle = !showTitle"
+            [class.active]="showTitle"
+            [disabled]="!(showAnnotationChange | async)"
+            type="button"
+            class="btn btn-secondary btn-sm">
+            Title
         </button>
     </div>
 </div>

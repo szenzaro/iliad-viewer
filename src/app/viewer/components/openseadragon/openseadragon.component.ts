@@ -45,7 +45,7 @@ interface OsdViewerAPI {
 }
 
 
- 
+
 /*
 
 From:
@@ -101,7 +101,8 @@ export class OpenseadragonComponent implements AfterViewInit {
   @Input() @InSubject() page: number;
   @Output() pageChange = new EventEmitter<number>();
 
-  @Input() annotations: Map<OsdAnnotation[]>;
+  @Input() @InSubject() annotations: Map<OsdAnnotation[]>;
+  annotationsChange = new BehaviorSubject<Map<OsdAnnotation[]>>({});
 
   @Input() text: string;
 
@@ -143,6 +144,19 @@ export class OpenseadragonComponent implements AfterViewInit {
         if (!!this.viewer) {
           this.viewer.goToPage(x);
         }
+      });
+
+    combineLatest([
+      this.annotationsChange,
+      this.pageChange,
+    ])
+      .pipe(
+        tap((a) => console.log('here', a)),
+      )
+      .subscribe(([ann, page]) => {
+        if (!this.annotationsHandle) { return; }
+        const p = page as number;
+        this.updateAnnotations(!!ann[p] ? ann[p] : []);
       });
   }
 
@@ -241,7 +255,7 @@ export class OpenseadragonComponent implements AfterViewInit {
     keys.forEach((k) => {
       this.annotations[k].forEach((a) => {
         a.modalService = this.modalService;
-      })
+      });
       //   this.pageAnnotations(+k).forEach((a) => {
       //     a.element.onclick = () => this.openAnnotation(a.text);
       //     a.element.onmouseenter = (e) => {
