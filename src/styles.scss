@@ -50,12 +50,46 @@
 .annotation {
     background-color: #7c9497;
     opacity: 0.4;
-    transition: all 0.3s;
+    position: absolute;
 }
 
 .annotation:hover {
-    opacity: 0.7;
+    opacity: 1;
 }
+
+.annotation.pill {
+    border-radius: 50%;
+}
+
+.annotation.scholie {
+    background-color: yellow;
+}
+
+.annotation.detail {
+    background-color: green;
+}
+
+.annotation.homeric {
+    background-color: red;
+}
+
+.annotation.paraphrase {
+    background-color: blue;
+}
+
+.annotation>span {
+    display: block;
+    min-width: 300px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    top: 15px;
+    left: 15px;
+    position: absolute;
+    z-index: 99999;
+}
+
+
 
 .highlighted {
     background-color: white;
