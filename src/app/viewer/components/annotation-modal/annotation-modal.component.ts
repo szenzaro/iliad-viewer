@@ -8,8 +8,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AnnotationModalComponent {
 
-  @Input() text;
+  @Input() text: string;
 
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(public activeModal: NgbActiveModal) { }
 
 }

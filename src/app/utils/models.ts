@@ -57,3 +57,18 @@ export interface Annotation {
     data: AnnotationData;
 }
 
+export type RecursivePartial<T> = {
+    [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object ? RecursivePartial<T[P]> :
+    T[P];
+};
+
+export function satisfies(a: Annotation, f: RecursivePartial<Annotation>): boolean {
+    // Object.keys(f).every((v) => {
+    //     if (v !== 'data') { return a[v] === f[v]; }
+    //     const dataKeys =
+    //     return false;
+    // });
+    return false;
+}

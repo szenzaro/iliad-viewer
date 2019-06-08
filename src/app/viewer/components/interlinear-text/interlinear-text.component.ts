@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { faListAlt, faThList } from '@fortawesome/free-solid-svg-icons';
 
 import { BehaviorSubject, combineLatest, forkJoin, merge } from 'rxjs';
@@ -31,7 +31,7 @@ export class InterlinearTextComponent {
   faThList = faThList;
   faListAlt = faListAlt;
 
-  @InSubject() showHomeric;
+  @Input() @InSubject() showHomeric;
   showHomericChange = new BehaviorSubject<boolean>(true);
 
   @InSubject() showParaphfrase;
@@ -53,6 +53,8 @@ export class InterlinearTextComponent {
 
   @Input() @InSubject() verse: number;
   @Output() verseChange = new BehaviorSubject<number>(1);
+
+  @Output() verseClicked = new EventEmitter<{ verse: number, book: number, text: number }>();
 
   versesChange = new BehaviorSubject<[number, number]>(undefined);
 

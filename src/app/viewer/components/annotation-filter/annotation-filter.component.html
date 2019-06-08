@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-center m-2">
+    <div class="btn-group">
+        <button
+            (click)="showHomer = !showHomer"
+            [class.active]="showHomer"
+            type="button"
+            class="btn btn-secondary btn-sm">
+            Homer
+            <!-- <fa-icon [icon]="faThList"></fa-icon> -->
+        </button>
+        <button
+            (click)="showParaphrase = !showParaphrase"
+            [class.active]="showParaphrase"
+            type="button"
+            class="btn btn-secondary btn-sm">
+            Paraphrase
+            <!-- <fa-icon [icon]="faListAlt"></fa-icon> -->
+        </button>
+        <button
+            type="button"
+            class="btn btn-secondary btn-sm">
+            Scholie
+        </button>
+    </div>
+</div>

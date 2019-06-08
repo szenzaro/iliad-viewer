@@ -5,11 +5,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Map, uuid } from 'src/app/utils';
 import { InSubject } from '../../utils/InSubject';
-import { AnnotationModalComponent } from '../annotation-modal/annotation-modal.component';
 
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
-
+import { Annotation } from 'src/app/utils/models';
 
 declare var OpenSeadragon: any;
 
@@ -22,6 +21,8 @@ export interface OsdAnnotation {
   height: number;
   fontSize?: number;
   text: string;
+  annotation: Annotation;
+  modalService?: NgbModal;
 }
 
 interface OsdAnnotationAPI {
@@ -43,30 +44,8 @@ interface OsdViewerAPI {
   raiseEvent: Function;
 }
 
-export function createAnnotation(text: string, x = 0, y = 0, width = 0, height = 0): OsdAnnotation {
-  const element = document.createElement('div');
-  element.classList.add('annotation');
-  const span = document.createElement('span');
-  span.innerHTML = text;
-  element.appendChild(span);
-  span.classList.add('invisible');
 
-  element.addEventListener('annev', (e) => {
-    console.log(e.srcElement);
-    (e.srcElement as HTMLElement).classList.add('invisible');
-  });
-
-  return {
-    id: uuid('annotation'),
-    element,
-    x,
-    y,
-    width,
-    height,
-    text
-  };
-}
-
+ 
 /*
 
 From:
@@ -122,7 +101,7 @@ export class OpenseadragonComponent implements AfterViewInit {
   @Input() @InSubject() page: number;
   @Output() pageChange = new EventEmitter<number>();
 
-  @Input() annotations: Map<OsdAnnotation[]> = {};
+  @Input() annotations: Map<OsdAnnotation[]>;
 
   @Input() text: string;
 
@@ -186,7 +165,7 @@ export class OpenseadragonComponent implements AfterViewInit {
       },
     };
 
-    combineLatest(this.optionsChange, this.clippedTileSources)
+    combineLatest([this.optionsChange, this.clippedTileSources])
       .subscribe(([_, tileSources]) => {
         if (!!tileSources) {
           this.viewer = OpenSeadragon({
@@ -219,12 +198,12 @@ export class OpenseadragonComponent implements AfterViewInit {
               const zoom = this.viewer.viewport.getZoom(true);
               const imageZoom = this.viewer.viewport.viewportToImageZoom(zoom);
 
-              // console.log(
-              //   'Web', webPoint.toString(),
-              //   'Viewport', viewportPoint.toString(),
-              //   'Image' + imagePoint.toString(),
-              //   'imageZoom', imageZoom.toString()
-              // );
+              console.log(
+                'Web', webPoint.toString(),
+                'Viewport', viewportPoint.toString(),
+                'Image' + imagePoint.toString(),
+                'imageZoom', imageZoom.toString()
+              );
 
             }
           });
@@ -260,22 +239,20 @@ export class OpenseadragonComponent implements AfterViewInit {
     const keys = Object.keys(this.annotations);
 
     keys.forEach((k) => {
-      this.pageAnnotations(+k).forEach((a) => {
-        a.element.onclick = () => this.openAnnotation(a.text);
-        a.element.onmouseenter = (e) => {
-          const elem = e.srcElement;
-          (elem as HTMLElement).children[0].classList.remove('invisible');
-        };
-        a.element.onmouseleave = (e) => {
-          const elem = e.srcElement;
-          (elem as HTMLElement).children[0].classList.add('invisible');
-        };
-      });
+      this.annotations[k].forEach((a) => {
+        a.modalService = this.modalService;
+      })
+      //   this.pageAnnotations(+k).forEach((a) => {
+      //     a.element.onclick = () => this.openAnnotation(a.text);
+      //     a.element.onmouseenter = (e) => {
+      //       const elem = e.srcElement;
+      //       (elem as HTMLElement).children[0].classList.remove('invisible');
+      //     };
+      //     a.element.onmouseleave = (e) => {
+      //       const elem = e.srcElement;
+      //       (elem as HTMLElement).children[0].classList.add('invisible');
+      //     };
+      //   });
     });
-  }
-
-  openAnnotation(text: string) {
-    const modalRef = this.modalService.open(AnnotationModalComponent);
-    (modalRef.componentInstance as AnnotationModalComponent).text = text;
   }
 }
