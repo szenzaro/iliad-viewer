@@ -1,157 +1,348 @@
 [
     {
-        "page": 0,
-        "verse": "1", "book": 1, 
-        "description": "bla bla bla bla",
-        "type": "homeric",
-        "text": "Titre",
-        "x": 630,
-        "y": 670,
-        "width": 1337,
-        "height": 100
+        "position": {"x": 630,"y": 670,"width": 1337,"height": 100},
+        "type": "title",
+        "page": "0",
+        "data": {
+            "book": 1,
+            "verse": 1,
+            "description": "bla bla bla bla",
+            "text": "Titre"
+        }
     },
     {
+        "position": {"x": 2220,"y": 548,"width": 413,"height": 1263},
+        "type": "scholie",
         "page": 0,
-        "text": "h.1.1",
-        "x": 532,
-        "y": 1014,
-        "width": 1438,
-        "height": 60
+        "data": {
+            "description": "Μῆνιν. Ὀργὴν, χόλον ἐπίμονον.<br>ἐζήτηται δὲ εὐθὺς, διὰ τί ἀπὸ τῶν τελευταίων<br>ἤρξατο τοῦ πολέμου ὁ Ποιητής.<br>καὶ φαμὲν, ὅτι ἅπας μὲν χρόνος ὁ πρὸ<br>τοῦ δεκάτου ἔτους, οὐκ ἔσχεν οὕτω συνεχεῖς<br>τὰς μάχας, διὰ τὸ τοὺς Τρῶας φόβῳ<br>τοῦ Ἀχιλλέως ἐντὸς κατακεκλεῖσθαι<br>τοῦ τείχους. τὸ δὲ δέκατον ἔτος, πλείονας<br>ἔσχε τὰς πράξεις, καὶ τοὺς πολέμους ἰσοπαλεῖς,<br>τοῦ Ἀχιλλέως ὀργιζομένου. ὁ δὲ<br>Ποιητὴς, οἰκονομικῶς κἀν τούτῳ ἤρξατο<br>μὲν ἀπὸ τῶν τελευταίων. διὰ δὲ τῶν σποράδην<br>αὐτῷ λεχθέντων, περιέλαβε καὶ τὰ<br>πρὸ τούτων πραχθέντα. αὕτη γὰρ ἀρετὴ<br>ποιήσεως, τὸ, ἀπὸ τῶν μέσων ἄρξασθαι,<br>προϊόντα δὲ καὶ τὴν ἀρχὴν διηγεῖσθαι κατὰ<br>μέρος. Ἄειδε. ᾆδε, λέγε. Θεά. Κοινῷ<br>"
+        }
     },
     {
+        "position": {"x": 532,"y": 1014,"width": 50,"height": 50},
         "page": 0,
-        "text": "Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος",
-        "x": 644,
-        "y": 1148,
-        "width": 1499,
-        "height": 60
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 1,"description": "Μῆνιν ἄειδε θεὰ Πηληιάδεω Ἀχιλῆος"}
     },
     {
+        "position": {"x": 644,"y": 1148,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 658,
-        "y": 1250,
-        "width": 1271,
-        "height": 58
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 1}
     },
     {
+        "position": {"x": 658,"y": 1250,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 655,
-        "y": 1367,
-        "width": 1548,
-        "height": 69
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 2}
     },
     {
+        "position": {"x": 655,"y": 1367,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 652,
-        "y": 1516,
-        "width": 1258,
-        "height": 54
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 2}
     },
     {
+        "position": {"x": 652,"y": 1516,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 659,
-        "y": 1622,
-        "width": 1302,
-        "height": 51
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 3}
     },
     {
+        "position": {"x": 659,"y": 1622,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 676,
-        "y": 1733,
-        "width": 1085,
-        "height": 60
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 3}
     },
     {
+        "position": {"x": 676,"y": 1733,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 642,
-        "y": 1829,
-        "width": 1634,
-        "height": 122
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 4}
     },
     {
+        "position": {"x": 642,"y": 1829,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 685,
-        "y": 1972,
-        "width": 1196,
-        "height": 66
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 4}
     },
     {
+        "position": {"x": 685,"y": 1972,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 681,
-        "y": 2070,
-        "width": 1475,
-        "height": 85
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 5}
     },
     {
+        "position": {"x": 681,"y": 2070,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 703,
-        "y": 2173,
-        "width": 1196,
-        "height": 73
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 5}
     },
     {
+        "position": {"x": 703,"y": 2173,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 700,
-        "y": 2300,
-        "width": 1397,
-        "height": 61
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 6}
     },
     {
+        "position": {"x": 700,"y": 2300,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 700,
-        "y": 2405,
-        "width": 1182,
-        "height": 81
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 6}
     },
     {
+        "position": {"x": 700,"y": 2405,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 700,
-        "y": 2566,
-        "width": 1606,
-        "height": 18
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 7}
     },
     {
+        "position": {"x": 700,"y": 2566,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 700,
-        "y": 2636,
-        "width": 1160,
-        "height": 76
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 7}
     },
     {
+        "position": {"x": 700,"y": 2636,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 700,
-        "y": 2737,
-        "width": 1225,
-        "height": 60
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 8}
     },
     {
+        "position": {"x": 700,"y": 2737,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 700,
-        "y": 2862,
-        "width": 1227,
-        "height": 58
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 8}
     },
     {
+        "position": {"x": 700,"y": 2862,"width": 50,"height": 50},
         "page": 0,
-        "text": "description",
-        "x": 700,
-        "y": 2966,
-        "width": 1367,
-        "height": 60
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 1,"verse": 9}
+    },
+    {
+        "position": {"x": 700,"y": 2966,"width": 50,"height": 50},
+        "page": 0,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 1,"verse": 9}
+    },
+
+    {
+        "position": {"x": 542,"y": 524,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 2,"verse": 467}
+    },
+    {
+        "position": {"x": 536,"y": 630,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 2,"verse": 487}
+    },
+    {
+        "position": {"x": 535,"y": 736,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 2,"verse": 488}
+    },
+    {
+        "position": {"x": 540,"y": 836,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 2,"verse": 488}
+    },
+    {
+        "position": {"x": 543,"y": 936,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 2,"verse": 489}
+    },
+    {
+        "position": {"x": 554,"y": 1042,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 2,"verse": 489}
+    },
+    {
+        "position": {"x": 551,"y": 1137,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 2,"verse": 490}
+    },
+    {
+        "position": {"x": 559,"y": 1248,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 2,"verse": 490}
+    },
+    {
+        "position": {"x": 545,"y": 1335,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 2,"verse": 491}
+    },
+    {
+        "position": {"x": 545,"y": 1443,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 2,"verse": 491}
+    },
+    {
+        "position": {"x": 535,"y": 1548,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 2,"verse": 492}
+    },
+    {
+        "position": {"x": 545,"y": 1665,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 2,"verse": 492}
+    },
+    {
+        "position": {"x": 542,"y": 1761,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 2,"verse": 493}
+    },
+    {
+        "position": {"x": 535,"y": 1867,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 2,"verse": 493}
+    },
+    {
+        "position": {"x": 540,"y": 1960,"width": 50,"height": 50},
+        "page": 109,
+        "type": "title",
+        "data": {"type": "end", "text": "Fin 2", "description": "τέλος σὺν θεῷ τῆς β Ὁμήρου ῥαψωδίας"}
+    },
+    {
+        "position": {"x": 544,"y": 2054,"width": 50,"height": 50},
+        "page": 109,
+        "type": "title",
+        "data": {"type": "beginning", "text": "Début 3", "description": "Ἀρχὴ σὺν θεῷ τῆς γ Ὁμήρου ῥαψωδίας"}
+    },
+    {
+        "position": {"x": 537,"y": 2158,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 3,"verse": 1}
+    },
+    {
+        "position": {"x": 546,"y": 2252,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 3,"verse": 1}
+    },
+    {
+        "position": {"x": 541,"y": 2357,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 3,"verse": 2}
+    },
+    {
+        "position": {"x": 542,"y": 2456,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 3,"verse": 2}
+    },
+    {
+        "position": {"x": 529,"y": 2553,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 3,"verse": 3}
+    },
+    {
+        "position": {"x": 542,"y": 2664,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 3,"verse": 3}
+    },
+    {
+        "position": {"x": 525,"y": 2773,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 3,"verse": 4}
+    },
+    {
+        "position": {"x": 524,"y": 2876,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 3,"verse": 4}
+    },
+    {
+        "position": {"x": 537,"y": 2979,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 3,"verse": 5}
+    },
+    {
+        "position": {"x": 531,"y": 3069,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "paraphrase", "shape": "pill","book": 3,"verse": 5}
+    },
+    {
+        "position": {"x": 529,"y": 3182,"width": 50,"height": 50},
+        "page": 109,
+        "type": "verse",
+        "data": {"type": "homeric", "shape": "pill","book": 3,"verse": 6}
+    },
+    {
+        "position": {"x": 54,"y": 2041,"width": 93, "height": 100},
+        "type": "varia",
+        "page": 109,
+        "data": {"text": "Renvoi édition de Bâle (1540)", "description": "Écriture attribuée à Henri II Estienne renvoyant à la page 58 de l’édition de l’Iliade publiée à Bâle en 1540."}
+    },
+    {
+        "position": {"x": 1055,"y": 134,"width": 1140, "height": 187},
+        "type": "varia",
+        "page": 109,
+        "data": {"text": "Écriture attribuée à Henri II Estienne indiquant le début du chant 3.", "description": "γ´ Ὁμήρου ῥαψωδίας"}
+    },
+    {
+        "position": {"x": 401,"y": 1962,"width": 131, "height": 114},
+        "type": "ornament",
+        "page": 109,
+        "data": {"text": "Ornementation", "description": "Indication (probablement de la main principale) visuelle permettant d’identifier rapidement le premier vers du chant 3."}
+    },
+    {
+        "position": {"x": 1000,"y": 2700,"width": 50,"height": 50},
+        "type": "ref",
+        "page": 109,
+        "data": {
+            "color": "green", "shape": "pill",
+            "description": "Scholie 3, 2 : [ἐνοπῇ] ἐνοπῇ δὲ τῇ εἰς ὀπὴν ὤτων δυναμένῃ φέρεσθαι. [κλαγγῇ] ἀπὸ τοῦ κλῶ κλάζω, κλαγή, καὶ πλεονασμῷ τοῦ γ´ κλαγγή.",
+            "text": "Scholie 3, 2 : [ἐνοπῇ] ἐνοπῇ δὲ τῇ εἰς ὀπὴν ὤτων δυναμένῃ φέρεσθαι. [κλαγγῇ] ἀπὸ τοῦ κλῶ κλάζω, κλαγή, καὶ πλεονασμῷ τοῦ γ´ κλαγγή."
+        }
+    },
+    {
+        "position": {"x": 814,"y": 3224,"width": 627,"height": 100},
+        "type": "scholie",
+        "page": 109,
+        "data": {
+            "color": "green",
+            "description": "Iliade 3, 2 : Τρῶες μὲν κλαγγῇ τ᾽ ἐνοπῇ τ᾽ ἴσαν ὄρνιθες ὣς<br>Scholie 3, 2 : [ἐνοπῇ] ἐνοπῇ δὲ τῇ εἰς ὀπὴν ὤτων δυναμένῃ φέρεσθαι.<br>[κλαγγῇ] ἀπὸ τοῦ κλῶ κλάζω, κλαγή, καὶ πλεονασμῷ τοῦ γ´ κλαγγή."
+        }
+    },
+    {
+        "position": {"x": 1216,"y": 2293,"width": 50,"height": 50},
+        "type": "ref",
+        "page": 109,
+        "data": {
+            "color": "yellow", "shape": "pill",
+            "description": "Iliade, 3, 4 : αἵ τ᾽ ἐπεὶ οὖν χειμῶνα φύγον καὶ ἀθέσφατον ὄμβρον<br>Scholie 3, 4 : [χειμῶνα] τὴν Θρᾴκην λέγει χειμερίαν οὖσαν.",
+            "text": "Scholie 3, 4 : [χειμῶνα] τὴν Θρᾴκην λέγει χειμερίαν οὖσαν."
+        }
+    },
+    {
+        "position": {"x": 83,"y": 2486,"width": 444,"height": 263},
+        "type": "scholie",
+        "page": 109,
+        "data": {
+            "color": "yellow",
+            "description": "Iliade, 3, 4 : αἵ τ᾽ ἐπεὶ οὖν χειμῶνα φύγον καὶ ἀθέσφατον ὄμβρον<br>Scholie 3, 4 : [χειμῶνα] τὴν Θρᾴκην λέγει χειμερίαν οὖσαν."
+        }
     }
 ]
