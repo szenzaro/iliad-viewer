@@ -33,11 +33,27 @@ export interface WordData {
 
 export type ChantData = WordData[];
 
-export interface Annotation {
-    page: number;
-    text: string;
+export interface AnnotationPosition {
     x: number;
     y: number;
     width: number;
     height: number;
 }
+
+export interface AnnotationData {
+    book?: number;
+    verse?: number;
+    description?: string;
+    text?: string;
+    type: 'homeric' | 'paraphrase';
+    color?: string;
+    shape?: string;
+}
+
+export interface Annotation {
+    position: AnnotationPosition;
+    type: 'title' | 'scholie' | 'ref' | 'verse' | 'detail' | 'varia' | 'ornament' | 'philologic';
+    page: number;
+    data: AnnotationData;
+}
+
