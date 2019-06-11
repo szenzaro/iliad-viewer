@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Map } from '../utils/index';
-import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
-
-import { createAnnotation, OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
-
 import { forkJoin, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { Map, uuid } from '../utils/index';
+import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnnotationModalComponent } from '../viewer/components/annotation-modal/annotation-modal.component';
+import { OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 
 function mapWords(text: string, chant: number, position: number, verse: VerseRowType, data: WordData[]): Word[] {
   let id = `${text}.${chant}.${position}`;
@@ -64,7 +65,10 @@ export class TextService {
 
   cache: Map<any> = {};
 
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly modalService: NgbModal,
+  ) {
   }
 
   getPageFromVerse(text: string, chant: number, verse: number) {
@@ -75,10 +79,10 @@ export class TextService {
   }
 
   getVerses(text: string, chant: number, range?: [number, number]) {
-    return forkJoin(
+    return forkJoin([
       this.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
       this.cachedGet<[string, string, string][][]>(`./assets/data/texts/${text}/${chant}/data.json`),
-    ).pipe(
+    ]).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
       map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
     );
@@ -120,15 +124,119 @@ export class TextService {
       .pipe(
         map((arr) => {
           const annotations: Map<OsdAnnotation[]> = {};
-          arr.forEach(({ page, text, x, y, width, height }) => {
-            if (!annotations[page]) {
-              annotations[page] = [];
+          arr.forEach((a) => {
+            if (!annotations[a.page]) {
+              annotations[a.page] = [];
             }
-            annotations[page].push(createAnnotation(text, x, y, width, height));
+            annotations[a.page].push(this.newAnnotation(a));
           });
           return annotations;
         }),
       );
+  }
+
+  openAnnotation(text: string) {
+    const modalRef = this.modalService.open(AnnotationModalComponent);
+    (modalRef.componentInstance as AnnotationModalComponent).text = text;
+  }
+
+  newAnnotation(annotation: Annotation): OsdAnnotation {
+    const element = document.createElement('div');
+    element.classList.add('annotation', annotation.type);
+
+    switch (annotation.type) { // TODO: refactor this switch
+      case 'verse':
+        element.classList.add(annotation.data.type);
+        element.classList.add(annotation.data.shape);
+        const span = document.createElement('span');
+        span.classList.add('invisible');
+        span.innerHTML = `${annotation.data.type === 'homeric' ? 'H.' : 'P.'}${annotation.data.book}.${annotation.data.verse}`;
+        element.onmouseenter = (e) => {
+          span.classList.remove('invisible');
+        };
+        element.onmouseleave = (e) => {
+          span.classList.add('invisible');
+        };
+        element.appendChild(span);
+        break;
+      case 'varia':
+        element.classList.add(annotation.data.type);
+        const spanVaria = document.createElement('span');
+        spanVaria.classList.add('invisible');
+        spanVaria.innerHTML = `${annotation.data.text}`;
+        element.onmouseenter = (e) => {
+          spanVaria.classList.remove('invisible');
+        };
+        element.onmouseleave = (e) => {
+          spanVaria.classList.add('invisible');
+        };
+        element.appendChild(spanVaria);
+        element.onclick = () => this.openAnnotation(annotation.data.description);
+        break;
+      case 'ref':
+        element.classList.add(annotation.data.shape);
+        if (!!annotation.data.color) {
+          element.style.backgroundColor = annotation.data.color;
+        }
+        const spanRef = document.createElement('span');
+        spanRef.classList.add('invisible');
+        spanRef.innerHTML = `${annotation.data.text}`;
+        element.onmouseenter = (e) => {
+          spanRef.classList.remove('invisible');
+        };
+        element.onmouseleave = (e) => {
+          spanRef.classList.add('invisible');
+        };
+        element.appendChild(spanRef);
+        element.onclick = () => this.openAnnotation(annotation.data.description);
+        break;
+      case 'ornament':
+          const spanOrnament = document.createElement('span');
+          spanOrnament.classList.add('invisible');
+          spanOrnament.innerHTML = `${annotation.data.text}`;
+          element.onmouseenter = (e) => {
+            spanOrnament.classList.remove('invisible');
+          };
+          element.onmouseleave = (e) => {
+            spanOrnament.classList.add('invisible');
+          };
+          element.onclick = () => this.openAnnotation(annotation.data.description);
+          element.appendChild(spanOrnament);
+        break;
+      case 'scholie':
+        element.classList.add(annotation.data.type);
+        if (!!annotation.data.color) {
+          element.style.backgroundColor = annotation.data.color;
+        }
+        element.onclick = () => this.openAnnotation(annotation.data.description);
+        break;
+      case 'title':
+        element.classList.add(annotation.data.type);
+        element.classList.add(annotation.data.shape);
+        const spanTitle = document.createElement('span');
+        spanTitle.classList.add('invisible');
+        spanTitle.innerHTML = `${annotation.data.text}`;
+        element.onmouseenter = (e) => {
+          spanTitle.classList.remove('invisible');
+        };
+        element.onmouseleave = (e) => {
+          spanTitle.classList.add('invisible');
+        };
+        element.onclick = () => this.openAnnotation(annotation.data.description);
+        element.appendChild(spanTitle);
+        break;
+    }
+
+    return {
+      id: uuid('annotation'),
+      element,
+      x: annotation.position.x,
+      y: annotation.position.y,
+      width: annotation.position.width,
+      height: annotation.position.height,
+      text: annotation.data.description,
+      annotation,
+    };
   }
 
   private cachedGet<T>(path: string) {

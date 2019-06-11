@@ -33,11 +33,40 @@ export interface WordData {
 
 export type ChantData = WordData[];
 
-export interface Annotation {
-    page: number;
-    text: string;
+export interface AnnotationPosition {
     x: number;
     y: number;
     width: number;
     height: number;
+}
+
+export interface AnnotationData {
+    book?: number;
+    verse?: number;
+    description?: string;
+    text?: string;
+    type: 'homeric' | 'paraphrase';
+    color?: string;
+    shape?: string;
+}
+
+export interface Annotation {
+    position: AnnotationPosition;
+    type: 'title' | 'scholie' | 'ref' | 'verse' | 'detail' | 'varia' | 'ornament' | 'philologic';
+    page: number;
+    data: AnnotationData;
+}
+
+export type RecursivePartial<T> = {
+    [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object ? RecursivePartial<T[P]> :
+    T[P];
+};
+
+export function satisfies(a: Annotation, f: RecursivePartial<Annotation>): boolean {
+
+    const firstLevel = Object.keys(f).filter((x) => x !== 'data').every((k) => a[k] === f[k]);
+    const dataLevel = Object.keys(f.data || {}).every((k) => !!a.data && a.data[k] === f.data[k]);
+    return firstLevel && dataLevel;
 }

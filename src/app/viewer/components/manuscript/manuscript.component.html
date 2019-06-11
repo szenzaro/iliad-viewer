@@ -1,17 +1,23 @@
+<app-annotation-filter
+    *ngIf="!!interlinearText"
+    (showAnnotationChange)="showAnnotations = $event"
+    (filterChange)="annotationsFilter = $event"
+    (showHomerChange)="interlinearText.showHomeric = $event"
+    (showParaphraseChange)="interlinearText.showParaphfrase = $event">
+</app-annotation-filter>
 <div class="d-flex">
     <app-openseadragon
         class="col"
         [(page)]="manuscriptPage"
-        [annotations]="annotations | async"
-        manifestURL="./assets/manuscript/manifest.json"
-    >
+        [annotations]="filteredAnnotations | async"
+        manifestURL="./assets/manuscript/manifest.json">
     </app-openseadragon>
     <app-interlinear-text
+        #interlinearText
         class="col"
         [(page)]="currentPage"
         [(chant)]="currentChant"
         [text]="text"
-        paraphrase="paraphrase"
-    >
+        paraphrase="paraphrase">
     </app-interlinear-text>
 </div>
