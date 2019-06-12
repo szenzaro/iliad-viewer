@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UiSwitchModule } from 'ngx-ui-switch';
 
+import { AnnotationFilterComponent } from './components/annotation-filter/annotation-filter.component';
 import { AnnotationModalComponent } from './components/annotation-modal/annotation-modal.component';
 import { ComparableTextComponent } from './components/comparable-text/comparable-text.component';
 import { InterlinearTextComponent } from './components/interlinear-text/interlinear-text.component';
@@ -57,6 +58,7 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     ViewerPageComponent,
     WordComponent,
     WordFiltersComponent,
+    AnnotationFilterComponent,
   ],
   entryComponents: [
     AnnotationModalComponent,
