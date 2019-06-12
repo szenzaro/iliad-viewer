@@ -165,14 +165,14 @@ export class OpenseadragonComponent implements AfterViewInit {
     this.div.nativeElement.id = this.viewerId;
 
     const commonOptions = {
-      visibilityRatio: 1,
+      visibilityRatio: 0.1,
       minZoomLevel: 0.5,
       defaultZoomLevel: 1,
       sequenceMode: true,
       prefixUrl: 'assets/osd/images/',
       id: this.div.nativeElement.id,
       navigatorBackground: '#606060',
-      showNavigator: true,
+      showNavigator: false,
       gestureSettingsMouse: {
         clickToZoom: false,
         dblClickToZoom: true,
