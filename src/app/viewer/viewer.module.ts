@@ -11,7 +11,6 @@ import { AnnotationModalComponent } from './components/annotation-modal/annotati
 import { ComparableTextComponent } from './components/comparable-text/comparable-text.component';
 import { InterlinearTextComponent } from './components/interlinear-text/interlinear-text.component';
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
-import { ModeSelectorComponent } from './components/mode-selector/mode-selector.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
 import { PillComponent } from './components/pill/pill.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
@@ -43,7 +42,6 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     ComparableTextComponent,
     InterlinearTextComponent,
     ManuscriptComponent,
-    ModeSelectorComponent,
     OpenseadragonComponent,
     PillComponent,
     SearchComponent,
