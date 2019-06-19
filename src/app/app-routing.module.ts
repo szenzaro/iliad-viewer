@@ -7,7 +7,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/viewer', pathMatch: 'full' },
+  { path: '', redirectTo: '/viewer/manuscript', pathMatch: 'full' },
   { path: 'about', component: AboutPageComponent },
   { path: 'home', component: HomePageComponent },
   { path: '**', component: PageNotFoundComponent },
