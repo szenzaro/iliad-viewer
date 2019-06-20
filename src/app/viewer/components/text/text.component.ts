@@ -17,6 +17,7 @@ export class TextComponent implements OnDestroy {
   @Input() highlight = false; // Highlight alternate verses
   @Input() showData = true;
   @Input() loading = true;
+  @Input() scrollableIndex = true;
   @Input() @InSubject() scrollIndex: number;
   @Output() scrollIndexChange = new BehaviorSubject<number>(0);
 
