@@ -1,7 +1,7 @@
-import { Component, Input, Output, ViewChild } from '@angular/core';
+import { Component, Input, Output, ViewChild, OnDestroy } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, skip, tap } from 'rxjs/operators';
 import { POS, PosFilter } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
@@ -12,7 +12,7 @@ import { InSubject } from '../../utils/InSubject';
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.scss'],
 })
-export class TextComponent {
+export class TextComponent implements OnDestroy {
   @Input() verses: Verse[] = [];
   @Input() highlight = false; // Highlight alternate verses
   @Input() showData = true;
@@ -27,6 +27,8 @@ export class TextComponent {
   get openedWordId() { return this._openedWordId; }
   set openedWordId(v: string) { this._openedWordId = v === this._openedWordId ? undefined : v; }
 
+  private scrollSubscription: Subscription;
+
   shouldHighlight(index: number, verse: Verse) {
     return this.highlight && index % 2 === 0 && verse.n !== 't';
   }
@@ -36,9 +38,13 @@ export class TextComponent {
   }
 
   constructor() {
-    this.scrollIndexChange.pipe(
+    this.scrollSubscription = this.scrollIndexChange.pipe(
       skip(1),
       tap(() => this.openedWordId = undefined),
-    ).subscribe((x: number) => this.scrollToIndex(x - 1));
+    ).subscribe((x: number) => { if (this.scrollableIndex) { this.scrollToIndex(x - 1); } });
+  }
+
+  ngOnDestroy(): void {
+    this.scrollSubscription.unsubscribe();
   }
 }
