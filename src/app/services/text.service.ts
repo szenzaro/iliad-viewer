@@ -72,9 +72,12 @@ export class TextService {
   }
 
   getPageFromVerse(text: string, chant: number, verse: number) {
-    return this.cachedGet<PageInfo[]>(`./assets/data/texts/${text}/pagesToVerses.json`)
+    return this.cachedGet<PageInfo[][]>(`./assets/data/texts/${text}/pagesToVerses.json`)
       .pipe(
-        map((pages: PageInfo[]) => (pages.findIndex((x) => x[0][0] === chant && verse <= x[0][1][1] && verse >= x[0][1][0]) + 1)),
+        map((pages: PageInfo[][]) => (pages.findIndex((x) => {
+          const entry = x.filter((e) => e[0] === chant).map((v) => verse <= v[1][1] && verse >= v[1][0]);
+          return entry.length > 0 && entry[0];
+        }) + 1)),
       );
   }
 
@@ -88,12 +91,15 @@ export class TextService {
     );
   }
 
-  getVersesNumberFromPage(text: string, n: number, chant?: number, ) {
-    return this.cachedGet<PageInfo[]>(`./assets/data/texts/${text}/pagesToVerses.json`)
+  getVersesNumberFromPage(text: string, n: number, chant?: number) {
+    return this.cachedGet<PageInfo[][]>(`./assets/data/texts/${text}/pagesToVerses.json`)
       .pipe(
-        map((pages: PageInfo[]) => chant !== undefined
-          ? pages[n].find((x) => x[0] === chant) // TODO check type correctness
-          : pages[n][pages[n].length - 1]),
+        map((pages: PageInfo[][]) => {
+          const entry = chant !== undefined
+            ? pages[n - 1].find((x) => x[0] === chant)
+            : pages[n - 1][pages[n - 1].length - 1];
+          return !!entry && entry[1];
+        }),
       );
   }
 
@@ -191,17 +197,17 @@ export class TextService {
         element.onclick = () => this.openAnnotation(annotation.data.description);
         break;
       case 'ornament':
-          const spanOrnament = document.createElement('span');
+        const spanOrnament = document.createElement('span');
+        spanOrnament.classList.add('invisible');
+        spanOrnament.innerHTML = `${annotation.data.text}`;
+        element.onmouseenter = (e) => {
+          spanOrnament.classList.remove('invisible');
+        };
+        element.onmouseleave = (e) => {
           spanOrnament.classList.add('invisible');
-          spanOrnament.innerHTML = `${annotation.data.text}`;
-          element.onmouseenter = (e) => {
-            spanOrnament.classList.remove('invisible');
-          };
-          element.onmouseleave = (e) => {
-            spanOrnament.classList.add('invisible');
-          };
-          element.onclick = () => this.openAnnotation(annotation.data.description);
-          element.appendChild(spanOrnament);
+        };
+        element.onclick = () => this.openAnnotation(annotation.data.description);
+        element.appendChild(spanOrnament);
         break;
       case 'scholie':
         element.classList.add(annotation.data.type);

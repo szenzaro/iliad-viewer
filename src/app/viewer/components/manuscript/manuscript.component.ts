@@ -6,6 +6,7 @@ import { TextService } from 'src/app/services/text.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, tap } from 'rxjs/operators';
 import { Annotation, RecursivePartial, satisfies } from 'src/app/utils/models';
+import { ManuscriptService } from '../../services/manuscript.service';
 
 @Component({
   selector: 'app-manuscript',
@@ -51,23 +52,7 @@ export class ManuscriptComponent {
 
   constructor(
     private textService: TextService,
+    readonly manuscriptService: ManuscriptService,
   ) {
-    combineLatest([this.currentChantChange, this.manuscriptPageChange])
-      .pipe(
-        skip(1),
-        distinctUntilChanged(),
-        debounceTime(150),
-        tap((x) => console.log('chant-page', x)),
-        switchMap(([chant, page]) => this.textService.getVersesNumberFromPage(this.text, page, chant)),
-        filter((x) => !!x),
-        map((pageData) => ({ chant: pageData[0], page: this.manuscriptPage + 1 })),
-      )
-      .subscribe(({ chant, page }) => {
-        this.currentChant = chant;
-        this.currentPage = page;
-      });
-
-    this.currentPageChange
-      .subscribe((page) => this.manuscriptPage = page - 1);
   }
 }

@@ -27,6 +27,8 @@ import { WordComponent } from './components/word/word.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ViewerRoutingModule } from './viewer-routing.module';
 
+import { ManuscriptService } from './services/manuscript.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -57,6 +59,9 @@ import { ViewerRoutingModule } from './viewer-routing.module';
     WordComponent,
     WordFiltersComponent,
     AnnotationFilterComponent,
+  ],
+  providers: [
+    ManuscriptService,
   ],
   entryComponents: [
     AnnotationModalComponent,
