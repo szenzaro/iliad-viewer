@@ -1,28 +1,30 @@
 <div class="d-flex">
     <app-select-number
-        [options]="chantsNumber | async"
+        [options]="manuscriptService.chants | async"
+        [selection]="manuscriptService.chant | async"
+        (selectionChange)="manuscriptService.chantInput.next($event)"
         label="Book"
-        class="flex-grow-1"
-        (selectionChange)="chantChange.next($event)">
+        class="flex-grow-1">
     </app-select-number>
     <app-select-number
-        [options]="chantPages | async"
+        [options]="manuscriptService.pages | async"
+        [selection]="manuscriptService.page | async"
+        (selectionChange)="manuscriptService.pageInput.next($event)"
         label="Page"
-        class="flex-grow-1"
-        [selection]="selectedPage | async"
-        (selectionChange)="pageChange.next($event)">
+        class="flex-grow-1">
     </app-select-number>
     <app-select-number
-        [options]="verseNumbers | async"
+        [options]="manuscriptService.verses | async"
+        [selection]="manuscriptService.verse | async"
+        (selectionChange)="manuscriptService.verseInput.next($event)"
         label="Verse"
-        class="flex-grow-1"
-        [selection]="selectedVerse | async"
-        (selectionChange)="verseChange.next($event)">
+        class="flex-grow-1">
     </app-select-number>
 </div>
 <app-text
     [loading]="loading | async"
     [verses]="verses | async"
+    [scrollableIndex]="false"
     [highlight]="showParaphfrase || showHomeric"
     [showData]="false">
 </app-text>
