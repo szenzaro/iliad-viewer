@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Map, uuid } from 'src/app/utils';
 import { InSubject } from '../../utils/InSubject';
 
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Annotation } from 'src/app/utils/models';
 
@@ -43,8 +43,6 @@ interface OsdViewerAPI {
   gestureSettingsMouse: any;
   raiseEvent: Function;
 }
-
-
 
 /*
 
@@ -89,7 +87,7 @@ function manifestResourcetoTileSource(manifestResource) {
   templateUrl: './openseadragon.component.html',
   styleUrls: ['./openseadragon.component.scss']
 })
-export class OpenseadragonComponent implements AfterViewInit {
+export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
   @ViewChild('osd', { read: ElementRef }) div: ElementRef;
 
   @Input() @InSubject() options; // TODO: add interface to better type this object
@@ -128,6 +126,8 @@ export class OpenseadragonComponent implements AfterViewInit {
   viewerId: string;
   annotationsHandle: OsdAnnotationAPI;
 
+  private subscriptions: Subscription[] = [];
+
   get pageAnnotations() {
     return (page: number) => !!this.annotations[page] ? this.annotations[page] : [];
   }
@@ -136,28 +136,24 @@ export class OpenseadragonComponent implements AfterViewInit {
     private http: HttpClient,
     private modalService: NgbModal,
   ) {
-    this.pageChange
-      .pipe(
-        distinctUntilChanged(),
-      )
-      .subscribe((x) => {
-        if (!!this.viewer) {
-          this.viewer.goToPage(x);
-        }
-      });
+    this.subscriptions.push(this.pageChange.pipe(
+      distinctUntilChanged(),
+    ).subscribe((x) => {
+      if (!!this.viewer) {
+        this.viewer.goToPage(x - 1);
+      }
+    }));
 
-    combineLatest([
+    this.subscriptions.push(combineLatest([
       this.annotationsChange,
       this.pageChange,
-    ])
-      .pipe(
-        tap((a) => console.log('here', a)),
-      )
-      .subscribe(([ann, page]) => {
-        if (!this.annotationsHandle) { return; }
-        const p = page as number;
-        this.updateAnnotations(!!ann[p] ? ann[p] : []);
-      });
+    ]).pipe(
+      tap((a) => console.log('here', a)),
+    ).subscribe(([ann, page]) => {
+      if (!this.annotationsHandle) { return; }
+      const p = page as number;
+      this.updateAnnotations(!!ann[p - 1] ? ann[p - 1] : []);
+    }));
   }
 
   ngAfterViewInit() {
@@ -179,7 +175,7 @@ export class OpenseadragonComponent implements AfterViewInit {
       },
     };
 
-    combineLatest([this.optionsChange, this.clippedTileSources])
+    this.subscriptions.push(combineLatest([this.optionsChange, this.clippedTileSources])
       .subscribe(([_, tileSources]) => {
         if (!!tileSources) {
           this.viewer = OpenSeadragon({
@@ -194,7 +190,7 @@ export class OpenseadragonComponent implements AfterViewInit {
         }
 
         this.viewer.addHandler('page', ({ page }) => {
-          this.pageChange.next(page);
+          this.pageChange.next(page + 1);
           this.clearAnnotations();
           this.annotationsHandle.addElements(this.pageAnnotations(page));
         });
@@ -224,12 +220,7 @@ export class OpenseadragonComponent implements AfterViewInit {
         });
         this.initAnnotationsEventSource();
         this.annotationsHandle.addElements(this.pageAnnotations(0));
-      });
-  }
-
-  addAnnotation() {
-    this.annotationsHandle.addElements(this.pageAnnotations(0));
-    this.viewer['raiseEvent']('resize');
+      }));
   }
 
   updateAnnotations(data: OsdAnnotation[]) {
@@ -256,17 +247,10 @@ export class OpenseadragonComponent implements AfterViewInit {
       this.annotations[k].forEach((a) => {
         a.modalService = this.modalService;
       });
-      //   this.pageAnnotations(+k).forEach((a) => {
-      //     a.element.onclick = () => this.openAnnotation(a.text);
-      //     a.element.onmouseenter = (e) => {
-      //       const elem = e.srcElement;
-      //       (elem as HTMLElement).children[0].classList.remove('invisible');
-      //     };
-      //     a.element.onmouseleave = (e) => {
-      //       const elem = e.srcElement;
-      //       (elem as HTMLElement).children[0].classList.add('invisible');
-      //     };
-      //   });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 }
