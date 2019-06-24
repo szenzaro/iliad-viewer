@@ -57,7 +57,6 @@ export class InterlinearTextComponent {
     this.manuscriptService.verse,
   ]).pipe(
     debounceTime(100),
-    tap((x) => console.log('verses params', x)),
     tap(() => this.loading.next(true)),
     switchMap(([text, paraphrase, chant, showHomeric, showParaphfrase, range]) =>
       forkJoin(

@@ -147,9 +147,7 @@ export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
     this.subscriptions.push(combineLatest([
       this.annotationsChange,
       this.pageChange,
-    ]).pipe(
-      tap((a) => console.log('here', a)),
-    ).subscribe(([ann, page]) => {
+    ]).subscribe(([ann, page]) => {
       if (!this.annotationsHandle) { return; }
       const p = page as number;
       this.updateAnnotations(!!ann[p - 1] ? ann[p - 1] : []);

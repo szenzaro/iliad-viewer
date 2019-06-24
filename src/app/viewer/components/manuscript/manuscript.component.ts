@@ -47,7 +47,6 @@ export class ManuscriptComponent {
       });
       return toRet;
     }),
-    tap((x) => console.log('filtered', x)),
   );
 
   constructor(

@@ -1,4 +1,4 @@
-import { Component, Input, Output, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { BehaviorSubject, Subscription } from 'rxjs';

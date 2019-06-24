@@ -1,7 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { numberToOptions, POS, PosFilter } from 'src/app/utils';
@@ -30,7 +30,23 @@ export class ComparableTextComponent {
 
   loading = new BehaviorSubject<boolean>(true);
 
-  verses = combineLatest(this.textChange, this.chantChange)
+
+
+  chantsNumber = this.textChange
+    .pipe(
+      switchMap((text) => this.textService.getNumberOfChants(text)),
+      map(numberToOptions),
+    );
+
+  actualChant = merge(
+    this.chantChange.pipe(filter((x) => x !== NaN)),
+    this.chantsNumber.pipe(map((x) => +x[0].id)),
+  ).pipe(
+    filter((x) => x !== NaN && x !== null),
+    debounceTime(150),
+  );
+
+  verses = combineLatest([this.textChange, this.actualChant.pipe(filter((x) => x !== NaN))])
     .pipe(
       debounceTime(100),
       tap(() => this.loading.next(true)),
@@ -39,15 +55,11 @@ export class ComparableTextComponent {
       tap(() => this.loading.next(false)),
     );
 
-  chantsNumber = this.textChange
-    .pipe(
-      switchMap((text) => this.textService.getNumberOfChants(text)),
-      map(numberToOptions),
-    );
-
   @Input() @InSubject() posFilter: PosFilter;
   @Output() posFilterChange = new BehaviorSubject<PosFilter>({ op: 'or', pos: [] });
 
-  constructor(private textService: TextService) {
+  constructor(
+    private textService: TextService,
+  ) {
   }
 }
