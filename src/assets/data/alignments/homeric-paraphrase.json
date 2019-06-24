@@ -1,0 +1,40 @@
+{
+    "1": {
+        "type": "sub",
+        "source": [],
+        "target": [
+            "2"
+        ]
+    },
+    "2": {
+        "type": "sub",
+        "source": [],
+        "target": [
+            "3"
+        ]
+    },
+    "3": {
+        "type": "eq",
+        "source": [],
+        "target": [
+            "6"
+        ]
+    },
+    "4": {
+        "type": "sub",
+        "source": [],
+        "target": [
+            "7",
+            "8",
+            "9",
+            "10"
+        ]
+    },
+    "5": {
+        "type": "sub",
+        "source": [],
+        "target": [
+            "11"
+        ]
+    }
+}
