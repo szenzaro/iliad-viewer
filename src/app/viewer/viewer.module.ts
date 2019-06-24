@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UiSwitchModule } from 'ngx-ui-switch';
 
+import { AlignedTextsComponent } from './components/aligned-texts/aligned-texts.component';
 import { AnnotationFilterComponent } from './components/annotation-filter/annotation-filter.component';
 import { AnnotationModalComponent } from './components/annotation-modal/annotation-modal.component';
 import { ComparableTextComponent } from './components/comparable-text/comparable-text.component';
@@ -25,6 +26,7 @@ import { VerseComponent } from './components/verse/verse.component';
 import { WordFiltersComponent } from './components/word-filters/word-filters.component';
 import { WordComponent } from './components/word/word.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
+
 import { ViewerRoutingModule } from './viewer-routing.module';
 
 import { ManuscriptService } from './services/manuscript.service';
@@ -40,6 +42,8 @@ import { ManuscriptService } from './services/manuscript.service';
     ViewerRoutingModule,
   ],
   declarations: [
+    AlignedTextsComponent,
+    AnnotationFilterComponent,
     AnnotationModalComponent,
     ComparableTextComponent,
     InterlinearTextComponent,
@@ -58,7 +62,6 @@ import { ManuscriptService } from './services/manuscript.service';
     ViewerPageComponent,
     WordComponent,
     WordFiltersComponent,
-    AnnotationFilterComponent,
   ],
   providers: [
     ManuscriptService,
