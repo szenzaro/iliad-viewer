@@ -30,10 +30,10 @@ export class ComparableTextComponent {
 
   loading = new BehaviorSubject<boolean>(true);
 
-
-
   chantsNumber = this.textChange
     .pipe(
+      debounceTime(150),
+      filter((x) => !!x),
       switchMap((text) => this.textService.getNumberOfChants(text)),
       map(numberToOptions),
     );
@@ -61,5 +61,6 @@ export class ComparableTextComponent {
   constructor(
     private textService: TextService,
   ) {
+    this.actualChant.subscribe((x) => console.log('actual', x));
   }
 }
