@@ -11,17 +11,15 @@ import { AnnotationModalComponent } from '../viewer/components/annotation-modal/
 import { OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 
 function mapWords(text: string, chant: number, position: number, verse: VerseRowType, data: WordData[]): Word[] {
-  let id = `${text}.${chant}.${position}`;
   switch (verse[0]) {
     case 'o':
-      id = `${id}.1`;
-      return [{ id, text: 'OMISIT', data } as Word];
+      return [{ text: 'OMISIT', data } as Word];
     case 'f':
       return verse[1].map((lemma) => ({ text: lemma } as Word));
     case 't':
       return verse[1].map((lemma) => ({ text: lemma } as Word));
     default: // "v"
-      return verse[2].map((lemma, j) => ({ id: `${id}.${j + 1}`, text: lemma, data: data[j] } as Word));
+      return verse[2].map((lemma, j) => ({ id: `${data[j] && data[j].id}`, text: lemma, data: data[j] } as Word));
   }
 }
 
@@ -38,11 +36,11 @@ function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], 
     .map((verse, i) => getVerse(verses[0][0] === 't' ? i : i + 1, text, chant, verse, data[i]));
 }
 
-function toWordData(versesData: [string, string, string][][]): WordData[][] {
+function toWordData(versesData: [string, string, string, string][][]): WordData[][] {
   return versesData.map((verse) => verse
     .map((x) => x[0] === '' || x[1] === '' || x[2] === ''
       ? undefined
-      : { normalized: x[0], lemma: x[1], tag: x[2] }));
+      : { normalized: x[0], lemma: x[1], tag: x[2], id: x[3] }));
 }
 
 interface TextItem {
@@ -58,6 +56,12 @@ interface TextManifest {
 
 type PageInfo = [number, [number, number]];
 
+interface AlignmentEntry {
+  type: 'sub' | 'ins' | 'del' | 'eq';
+  source: string[];
+  target: string[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -69,6 +73,13 @@ export class TextService {
     private readonly http: HttpClient,
     private readonly modalService: NgbModal,
   ) {
+  }
+
+  getAlignment(text1: string, text2: string, wordId: string) {
+    return this.cachedGet<Map<AlignmentEntry>>(`./assets/data/alignments/${text1}-${text2}.json`)
+      .pipe(
+        map((alignment) => alignment[wordId]), // Can be undefined!
+      );
   }
 
   getPageFromVerse(text: string, chant: number, verse: number) {
@@ -84,7 +95,7 @@ export class TextService {
   getVerses(text: string, chant: number, range?: [number, number]) {
     return forkJoin([
       this.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
-      this.cachedGet<[string, string, string][][]>(`./assets/data/texts/${text}/${chant}/data.json`),
+      this.cachedGet<[string, string, string, string][][]>(`./assets/data/texts/${text}/${chant}/data.json`),
     ]).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
       map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
