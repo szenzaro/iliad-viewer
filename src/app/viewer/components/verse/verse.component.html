@@ -12,6 +12,7 @@
         [word]="w"
         [posHighlight]="posHighlight"
         [highlighted]="!!wordDetailsId && w.id === wordDetailsId"
+        (wordOver)="wordOver.next($event)"
         (openWordId)="openWordId.next($event)"></app-word>
 </div>
 <div

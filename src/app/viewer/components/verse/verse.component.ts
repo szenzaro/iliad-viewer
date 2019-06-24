@@ -18,6 +18,7 @@ export class VerseComponent {
   @Input() posHighlight: PosFilter;
   @Output() openWordId = new EventEmitter<string>();
   @Output() verseClicked = new EventEmitter<number | 'f' | 't'>();
+  @Output() wordOver = new EventEmitter<string>();
 
   openedDataPanel(id: string) {
     return !!id && this.verse.words.find((w) => w.id === id);

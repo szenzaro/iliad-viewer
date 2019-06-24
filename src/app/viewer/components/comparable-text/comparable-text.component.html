@@ -13,6 +13,7 @@
 </div>
 <div class="overflow-scroll mt-1">
     <app-text
+        (wordOver)="wordOver.next($event)"
         [(scrollIndex)]="scrollIndex"
         [posHighlight]="posFilterChange | async"
         [verses]="verses | async"
