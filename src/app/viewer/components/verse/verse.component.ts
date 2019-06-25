@@ -16,9 +16,14 @@ export class VerseComponent {
   @Input() highlight = false;
   @Input() wordDetailsId: string;
   @Input() posHighlight: PosFilter;
+  @Input() highlightIds: string[] = [];
   @Output() openWordId = new EventEmitter<string>();
   @Output() verseClicked = new EventEmitter<number | 'f' | 't'>();
   @Output() wordOver = new EventEmitter<string>();
+
+  isHighlighted(id: string): boolean {
+    return (!!this.wordDetailsId && id === this.wordDetailsId) || (!!this.highlightIds && this.highlightIds.includes(id));
+  }
 
   openedDataPanel(id: string) {
     return !!id && this.verse.words.find((w) => w.id === id);
