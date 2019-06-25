@@ -1,14 +1,15 @@
-{{ al1 | async | json}}
-{{ wordOver | async }}
 <div class="d-flex flex-grow-1 full-height justify-content-around mt-3">
     <app-comparable-text
-        (wordOver)="wordOver.next($event)"
+        (wordOver)="leftWordOver.next($event)"
+        [highlightIds]="sourceIds | async"
         class="container"
         [chant]="1"
         [text]="'homeric'">
     </app-comparable-text>
 
     <app-comparable-text
+        (wordOver)="rightWordOver.next($event)"
+        [highlightIds]="targetIds | async"
         class="container"
         [chant]="1"
         [text]="'paraphrase'">
