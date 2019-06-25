@@ -1,5 +1,4 @@
 
-{{ openedWordId }}
 <app-spinner *ngIf="loading"></app-spinner>
 <cdk-virtual-scroll-viewport
     *ngIf="!loading"
@@ -9,6 +8,7 @@
         <app-verse
             (verseClicked)="scrollIndexChange.next($event)"
             [posHighlight]="posHighlight"
+            [highlightIds]="highlightIds"
             (openWordId)="showData ? openedWordId = $event : 0"
             (wordOver)="wordOver.next($event)"
             [attr.data-index]="index"

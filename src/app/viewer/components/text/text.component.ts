@@ -25,6 +25,8 @@ export class TextComponent implements OnDestroy {
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
   @Input() posHighlight: PosFilter;
 
+  @Input() highlightIds: string[] = [];
+
   private _openedWordId: string;
   get openedWordId() { return this._openedWordId; }
   set openedWordId(v: string) { this._openedWordId = v === this._openedWordId ? undefined : v; }
