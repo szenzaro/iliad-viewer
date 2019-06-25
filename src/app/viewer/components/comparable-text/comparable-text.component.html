@@ -16,6 +16,7 @@
         (wordOver)="wordOver.next($event)"
         [(scrollIndex)]="scrollIndex"
         [posHighlight]="posFilterChange | async"
+        [highlightIds]="highlightIds"
         [verses]="verses | async"
         [loading]="loading | async"
     ></app-text>

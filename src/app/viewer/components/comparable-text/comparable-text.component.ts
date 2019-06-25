@@ -24,6 +24,9 @@ export class ComparableTextComponent {
   @Output() scrollIndexChange = new BehaviorSubject<number>(0);
   @Output() wordOver = new EventEmitter<string>();
 
+  @Input() highlightIds: string[];
+  @Input() highlightIdsChange = new BehaviorSubject<string[]>([]);
+
   textsList = this.textService.getTextsList()
     .pipe(
       map(({ textsList }) => textsList),
@@ -62,6 +65,5 @@ export class ComparableTextComponent {
   constructor(
     private textService: TextService,
   ) {
-    this.actualChant.subscribe((x) => console.log('actual', x));
   }
 }
