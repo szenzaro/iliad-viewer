@@ -42,7 +42,8 @@
     [class.passive]="posPassive && posHighlighted"
     [class.toponym]="posToponym && posHighlighted"
     [class.patronymic]="posPatronymic && posHighlighted"
-    (mouseover)="wordOver.next(word.id)"
+    (mouseenter)="wordOver.next(word.id)"
+    (mouseleave)="wordOver.next(null)"
     (click)="!!word.data ? openWordId.next(word.id) : 0">
     {{ word.text }}
     <fa-icon
