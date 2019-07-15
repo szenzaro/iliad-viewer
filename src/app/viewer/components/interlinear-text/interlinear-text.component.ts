@@ -59,18 +59,21 @@ export class InterlinearTextComponent {
     debounceTime(100),
     tap(() => this.loading.next(true)),
     switchMap(([text, paraphrase, chant, showHomeric, showParaphfrase, range]) =>
-      forkJoin(
-        this.textService.getVerses(text as string, chant as number, [range[0] - 1, range[1]]),
-        this.textService.getVerses(paraphrase as string, chant as number, [range[0] - 1, range[1]]),
-      ).pipe(
+      forkJoin([
+        this.textService.getVerses(text as string, chant as number, [range[0][0] - 1, range[0][1]]),
+        this.textService.getVerses(paraphrase as string, chant as number, [range[1][0] - 1, range[1][1]]),
+      ]).pipe(
         map(([greek, paraph]) => {
           const greekVerses = showHomeric
             ? greek.length > 0 && greek[0].n === 't' ? greek.slice(1) : greek
             : [];
           const paraphVerses = showParaphfrase ? paraph : [];
 
-          const merged = pairwiseMerge(greekVerses, paraphVerses);
-          return greek.length > 0 && greek[0].n === 't' ? [greek[0]].concat(merged) : merged;
+          const merged = greekVerses.length > 0 && paraphVerses.length > 0 && greekVerses[0].n <= paraphVerses[0].n
+            ? pairwiseMerge(greekVerses, paraphVerses, greek.length > 0 && greek[0].n === 't' ? [greek[0]] : [])
+            : pairwiseMerge(paraphVerses, greekVerses, greek.length > 0 && greek[0].n === 't' ? [greek[0]] : []);
+
+          return merged;
         }),
       ),
     ),

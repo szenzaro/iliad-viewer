@@ -56,7 +56,7 @@ interface TextManifest {
   mainText: string;
 }
 
-type PageInfo = [number, [number, number]];
+type PageInfo = [number, [number, number], [number, number]];
 
 @Injectable({
   providedIn: 'root'
@@ -91,14 +91,14 @@ export class TextService {
     );
   }
 
-  getVersesNumberFromPage(text: string, n: number, chant?: number) {
-    return this.cachedGet<PageInfo[][]>(`./assets/data/texts/${text}/pagesToVerses.json`)
+  getVersesNumberFromPage(n: number, chant?: number) {
+    return this.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[][]) => {
           const entry = chant !== undefined
             ? pages[n - 1].find((x) => x[0] === chant)
             : pages[n - 1][pages[n - 1].length - 1];
-          return !!entry && entry[1];
+          return !!entry && [entry[1], entry[2]] as [[number, number], [number, number]];
         }),
       );
   }
