@@ -107,8 +107,8 @@ export class TextService {
     return this.cachedGet<TextManifest>(`./assets/data/manifest.json`);
   }
 
-  getPageNumbers(text: string, chant: number) {
-    return this.cachedGet<number[][]>(`./assets/data/texts/${text}/booksToPages.json`)
+  getPageNumbers(chant: number) {
+    return this.cachedGet<number[][]>(`./assets/manuscript/booksToPages.json`)
       .pipe(
         map((pages) => pages[chant - 1]),
       );

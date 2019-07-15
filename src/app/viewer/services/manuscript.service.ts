@@ -37,12 +37,9 @@ export class ManuscriptService {
     shareReplay(1),
   );
 
-  pages = combineLatest([
-    this.text.pipe(filter((x) => !!x)),
-    this.chant,
-  ]).pipe(
+  pages = this.chant.pipe(
     debounceTime(150),
-    switchMap(([text, chant]) => this.textService.getPageNumbers(text, chant)),
+    switchMap((chant) => this.textService.getPageNumbers(chant)),
     map((pages) => pages.map(numberToOption)),
   );
 
