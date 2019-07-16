@@ -54,6 +54,7 @@ export class ManuscriptService {
     }),
     distinctUntilChanged(),
     map(numberToOptions),
+    tap(() => console.log('hello')),
   );
 
   verseInput = new Subject<number>();
@@ -92,8 +93,8 @@ export class ManuscriptService {
 
   pageInput = new Subject<number>();
 
-  private verseToPage = combineLatest([this.text, this.chant, this.verse]).pipe(
-    switchMap(([text, chant, verse]) => this.textService.getPageFromVerse(text, chant, verse)),
+  private verseToPage = combineLatest([this.chant, this.verse]).pipe(
+    switchMap(([chant, verse]) => this.textService.getPageFromVerse(chant, verse)),
     filter((x) => x !== NaN && x > 0),
   );
 

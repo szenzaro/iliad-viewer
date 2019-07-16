@@ -71,8 +71,8 @@ export class TextService {
   ) {
   }
 
-  getPageFromVerse(text: string, chant: number, verse: number) {
-    return this.cachedGet<PageInfo[][]>(`./assets/data/texts/${text}/pagesToVerses.json`)
+  getPageFromVerse(chant: number, verse: number) {
+    return this.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[][]) => (pages.findIndex((x) => {
           const entry = x.filter((e) => e[0] === chant).map((v) => verse <= v[1][1] && verse >= v[1][0]);
