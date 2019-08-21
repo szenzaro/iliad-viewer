@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input } from '@angular/core';
 import { combineLatest, merge } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
@@ -11,6 +11,7 @@ import { TextService } from 'src/app/services/text.service';
 export class AlignedTextsComponent {
   readonly leftWordOver = new EventEmitter<string>();
   readonly rightWordOver = new EventEmitter<string>();
+  @Input() scrollIndex = 0;
 
   al1 = this.leftWordOver.pipe(
     switchMap((x) => this.textService.getAlignment('homeric', 'paraphrase', x)),

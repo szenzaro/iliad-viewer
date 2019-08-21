@@ -1,6 +1,7 @@
 <div class="d-flex flex-grow-1 full-height justify-content-around mt-3">
     <app-comparable-text
         (wordOver)="leftWordOver.next($event)"
+        [(scrollIndex)]="scrollIndex"
         [highlightIds]="sourceIds | async"
         class="container"
         [chant]="1"
@@ -9,6 +10,7 @@
 
     <app-comparable-text
         (wordOver)="rightWordOver.next($event)"
+        [(scrollIndex)]="scrollIndex"
         [highlightIds]="targetIds | async"
         class="container"
         [chant]="1"
