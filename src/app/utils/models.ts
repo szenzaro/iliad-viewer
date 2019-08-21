@@ -29,6 +29,7 @@ export interface WordData {
     lemma: string;
     normalized: string;
     tag: string;
+    id: string;
 }
 
 export type ChantData = WordData[];

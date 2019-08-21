@@ -41,7 +41,8 @@
     font-family: sans-serif;
 }
 
-.word:hover {
+.word:hover,
+.highlighted {
     cursor: pointer;
     color: $word-over-color;
     background-color: $word-over-bg-color;
@@ -89,15 +90,6 @@
     z-index: 99999;
 }
 
-
-
-.highlighted {
-    background-color: white;
-    border: solid 1px #cecece;
-    padding: 2px 2px 4px 2px;
-    color: #8e8ee5;
-}
-
 .invisible {
     display: none;
 }
@@ -132,12 +124,6 @@
 .badge {
     border-style: solid;
     border-color: $badge-color;
-}
-
-.highlighted-word {
-    border: solid 3px lightgrey;
-    background-color: grey;
-    color: white;
 }
 
 .article {

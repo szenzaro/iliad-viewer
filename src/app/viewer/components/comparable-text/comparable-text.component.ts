@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 
 import { BehaviorSubject, combineLatest, merge } from 'rxjs';
@@ -22,6 +22,10 @@ export class ComparableTextComponent {
 
   @Input() @InSubject() scrollIndex: number;
   @Output() scrollIndexChange = new BehaviorSubject<number>(0);
+  @Output() wordOver = new EventEmitter<string>();
+
+  @Input() highlightIds: string[];
+  @Input() highlightIdsChange = new BehaviorSubject<string[]>([]);
 
   textsList = this.textService.getTextsList()
     .pipe(
@@ -61,6 +65,5 @@ export class ComparableTextComponent {
   constructor(
     private textService: TextService,
   ) {
-    this.actualChant.subscribe((x) => console.log('actual', x));
   }
 }

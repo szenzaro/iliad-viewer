@@ -1,9 +1,9 @@
-import { Component, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, skip, tap } from 'rxjs/operators';
-import { POS, PosFilter } from 'src/app/utils';
+import { skip, tap } from 'rxjs/operators';
+import { PosFilter } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
 import { InSubject } from '../../utils/InSubject';
 
@@ -20,9 +20,12 @@ export class TextComponent implements OnDestroy {
   @Input() scrollableIndex = true;
   @Input() @InSubject() scrollIndex: number;
   @Output() scrollIndexChange = new BehaviorSubject<number>(0);
+  @Output() wordOver = new EventEmitter<string>();
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
   @Input() posHighlight: PosFilter;
+
+  @Input() highlightIds: string[] = [];
 
   private _openedWordId: string;
   get openedWordId() { return this._openedWordId; }
@@ -35,6 +38,9 @@ export class TextComponent implements OnDestroy {
   }
 
   scrollToIndex(index: number) {
+    if (this.verses.length > 0 && this.verses[0].n === 't') {
+      index++;
+    }
     this.viewPort.scrollToIndex(index, 'smooth');
   }
 

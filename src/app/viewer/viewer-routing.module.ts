@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AlignedTextsComponent } from './components/aligned-texts/aligned-texts.component';
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { SearchComponent } from './components/search/search.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
@@ -17,6 +18,10 @@ const routes: Routes = [
       {
         path: 'texts',
         component: TextComparisonComponent,
+      },
+      {
+        path: 'alignment',
+        component: AlignedTextsComponent,
       },
       {
         path: 'search',

@@ -11,7 +11,8 @@
         *ngFor="let w of verse.words"
         [word]="w"
         [posHighlight]="posHighlight"
-        [highlighted]="!!wordDetailsId && w.id === wordDetailsId"
+        [highlighted]="isHighlighted(w.id)"
+        (wordOver)="wordOver.next($event)"
         (openWordId)="openWordId.next($event)"></app-word>
 </div>
 <div
