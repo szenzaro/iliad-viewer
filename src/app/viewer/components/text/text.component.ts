@@ -38,6 +38,9 @@ export class TextComponent implements OnDestroy {
   }
 
   scrollToIndex(index: number) {
+    if (this.verses.length > 0 && this.verses[0].n === 't') {
+      index++;
+    }
     this.viewPort.scrollToIndex(index, 'smooth');
   }
 
