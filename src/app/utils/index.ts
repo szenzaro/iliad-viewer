@@ -8,6 +8,17 @@ export function arrayToMap<T, K extends keyof T>(arr: T[], key: K): Map<T> {
     return map;
 }
 
+export function groupBy<T, K extends keyof T>(arr: T[], key: K): Map<T[]> {
+    const map: Map<T[]> = {};
+    arr.forEach((x) => {
+        if (!map[x[`${key}`]]) {
+            map[x[`${key}`]] = [];
+        }
+        map[x[`${key}`]].push(x);
+    });
+    return map;
+}
+
 export function uuid(prefix?: string): string {
     return !!prefix ? `${prefix}-${Math.random()}` : `${Math.random()}`;
 }
