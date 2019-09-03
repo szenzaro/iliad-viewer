@@ -1,3 +1,3 @@
 <div class="d-flex">
-  <p>{{ data.query }} => {{ data.result }}</p>
+    <app-verse [verse]="result | async" [highlightIds]="word.id"></app-verse>
 </div>
