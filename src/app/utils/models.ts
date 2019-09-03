@@ -1,6 +1,9 @@
 export interface Word {
     id?: string;
     text: string;
+    verse: number;
+    chant: number;
+    source: string;
     data?: any; // FIXME: use correct type
 }
 
