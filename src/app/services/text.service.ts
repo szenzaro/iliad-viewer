@@ -119,6 +119,23 @@ export class TextService {
     );
   }
 
+  getWords(text: string) {
+    if (!this.cache[`words-${text}`]) {
+      return this.getTextsList().pipe(
+        map((x) => x.textsList.find((txt) => txt.id === text)),
+        filter((x) => !!x),
+        map(({ chants }) => new Array(chants).fill(0).map((_, i) => i + 1)),
+        map((chantNums) => chantNums.map((n) => this.getVerses(text, n))),
+        map((x) => forkJoin(x)),
+        switchMap((x) => x),
+        map((verses) => verses.reduce((x, v) => x.concat(v), [])),
+        map((verses) => verses.reduce((x, v) => x.concat(v.words), []) as Word[]),
+        map((words) => arrayToMap(words, 'id')),
+      );
+    }
+    return of<Map<Word>>(this.cache[`words-${text}`] as Map<Word>);
+  }
+
   getVersesNumberFromPage(n: number, chant?: number) {
     return this.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
