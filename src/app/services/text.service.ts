@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { forkJoin, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { Map, uuid } from '../utils/index';
+import { forkJoin, merge, of } from 'rxjs';
+import { filter, map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { arrayToMap, Map, uuid } from '../utils/index';
 import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnotationModalComponent } from '../viewer/components/annotation-modal/annotation-modal.component';
 import { OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 
-function mapWords(text: string, chant: number, position: number, verse: VerseRowType, data: WordData[]): Word[] {
+function mapWords(text: string, chant: number, position: number, verse: VerseRowType, data: WordData[], verseNumber: number): Word[] {
   switch (verse[0]) {
     case 'o':
       return [{ text: 'OMISIT', data } as Word];
@@ -19,7 +19,13 @@ function mapWords(text: string, chant: number, position: number, verse: VerseRow
     case 't':
       return verse[1].map((lemma) => ({ text: lemma } as Word));
     default: // "v"
-      return verse[2].map((lemma, j) => ({ id: `${data[j] && data[j].id}`, text: lemma, data: data[j] } as Word));
+      return verse[2].map((lemma, j) => ({
+        id: `${data[j] && data[j].id}`,
+        text: lemma, data: data[j],
+        verse: verseNumber,
+        chant,
+        source: text,
+      } as Word));
   }
 }
 
@@ -27,7 +33,7 @@ function getVerse(id: number, text: string, chant: number, verse: VerseRowType, 
   return {
     id,
     n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
-    words: mapWords(text, chant, id, verse, data),
+    words: mapWords(text, chant, id, verse, data, id),
   };
 }
 
@@ -93,12 +99,23 @@ export class TextService {
   }
 
   getVerses(text: string, chant: number, range?: [number, number]) {
+    const cacheKey = `${text}-c${chant}`;
+    if (!!this.cache[cacheKey]) {
+      return of<Verse[]>(!!range ? this.cache[cacheKey].slice(range[0], range[1]) : this.cache[cacheKey]);
+    }
     return forkJoin([
       this.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
       this.cachedGet<[string, string, string, string][][]>(`./assets/data/texts/${text}/${chant}/data.json`),
     ]).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
-      map((verses) => !!range ? verses.slice(range[0], range[1]) : verses)
+      tap((verses) => this.cache[cacheKey] = verses),
+      map((verses) => !!range ? verses.slice(range[0], range[1]) : verses),
+    );
+  }
+
+  getVerseFromNumber(text: string, chant: number, n: number) {
+    return this.getVerses(text, chant).pipe(
+      map((verses) => verses.find((v) => v.n === n)),
     );
   }
 
