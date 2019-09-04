@@ -54,7 +54,7 @@ interface TextManifest {
   mainText: string;
 }
 
-type PageInfo = [number, [number, number]];
+type PageInfo = [number, [number, number], [number, number]];
 
 interface AlignmentEntry {
   type: 'sub' | 'ins' | 'del' | 'eq';
@@ -82,8 +82,8 @@ export class TextService {
       );
   }
 
-  getPageFromVerse(text: string, chant: number, verse: number) {
-    return this.cachedGet<PageInfo[][]>(`./assets/data/texts/${text}/pagesToVerses.json`)
+  getPageFromVerse(chant: number, verse: number) {
+    return this.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[][]) => (pages.findIndex((x) => {
           const entry = x.filter((e) => e[0] === chant).map((v) => verse <= v[1][1] && verse >= v[1][0]);
@@ -102,14 +102,14 @@ export class TextService {
     );
   }
 
-  getVersesNumberFromPage(text: string, n: number, chant?: number) {
-    return this.cachedGet<PageInfo[][]>(`./assets/data/texts/${text}/pagesToVerses.json`)
+  getVersesNumberFromPage(n: number, chant?: number) {
+    return this.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[][]) => {
           const entry = chant !== undefined
             ? pages[n - 1].find((x) => x[0] === chant)
             : pages[n - 1][pages[n - 1].length - 1];
-          return !!entry && entry[1];
+          return !!entry && [entry[1], entry[2]] as [[number, number], [number, number]];
         }),
       );
   }
@@ -118,8 +118,8 @@ export class TextService {
     return this.cachedGet<TextManifest>(`./assets/data/manifest.json`);
   }
 
-  getPageNumbers(text: string, chant: number) {
-    return this.cachedGet<number[][]>(`./assets/data/texts/${text}/booksToPages.json`)
+  getPageNumbers(chant: number) {
+    return this.cachedGet<number[][]>(`./assets/manuscript/booksToPages.json`)
       .pipe(
         map((pages) => pages[chant - 1]),
       );

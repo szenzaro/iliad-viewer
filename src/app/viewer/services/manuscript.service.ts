@@ -37,12 +37,9 @@ export class ManuscriptService {
     shareReplay(1),
   );
 
-  pages = combineLatest([
-    this.text.pipe(filter((x) => !!x)),
-    this.chant,
-  ]).pipe(
+  pages = this.chant.pipe(
     debounceTime(150),
-    switchMap(([text, chant]) => this.textService.getPageNumbers(text, chant)),
+    switchMap((chant) => this.textService.getPageNumbers(chant)),
     map((pages) => pages.map(numberToOption)),
   );
 
@@ -57,14 +54,15 @@ export class ManuscriptService {
     }),
     distinctUntilChanged(),
     map(numberToOptions),
+    tap(() => console.log('hello')),
   );
 
   verseInput = new Subject<number>();
 
   private pageProxy = new Subject<number>();
 
-  versesRange = combineLatest(this.pageProxy, this.text, this.chant).pipe(
-    switchMap(([page, text, chant]) => this.textService.getVersesNumberFromPage(text, page, chant)),
+  versesRange = combineLatest([this.pageProxy, this.chant]).pipe(
+    switchMap(([page, chant]) => this.textService.getVersesNumberFromPage(page, chant)),
   );
 
   private verseProxy = new Subject<number>();
@@ -74,7 +72,7 @@ export class ManuscriptService {
       this.versesRange,
       this.verseProxy,
     ]).pipe(
-      map(([[l, r], v]) => v <= r && v >= l ? v : l),
+      map(([[[l, r], [lp, rp]], v]) => v <= Math.max(r, rp) && v >= Math.min(l, lp) ? v : Math.min(l, lp)),
     ),
     this.verseProxy,
   ).pipe(
@@ -95,8 +93,8 @@ export class ManuscriptService {
 
   pageInput = new Subject<number>();
 
-  private verseToPage = combineLatest(this.text, this.chant, this.verse).pipe(
-    switchMap(([text, chant, verse]) => this.textService.getPageFromVerse(text, chant, verse)),
+  private verseToPage = combineLatest([this.chant, this.verse]).pipe(
+    switchMap(([chant, verse]) => this.textService.getPageFromVerse(chant, verse)),
     filter((x) => x !== NaN && x > 0),
   );
 
