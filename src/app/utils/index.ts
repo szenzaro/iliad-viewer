@@ -480,3 +480,7 @@ export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): bool
     });
     return pos.reduce((x, y) => op === 'and' ? x && y : x || y, op === 'and' ? true : false);
 }
+
+export function removeAccents(str: string): string {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
