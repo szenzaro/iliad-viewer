@@ -21,8 +21,10 @@ export class SearchComponent {
       const keys = Object.keys(x);
       const m: Map<Map<Word[]>> = {};
       keys.forEach((k) => m[k] = groupBy(x[k], 'chant'));
+      keys.forEach((text) => Object.keys(m[text])
+        .forEach((chant) => m[text][chant] = m[text][chant].sort((w1, w2) => w1.verse - w2.verse)));
       return m;
-    })
+    }),
   );
 
   constructor(
