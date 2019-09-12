@@ -14,6 +14,7 @@ import { InterlinearTextComponent } from './components/interlinear-text/interlin
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
 import { PillComponent } from './components/pill/pill.component';
+import { RadioComponent } from './components/radio/radio.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
 import { SearchComponent } from './components/search/search.component';
 import { SelectNumberComponent } from './components/select-number/select-number.component';
@@ -50,6 +51,7 @@ import { ManuscriptService } from './services/manuscript.service';
     ManuscriptComponent,
     OpenseadragonComponent,
     PillComponent,
+    RadioComponent,
     SearchComponent,
     SearchResultComponent,
     SelectComponent,
