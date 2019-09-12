@@ -11,10 +11,12 @@ export function arrayToMap<T, K extends keyof T>(arr: T[], key: K): Map<T> {
 export function groupBy<T, K extends keyof T>(arr: T[], key: K): Map<T[]> {
     const map: Map<T[]> = {};
     arr.forEach((x) => {
-        if (!map[x[`${key}`]]) {
-            map[x[`${key}`]] = [];
+        if (x !== undefined) {
+            if (!map[x[`${key}`]]) {
+                map[x[`${key}`]] = [];
+            }
+            map[x[`${key}`]].push(x);
         }
-        map[x[`${key}`]].push(x);
     });
     return map;
 }
