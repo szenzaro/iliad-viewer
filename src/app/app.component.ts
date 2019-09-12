@@ -20,7 +20,7 @@ export class AppComponent {
     { active: true, label: 'Manuscript', path: 'viewer/manuscript' },
     { active: false, label: 'Text Comparison', path: 'viewer/texts' },
     { active: false, label: 'Alignment', path: 'viewer/alignment' },
-    { active: false, label: 'Search/Analytics', path: 'viewer/search' },
+    { active: false, label: 'Search', path: 'viewer/search' },
     { active: false, label: 'About', path: '/about' },
   ];
 }
