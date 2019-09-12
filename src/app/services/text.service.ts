@@ -49,7 +49,7 @@ function toWordData(versesData: [string, string, string, string][][]): WordData[
       : { normalized: x[0], lemma: x[1], tag: x[2], id: x[3] }));
 }
 
-interface TextItem {
+export interface TextItem {
   id: string;
   label: string;
   chants: number;
