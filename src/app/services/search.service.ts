@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { Map } from '../utils/index';
-import { Word } from '../utils/models';
+import { Map, removeAccents } from '../utils/index';
 import { TextService } from './text.service';
 
 export type Index = Map<number[]>;
+
+export interface SearchQuery {
+  text: string;
+  index: 'text' | 'lemma';
+  mode: 'words' | 'alignment';
+  ignoreCase: boolean;
+  ignoreAccents: boolean;
+  texts: string[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +24,7 @@ export type Index = Map<number[]>;
 export class SearchService {
 
   cache: Map<any> = {};
-  queryString = new BehaviorSubject<string>(undefined);
+  queryString = new Subject<SearchQuery>();
 
   private words = this.textService.getWords('homeric');
 
@@ -26,10 +34,9 @@ export class SearchService {
       .pipe(
         map((x) => {
           const keys = Object.keys(x);
-          const re = new RegExp(`.*${query}.*`, 'g');
+          const re = new RegExp(`.*${query.text}.*`, 'g');
           return keys.filter((r) => re.test(r)).map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
         }),
-        map((res) => res),
       )
     ),
   );
