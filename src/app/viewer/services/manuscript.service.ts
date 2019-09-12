@@ -54,7 +54,6 @@ export class ManuscriptService {
     }),
     distinctUntilChanged(),
     map(numberToOptions),
-    tap(() => console.log('hello')),
   );
 
   verseInput = new Subject<number>();
