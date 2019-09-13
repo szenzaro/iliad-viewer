@@ -2,9 +2,9 @@
     μῆνις
     <app-search-box class="p-2 w-50 align-self-center" (queryChange)="searchService.queryString.next($event)"></app-search-box>
 
-    <ngb-tabset>
+    <ngb-tabset *ngIf="results | async as res">
         <ngb-tab
-            *ngFor="let r of results | async | keyvalue"
+            *ngFor="let r of res | keyvalue"
             [title]="r.key">
             <ng-template ngbTabContent>
                 <ngb-tabset>
@@ -22,31 +22,6 @@
                         </ng-template>
                     </ngb-tab>
                 </ngb-tabset>
-
-                <!-- <ngb-accordion
-                    #acc="ngbAccordion"
-                    activeIds="ngb-panel-0">
-                    <ngb-panel *ngFor="let v of r.value | keyvalue">
-                        <ng-template ngbPanelHeader>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <button
-                                    ngbPanelToggle
-                                    class="btn btn-link container-fluid text-left p-0">
-                                    Book {{ v.key }} ({{ v.value.length }})
-                                </button>
-                            </div>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
-                            <cdk-virtual-scroll-viewport
-                                itemSize="32"
-                                class="min-h">
-                                <ng-container *cdkVirtualFor="let res of v.value">
-                                    <app-search-result [word]="res"></app-search-result>
-                                </ng-container>
-                            </cdk-virtual-scroll-viewport>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion> -->
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
