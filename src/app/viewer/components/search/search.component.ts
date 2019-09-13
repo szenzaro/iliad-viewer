@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { faSearch, faSlidersH } from '@fortawesome/free-solid-svg-icons';
-import { BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { SearchQuery, SearchService } from 'src/app/services/search.service';
-import { TextItem, TextService } from 'src/app/services/text.service';
+import { map } from 'rxjs/operators';
+import { SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
-import { InSubject } from '../../utils/InSubject';
 
 @Component({
   selector: 'app-search',
@@ -15,40 +11,6 @@ import { InSubject } from '../../utils/InSubject';
 })
 export class SearchComponent {
 
-  defaultQuery: SearchQuery = {
-    text: '',
-    ignoreAccents: false,
-    ignoreCase: false,
-    index: 'text',
-    mode: 'words',
-    texts: [],
-  };
-  isCollapsed = true;
-  searchQuery: SearchQuery = { ...this.defaultQuery };
-
-  @InSubject() selectedTexts: TextItem[];
-  selectedTextsChange = new BehaviorSubject<TextItem[]>([]);
-
-  set selectedTextsIds(texts: TextItem[]) {
-    this.searchQuery.texts = texts.map((t) => t.id);
-  }
-
-  texts = this.textService.getTextsList().pipe(
-    map((manifest) => manifest.textsList),
-    tap((x) => this.selectedTexts = [x[0]]),
-    tap((x) => this.searchQuery.texts = [x[0].id]),
-  );
-
-  sourceText: string;
-  targetText: string;
-
-  indexes = [{ id: 'text', label: 'Text' }, { id: 'lemma', label: 'Lemma' }];
-
-  mode: 'words' | 'alignment' = 'words';
-
-  faSearch = faSearch;
-  faSlidersH = faSlidersH;
-  
   results = this.searchService.results.pipe(
     map((x) => groupBy(x, 'source')),
     map((x) => {
@@ -62,12 +24,7 @@ export class SearchComponent {
   );
 
   constructor(
-    public searchService: SearchService,
-    private textService: TextService,
+    public readonly searchService: SearchService,
   ) {
-  }
-
-  search() {
-    this.searchService.queryString.next(this.searchQuery);
   }
 }

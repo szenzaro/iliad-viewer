@@ -1,64 +1,6 @@
 <div class="d-flex flex-column">
     μῆνις
-    <div class="p-3 d-flex flex-column w-50 align-self-center">
-        <div class="input-group">
-            <input
-                type="text"
-                class="form-control"
-                (keyup.enter)="search()"
-                [(ngModel)]="searchQuery.text"
-                placeholder="Search text">
-            <div class="input-group-append">
-                <fa-icon
-                    (click)="search()"
-                    [icon]="faSearch"
-                    class="search-button input-group-text">
-                </fa-icon>
-            </div>
-            <div class="input-group-append">
-                <fa-icon
-                    (click)="isCollapsed = !isCollapsed"
-                    [icon]="faSlidersH"
-                    class="search-button input-group-text">
-                </fa-icon>
-            </div>
-        </div>
-        <div class="p-1">
-            <div
-                *ngIf="!isCollapsed"
-                class="d-flex justify-content-between">
-                <app-radio
-                    label="Mode:"
-                    [initialValue]="searchQuery.index"
-                    (value)="searchQuery.index = $event"
-                    [items]="indexes"></app-radio>
-                <div class="d-flex flex-column">
-                    <label>Options:</label>
-                    <app-switch
-                        label="Ignore case"
-                        [(value)]="searchQuery.ignoreCase"></app-switch>
-                    <app-switch
-                        label="Ignore accents"
-                        [(value)]="searchQuery.ignoreAccents"></app-switch>
-                </div>
-            </div>
-            <div
-                *ngIf="!isCollapsed"
-                class="form-group">
-                <label for="texts">Sources:</label>
-                <ng-select
-                    [items]="texts | async"
-                    [multiple]="true"
-                    [closeOnSelect]="false"
-                    [searchable]="false"
-                    labelForId="texts"
-                    placeholder="Select people"
-                    [(ngModel)]="selectedTexts"
-                    (ngModelChange)="selectedTextsIds = $event">
-                </ng-select>
-            </div>
-        </div>
-    </div>
+    <app-search-box class="p-2 w-50 align-self-center" (queryChange)="searchService.queryString.next($event)"></app-search-box>
 
     <ngb-tabset>
         <ngb-tab
