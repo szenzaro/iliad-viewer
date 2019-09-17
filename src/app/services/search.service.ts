@@ -12,8 +12,11 @@ export interface SearchQuery {
   text: string;
   index: 'text' | 'lemma';
   mode: 'words' | 'alignment';
-  ignoreCase: boolean;
-  ignoreAccents: boolean;
+  caseSensitive: boolean;
+  diacriticSensitive: boolean;
+  exactMatch: boolean;
+  alignment: boolean;
+  pos: boolean;
   texts: string[];
 }
 

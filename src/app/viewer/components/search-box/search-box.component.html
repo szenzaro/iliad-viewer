@@ -33,11 +33,14 @@
             <div class="d-flex flex-column">
                 <label>Options:</label>
                 <app-switch
-                    label="Ignore case"
-                    [(value)]="searchQuery.ignoreCase"></app-switch>
+                    label="Case sensitive"
+                    [(value)]="searchQuery.caseSensitive"></app-switch>
                 <app-switch
-                    label="Ignore accents"
-                    [(value)]="searchQuery.ignoreAccents"></app-switch>
+                    label="Diacritics sensitive"
+                    [(value)]="searchQuery.diacriticSensitive"></app-switch>
+                <app-switch
+                    label="Exact Match"
+                    [(value)]="searchQuery.exactMatch"></app-switch>
             </div>
         </div>
         <div

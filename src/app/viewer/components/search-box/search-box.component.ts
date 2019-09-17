@@ -20,11 +20,14 @@ export class SearchBoxComponent {
 
   defaultQuery: SearchQuery = {
     text: '',
-    ignoreAccents: false,
-    ignoreCase: false,
+    diacriticSensitive: false,
+    caseSensitive: false,
+    exactMatch: false,
+    alignment: false, // TODO: make default true
+    pos: false,
     index: 'text',
     mode: 'words',
-    texts: [],
+    texts: ['homeric', 'paraphrase'],
   };
   isCollapsed = true;
   searchQuery: SearchQuery = { ...this.defaultQuery };
