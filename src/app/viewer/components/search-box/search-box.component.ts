@@ -1,10 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { faSearch, faSlidersH } from '@fortawesome/free-solid-svg-icons';
-import { BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { SearchQuery } from 'src/app/services/search.service';
-import { TextItem, TextService } from 'src/app/services/text.service';
-import { InSubject } from '../../utils/InSubject';
+import { TextService } from 'src/app/services/text.service';
 
 @Component({
   selector: 'app-search-box',
@@ -12,9 +10,6 @@ import { InSubject } from '../../utils/InSubject';
   styleUrls: ['./search-box.component.scss']
 })
 export class SearchBoxComponent {
-
-  @InSubject() selectedTexts: TextItem[];
-  selectedTextsChange = new BehaviorSubject<TextItem[]>([]);
 
   @Output() queryChange = new EventEmitter<SearchQuery>();
 
@@ -36,8 +31,7 @@ export class SearchBoxComponent {
 
   texts = this.textService.getTextsList().pipe(
     map((manifest) => manifest.textsList),
-    tap((x) => this.selectedTexts = [x[0]]),
-    tap((x) => this.searchQuery.texts = [x[0].id]),
+    map((x) => x.map(({id}) => id)),
   );
 
   faSearch = faSearch;

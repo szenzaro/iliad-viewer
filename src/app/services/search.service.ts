@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Map } from '../utils/index';
 import { Word } from '../utils/models';
 import { TextService } from './text.service';
@@ -61,6 +61,7 @@ export class SearchService {
     this.resultArrays,
     this.queryString.pipe(map(({ texts }) => texts))
   ]).pipe(
+    debounceTime(150),
     map(([words, nestedIds, qs]) => nestedIds.map((ni, i) => ni.ids.map((id) => words[qs[i]][id]))),
     map((x) => [].concat(...x)),
   );

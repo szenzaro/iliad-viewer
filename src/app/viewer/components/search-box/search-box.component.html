@@ -53,9 +53,7 @@
                 [closeOnSelect]="false"
                 [searchable]="false"
                 labelForId="texts"
-                placeholder="Select people"
-                [(ngModel)]="selectedTexts"
-                (ngModelChange)="selectedTextsIds = $event">
+                [(ngModel)]="searchQuery.texts">
             </ng-select>
         </div>
     </div>
