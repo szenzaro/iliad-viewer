@@ -472,15 +472,17 @@ function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[
     return g(parts);
 }
 
-export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): boolean {
-
+export function containsPOStoHighlight(tag: string, posFilter: PosFilter): boolean {
+    if (!posFilter.pos || posFilter.pos.length === 0 || !tag) {
+        return false;
+    }
     const pos: boolean[] = [];
 
-    ph.forEach((x) => {
+    posFilter.pos.forEach((x) => {
         // tslint:disable-next-line:no-eval
         pos.push(eval(`is${x}(tag)`) as boolean);
     });
-    return pos.reduce((x, y) => op === 'and' ? x && y : x || y, op === 'and' ? true : false);
+    return pos.reduce((x, y) => posFilter.op === 'and' ? x && y : x || y, posFilter.op === 'and' ? true : false);
 }
 
 export function removeAccents(str: string): string {
