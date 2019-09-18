@@ -1,28 +1,32 @@
 <div class="d-flex flex-column">
     μῆνις
-    <app-search-box class="p-2 w-50 align-self-center" (queryChange)="searchService.queryString.next($event)"></app-search-box>
-
+    <app-search-box
+        class="p-2 w-50 align-self-center"
+        (queryChange)="searchService.queryString.next($event)"></app-search-box>
+    <app-spinner *ngIf="searchService.loading | async"></app-spinner>
     <ngb-tabset *ngIf="results | async as res">
-        <ngb-tab
-            *ngFor="let r of res | keyvalue"
-            [title]="r.key">
-            <ng-template ngbTabContent>
-                <ngb-tabset>
-                    <ngb-tab
-                        *ngFor="let v of r.value | keyvalue"
-                        [title]="'Book ' + v.key + ' ('+v.value.length+')'">
-                        <ng-template ngbTabContent>
-                            <cdk-virtual-scroll-viewport
-                                itemSize="32"
-                                class="min-h">
-                                <ng-container *cdkVirtualFor="let res of v.value">
-                                    <app-search-result [word]="res"></app-search-result>
-                                </ng-container>
-                            </cdk-virtual-scroll-viewport>
-                        </ng-template>
-                    </ngb-tab>
-                </ngb-tabset>
-            </ng-template>
-        </ngb-tab>
+        <ng-container *ngIf="!(searchService.loading | async)">
+            <ngb-tab
+                *ngFor="let r of res | keyvalue"
+                [title]="r.key">
+                <ng-template ngbTabContent>
+                    <ngb-tabset>
+                        <ngb-tab
+                            *ngFor="let v of r.value | keyvalue"
+                            [title]="'Book ' + v.key + ' ('+v.value.length+')'">
+                            <ng-template ngbTabContent>
+                                <cdk-virtual-scroll-viewport
+                                    itemSize="32"
+                                    class="min-h">
+                                    <ng-container *cdkVirtualFor="let res of v.value">
+                                        <app-search-result [word]="res"></app-search-result>
+                                    </ng-container>
+                                </cdk-virtual-scroll-viewport>
+                            </ng-template>
+                        </ngb-tab>
+                    </ngb-tabset>
+                </ng-template>
+            </ngb-tab>
+        </ng-container>
     </ngb-tabset>
 </div>

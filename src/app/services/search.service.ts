@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Map, removeAccents } from '../utils/index';
 import { Word } from '../utils/models';
@@ -32,6 +32,7 @@ export class SearchService {
 
   cache: Map<any> = {};
   queryString = new Subject<SearchQuery>();
+  loading = new BehaviorSubject<boolean>(false);
 
   private words = this.textService.getTextsList().pipe(
     map((manifest) => manifest.textsList.map((x) => x.id)),
@@ -47,6 +48,7 @@ export class SearchService {
 
   private resultArrays = this.queryString.pipe(
     filter((x) => !!x),
+    tap(() => this.loading.next(true)),
     switchMap((q) => forkJoin(q.texts
       .map((txt) => `./assets/data/texts/${txt}/index/${q.index}.json`)
       .map((url) => this.cachedGet<Index>(url))
@@ -58,6 +60,7 @@ export class SearchService {
           .map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
       })),
       map((x) => x.map(((ids, i) => ({ text: q.texts[i], ids })))),
+      tap(() => this.loading.next(false)),
     )
     ),
   );
