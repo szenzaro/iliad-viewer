@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
-import { Map } from '../utils/index';
+import { Map, removeAccents } from '../utils/index';
 import { Word } from '../utils/models';
 import { TextService } from './text.service';
 
@@ -18,6 +18,11 @@ export interface SearchQuery {
   alignment: boolean;
   pos: boolean;
   texts: string[];
+}
+
+function getRegexp(q: SearchQuery): RegExp {
+  const txt = `${q.exactMatch ? '^' : '.*'}${q.diacriticSensitive ? q.text : removeAccents(q.text)}${q.exactMatch ? '$' : '.*'}`;
+  return new RegExp(txt, `g${q.caseSensitive ? '' : 'i'}`);
 }
 
 @Injectable({
@@ -42,16 +47,17 @@ export class SearchService {
 
   private resultArrays = this.queryString.pipe(
     filter((x) => !!x),
-    switchMap((query) => forkJoin(query.texts
-      .map((txt) => `./assets/data/texts/${txt}/index/${query.index}.json`)
+    switchMap((q) => forkJoin(q.texts
+      .map((txt) => `./assets/data/texts/${txt}/index/${q.index}.json`)
       .map((url) => this.cachedGet<Index>(url))
     ).pipe(
       map((indexes) => indexes.map((x) => {
         const keys = Object.keys(x);
-        const re = new RegExp(`.*${query.text}.*`, 'g');
-        return keys.filter((r) => re.test(r)).map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
+        const re = getRegexp(q);
+        return keys.filter((r) => re.test(q.diacriticSensitive ? r : removeAccents(r)))
+          .map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
       })),
-      map((x) => x.map(((ids, i) => ({ text: query.texts[i], ids })))),
+      map((x) => x.map(((ids, i) => ({ text: q.texts[i], ids })))),
     )
     ),
   );
