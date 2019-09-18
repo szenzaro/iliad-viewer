@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
-import { Map, removeAccents } from '../utils/index';
+import { Map, removeAccents, PosFilter, containsPOStoHighlight } from '../utils/index';
 import { Word } from '../utils/models';
 import { TextService } from './text.service';
 
@@ -18,6 +18,7 @@ export interface SearchQuery {
   alignment: boolean;
   pos: boolean;
   texts: string[];
+  posFilter: PosFilter;
 }
 
 function getRegexp(q: SearchQuery): RegExp {
@@ -46,33 +47,42 @@ export class SearchService {
     )),
   );
 
-  private resultArrays = this.queryString.pipe(
-    filter((x) => !!x),
-    tap(() => this.loading.next(true)),
-    switchMap((q) => forkJoin(q.texts
-      .map((txt) => `./assets/data/texts/${txt}/index/${q.index}.json`)
-      .map((url) => this.cachedGet<Index>(url))
-    ).pipe(
-      map((indexes) => indexes.map((x) => {
-        const keys = Object.keys(x);
-        const re = getRegexp(q);
-        return keys.filter((r) => re.test(q.diacriticSensitive ? r : removeAccents(r)))
-          .map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
-      })),
-      map((x) => x.map(((ids, i) => ({ text: q.texts[i], ids })))),
-      tap(() => this.loading.next(false)),
-    )
-    ),
-  );
-
   results = combineLatest([
+    this.queryString,
     this.words,
-    this.resultArrays,
-    this.queryString.pipe(map(({ texts }) => texts))
   ]).pipe(
-    debounceTime(150),
-    map(([words, nestedIds, qs]) => qs.length > 0 ? nestedIds.map((ni, i) => ni.ids.map((id) => words[qs[i]][id])) : []),
-    map((x) => [].concat(...x)),
+    filter(([q, ws]) => !!q && !!ws),
+    map(([q, ws]) => {
+      if (q.pos) {
+        const words: Word[] = [];
+        Object.keys(ws).forEach((text) => {
+          Object.keys(ws[text]).forEach((wID) => {
+            const w = ws[text][wID];
+            if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
+              words.push(w);
+            }
+          });
+        });
+        return of(words);
+      }
+
+      return forkJoin(q.texts
+        .map((txt) => `./assets/data/texts/${txt}/index/${q.index}.json`)
+        .map((url) => this.cachedGet<Index>(url))
+      ).pipe(
+        map((indexes) => indexes.map((x) => {
+          const keys = Object.keys(x);
+          const re = getRegexp(q);
+          return keys.filter((r) => re.test(q.diacriticSensitive ? r : removeAccents(r)))
+            .map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
+        })),
+        map((x) => x.map(((ids, i) => ({ text: q.texts[i], ids })))),
+        map((nestedIds) => q.texts.length > 0 ? nestedIds.map((ni, i) => ni.ids.map((id) => ws[q.texts[i]][id])) : []),
+        map((x) => [].concat(...x) as Word[]),
+        tap(() => this.loading.next(false)),
+      );
+    }),
+    switchMap((x) => x),
   );
 
   constructor(

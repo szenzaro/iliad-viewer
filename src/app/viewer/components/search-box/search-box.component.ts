@@ -23,6 +23,7 @@ export class SearchBoxComponent {
     index: 'text',
     mode: 'words',
     texts: ['homeric', 'paraphrase'],
+    posFilter: undefined,
   };
   isCollapsed = true;
   searchQuery: SearchQuery = { ...this.defaultQuery };
