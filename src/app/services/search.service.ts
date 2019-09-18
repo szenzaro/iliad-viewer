@@ -62,7 +62,7 @@ export class SearchService {
     this.queryString.pipe(map(({ texts }) => texts))
   ]).pipe(
     debounceTime(150),
-    map(([words, nestedIds, qs]) => nestedIds.map((ni, i) => ni.ids.map((id) => words[qs[i]][id]))),
+    map(([words, nestedIds, qs]) => qs.length > 0 ? nestedIds.map((ni, i) => ni.ids.map((id) => words[qs[i]][id])) : []),
     map((x) => [].concat(...x)),
   );
 
