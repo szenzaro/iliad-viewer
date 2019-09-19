@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
-import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap, tap, shareReplay } from 'rxjs/operators';
 import { Map, removeAccents, PosFilter, containsPOStoHighlight } from '../utils/index';
 import { Word } from '../utils/models';
 import { TextService } from './text.service';
@@ -83,6 +83,7 @@ export class SearchService {
       );
     }),
     switchMap((x) => x),
+    shareReplay(1),
   );
 
   constructor(
