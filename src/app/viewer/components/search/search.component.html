@@ -1,7 +1,7 @@
 <div class="d-flex flex-column">
     μῆνις
     <app-search-box
-        class="p-2 w-50 align-self-center"
+        class="p-2"
         (queryChange)="searchService.queryString.next($event)"></app-search-box>
     <app-spinner *ngIf="searchService.loading | async"></app-spinner>
 
