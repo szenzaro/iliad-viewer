@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
-import { debounceTime, filter, map, switchMap, tap, shareReplay } from 'rxjs/operators';
-import { Map, removeAccents, PosFilter, containsPOStoHighlight } from '../utils/index';
+import { filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { containsPOStoHighlight, Map, PosFilter, removeAccents } from '../utils/index';
 import { Word } from '../utils/models';
 import { TextService } from './text.service';
 
@@ -51,6 +51,7 @@ export class SearchService {
     this.queryString,
     this.words,
   ]).pipe(
+    tap(() => this.loading.next(true)),
     filter(([q, ws]) => !!q && !!ws),
     map(([q, ws]) => {
       if (q.pos) {
@@ -83,6 +84,7 @@ export class SearchService {
       );
     }),
     switchMap((x) => x),
+    tap(() => this.loading.next(false)),
     shareReplay(1),
   );
 
