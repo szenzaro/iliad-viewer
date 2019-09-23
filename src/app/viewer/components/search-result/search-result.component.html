@@ -1,3 +1,8 @@
 <div class="d-flex">
-    <app-verse [verse]="result | async" [highlightIds]="word.id"></app-verse>
+    <app-verse
+        [verse]="result | async"
+        [highlightIds]="word.id"
+        (openWordId)="openedWordId = $event"
+        [wordDetailsId]="openedWordId">
+    </app-verse>
 </div>

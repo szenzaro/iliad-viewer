@@ -17,6 +17,10 @@ export class SearchResultComponent {
   @Input() @InSubject() word: Word;
   private wordChange = new BehaviorSubject<Word>(undefined);
 
+  private _openedWordId: string;
+  get openedWordId() { return this._openedWordId; }
+  set openedWordId(v: string) { this._openedWordId = v === this._openedWordId ? undefined : v; }
+
   result = this.wordChange.pipe(
     filter((x) => x !== undefined && x !== null),
     switchMap((w) => this.textService.getVerseFromNumber(w.source, w.chant, w.verse)),
