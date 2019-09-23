@@ -56,12 +56,15 @@ export class SearchService {
     map(([q, ws]) => {
       if (q.pos) {
         const words: Word[] = [];
-        Object.keys(ws).forEach((text) => {
-          Object.keys(ws[text]).forEach((wID) => {
-            const w = ws[text][wID];
-            if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
-              words.push(w);
-            }
+        Object.keys(ws)
+          .filter((t) => q.texts.includes(t))
+          .forEach((text) => {
+            Object.keys(ws[text]).forEach((wID) => {
+              const w = ws[text][wID];
+              if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
+                words.push(w);
+              }
+            });
           });
         return of(words);
       }
