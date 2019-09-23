@@ -51,8 +51,8 @@ export class SearchService {
     this.queryString,
     this.words,
   ]).pipe(
-    filter(([q, ws]) => !!q && !!ws && q.text !== ''),
     debounceTime(150),
+    filter(([q, ws]) => !!q && !!ws && (q.text !== '' || q.pos)),
     map(([q, ws]) => {
       if (q.pos) {
         const words: Word[] = [];
