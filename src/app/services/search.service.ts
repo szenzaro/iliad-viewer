@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
-import { filter, map, shareReplay, switchMap, tap, debounceTime } from 'rxjs/operators';
+import { debounceTime, filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { containsPOStoHighlight, Map, PosFilter, removeAccents } from '../utils/index';
 import { Word } from '../utils/models';
 import { TextService } from './text.service';
