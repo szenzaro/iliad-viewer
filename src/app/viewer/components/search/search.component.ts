@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
@@ -17,6 +17,7 @@ export class SearchComponent {
   );
 
   results = this.resultsByText.pipe(
+    tap(() => this.searchService.loading.next(true)),
     map((x) => {
       const keys = Object.keys(x);
       const m: Map<Map<Word[]>> = {};
@@ -25,6 +26,7 @@ export class SearchComponent {
         .forEach((chant) => m[text][chant] = m[text][chant].sort((w1, w2) => w1.verse - w2.verse)));
       return m;
     }),
+    tap(() => this.searchService.loading.next(false)),
   );
 
   totalResultsPerText = this.resultsByText.pipe(

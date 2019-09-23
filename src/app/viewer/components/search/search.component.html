@@ -2,11 +2,12 @@
     μῆνις
     <app-search-box
         class="p-2"
+        (queryChange)="searchService.loading.next(true)"
         (queryChange)="searchService.queryString.next($event)"></app-search-box>
     <app-spinner *ngIf="searchService.loading | async"></app-spinner>
 
     <div *ngIf="results | async as res">
-        <p class="mr-3 text-right" >Found {{ totalResults | async }} results</p>
+        <p *ngIf="!(searchService.loading | async)" class="mr-3 text-right" >Number of results: {{ totalResults | async }}</p>
         <ngb-tabset>
             <ng-container *ngIf="!(searchService.loading | async)">
                 <ngb-tab
