@@ -17,7 +17,6 @@ export class SearchComponent {
   );
 
   results = this.resultsByText.pipe(
-    tap(() => this.searchService.loading.next(true)),
     map((x) => {
       const keys = Object.keys(x);
       const m: Map<Map<Word[]>> = {};

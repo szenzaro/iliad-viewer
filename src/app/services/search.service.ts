@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
-import { filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, switchMap, tap, debounceTime } from 'rxjs/operators';
 import { containsPOStoHighlight, Map, PosFilter, removeAccents } from '../utils/index';
 import { Word } from '../utils/models';
 import { TextService } from './text.service';
@@ -52,7 +52,7 @@ export class SearchService {
     this.words,
   ]).pipe(
     filter(([q, ws]) => !!q && !!ws && q.text !== ''),
-    tap(() => this.loading.next(true)),
+    debounceTime(150),
     map(([q, ws]) => {
       if (q.pos) {
         const words: Word[] = [];
@@ -63,7 +63,6 @@ export class SearchService {
               words.push(w);
             }
           });
-        });
         return of(words);
       }
 
@@ -80,11 +79,9 @@ export class SearchService {
         map((x) => x.map(((ids, i) => ({ text: q.texts[i], ids })))),
         map((nestedIds) => q.texts.length > 0 ? nestedIds.map((ni, i) => ni.ids.map((id) => ws[q.texts[i]][id])) : []),
         map((x) => [].concat(...x) as Word[]),
-        tap(() => this.loading.next(false)),
       );
     }),
     switchMap((x) => x),
-    tap(() => this.loading.next(false)),
     shareReplay(1),
   );
 
