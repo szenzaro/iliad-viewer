@@ -1,3 +1,8 @@
 <div class="d-flex">
-  <p>{{ data.query }} => {{ data.result }}</p>
+    <app-verse
+        [verse]="result | async"
+        [highlightIds]="wids | async"
+        (openWordId)="openedWordId = $event"
+        [wordDetailsId]="openedWordId">
+    </app-verse>
 </div>

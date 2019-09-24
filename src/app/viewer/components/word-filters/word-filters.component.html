@@ -12,9 +12,14 @@
         <div class="d-flex flex-column">
             <button
                 (click)="filterItem.next({})"
-                class="btn btn-secondary">
+                class="m-1 btn btn-sm btn-secondary">
                 <fa-icon [icon]="faBroom"></fa-icon>
-                Clear Filter
+            </button>
+            <button
+                *ngIf="submitBtn"
+                (click)="submitFilter.next()"
+                class="m-1 btn btn-sm btn-secondary">
+                <fa-icon [icon]="faSearch"></fa-icon> 
             </button>
             <ui-switch
                 (change)="switchChange.next($event)"

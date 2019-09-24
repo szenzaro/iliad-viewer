@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Map, POS, POS_OP, PosFilter } from 'src/app/utils';
 
 import { debounceTime, distinctUntilChanged, map, scan, shareReplay, startWith } from 'rxjs/operators';
 
-import { faBroom } from '@fortawesome/free-solid-svg-icons';
-import { combineLatest, never } from 'rxjs';
+import { faBroom, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-word-filters',
@@ -14,6 +14,7 @@ import { combineLatest, never } from 'rxjs';
 })
 export class WordFiltersComponent {
 
+  faSearch = faSearch;
   faBroom = faBroom;
   filterItem = new EventEmitter<Map<boolean>>();
   currentFilter = this.filterItem.pipe(
@@ -37,6 +38,9 @@ export class WordFiltersComponent {
     }),
     shareReplay(1),
   );
+
+  @Input() submitBtn = false;
+  @Output() submitFilter = new EventEmitter();
 
   filterSelected = (label: POS) => {
     return this.filterChange.pipe(

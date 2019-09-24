@@ -8,6 +8,19 @@ export function arrayToMap<T, K extends keyof T>(arr: T[], key: K): Map<T> {
     return map;
 }
 
+export function groupBy<T, K extends keyof T>(arr: T[], key: K): Map<T[]> {
+    const map: Map<T[]> = {};
+    arr.forEach((x) => {
+        if (x !== undefined) {
+            if (!map[x[`${key}`]]) {
+                map[x[`${key}`]] = [];
+            }
+            map[x[`${key}`]].push(x);
+        }
+    });
+    return map;
+}
+
 export function uuid(prefix?: string): string {
     return !!prefix ? `${prefix}-${Math.random()}` : `${Math.random()}`;
 }
@@ -459,13 +472,19 @@ function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[
     return g(parts);
 }
 
-export function containsPOStoHighlight(tag: string, ph: POS[], op: POS_OP): boolean {
-
+export function containsPOStoHighlight(tag: string, posFilter: PosFilter): boolean {
+    if (!posFilter.pos || posFilter.pos.length === 0 || !tag) {
+        return false;
+    }
     const pos: boolean[] = [];
 
-    ph.forEach((x) => {
+    posFilter.pos.forEach((x) => {
         // tslint:disable-next-line:no-eval
         pos.push(eval(`is${x}(tag)`) as boolean);
     });
-    return pos.reduce((x, y) => op === 'and' ? x && y : x || y, op === 'and' ? true : false);
+    return pos.reduce((x, y) => posFilter.op === 'and' ? x && y : x || y, posFilter.op === 'and' ? true : false);
+}
+
+export function removeAccents(str: string): string {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }

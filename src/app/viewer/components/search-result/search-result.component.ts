@@ -1,6 +1,12 @@
 import { Component, Input } from '@angular/core';
 
-import { SearchResult } from 'src/app/services/search.service';
+import { BehaviorSubject } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { Word } from 'src/app/utils/models';
+
+import { InSubject } from '../../utils/InSubject';
+
+import { TextService } from 'src/app/services/text.service';
 
 @Component({
   selector: 'app-search-result',
@@ -8,5 +14,25 @@ import { SearchResult } from 'src/app/services/search.service';
   styleUrls: ['./search-result.component.scss'],
 })
 export class SearchResultComponent {
-  @Input() data: SearchResult;
+  @Input() @InSubject() words: Word[];
+  private wordsChange = new BehaviorSubject<Word[]>([]);
+
+  private _openedWordId: string;
+  get openedWordId() { return this._openedWordId; }
+  set openedWordId(v: string) { this._openedWordId = v === this._openedWordId ? undefined : v; }
+
+
+  wids = this.wordsChange.pipe(
+    map((ws) => ws.map(({ id }) => id)),
+  );
+
+  result = this.wordsChange.pipe(
+    filter((x) => x !== undefined && x !== null && x.length > 0),
+    switchMap((ws) => this.textService.getVerseFromNumber(ws[0].source, ws[0].chant, ws[0].verse)),
+  );
+
+  constructor(
+    private textService: TextService,
+  ) {
+  }
 }

@@ -70,7 +70,7 @@ export class WordComponent {
       !!this.word &&
       !!this.word.data &&
       !!this.word.data.tag &&
-      containsPOStoHighlight(this.word.data.tag, this.posHighlight.pos, this.posHighlight.op);
+      containsPOStoHighlight(this.word.data.tag, this.posHighlight);
   }
 
   get tagIsDefined() { return !!this.word && !!this.word.data && !!this.word.data.tag; }
