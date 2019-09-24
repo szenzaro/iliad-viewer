@@ -17,6 +17,7 @@ import { ManuscriptComponent } from './components/manuscript/manuscript.componen
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
 import { PillComponent } from './components/pill/pill.component';
 import { RadioComponent } from './components/radio/radio.component';
+import { SearchAlignmentResultComponent } from './components/search-alignment-result/search-alignment-result.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
 import { SearchComponent } from './components/search/search.component';
@@ -58,6 +59,7 @@ import { ManuscriptService } from './services/manuscript.service';
     OpenseadragonComponent,
     PillComponent,
     RadioComponent,
+    SearchAlignmentResultComponent,
     SearchBoxComponent,
     SearchComponent,
     SearchResultComponent,

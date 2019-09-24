@@ -1,0 +1,12 @@
+<div class="d-flex">
+    <app-verse
+        class="w-50"
+        [verse]="sourceVerse | async"
+        [highlightIds]="sourceIds | async">
+    </app-verse>
+    <app-verse
+        class="w-50"
+        [verse]="targetVerse | async"
+        [highlightIds]="targetIds | async">
+    </app-verse>
+</div>
