@@ -23,7 +23,7 @@ export class SearchBoxComponent {
     diacriticSensitive: false,
     caseSensitive: false,
     exactMatch: false,
-    alignment: false, // TODO: make default true
+    alignment: true,
     pos: false,
     index: 'text',
     mode: 'words',
