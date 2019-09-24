@@ -5,36 +5,42 @@
         (queryChange)="searchService.queryString.next($event)"></app-search-box>
     <app-spinner *ngIf="searchService.loading | async"></app-spinner>
 
-    <div *ngIf="results | async as res">
-        <p
-            *ngIf="!(searchService.loading | async)"
-            class="mr-3 text-right">
-            Number of results: {{ totalResults | async }}
-        </p>
-        <ngb-tabset>
-            <ng-container *ngIf="!(searchService.loading | async)">
-                <ngb-tab
-                    *ngFor="let r of res | keyvalue"
-                    [title]="r.key  + ' (' + (totalResultsPerText | async)[r.key] + ')'">
-                    <ng-template ngbTabContent>
-                        <ngb-tabset>
-                            <ngb-tab
-                                *ngFor="let v of r.value | keyvalue"
-                                [title]="'Book ' + v.key + ' ('+bookResNumber(v.value)+')'">
-                                <ng-template ngbTabContent>
-                                    <cdk-virtual-scroll-viewport
-                                        itemSize="32"
-                                        class="min-h">
-                                        <ng-container *cdkVirtualFor="let res of v.value | keyvalue: keyNumOrder">
-                                            <app-search-result [words]="res.value"></app-search-result>
-                                        </ng-container>
-                                    </cdk-virtual-scroll-viewport>
-                                </ng-template>
-                            </ngb-tab>
-                        </ngb-tabset>
-                    </ng-template>
-                </ngb-tab>
-            </ng-container>
-        </ngb-tabset>
-    </div>
+    <ng-container *ngIf="(currentQuery | async)?.alignment">
+        <div *ngIf="results | async as res">hello</div>
+    </ng-container>
+
+    <ng-container *ngIf="!(currentQuery | async)?.alignment">
+        <div *ngIf="results | async as res">
+            <p
+                *ngIf="!(searchService.loading | async)"
+                class="mr-3 text-right">
+                Number of results: {{ totalResults | async }}
+            </p>
+            <ngb-tabset>
+                <ng-container *ngIf="!(searchService.loading | async)">
+                    <ngb-tab
+                        *ngFor="let r of res | keyvalue"
+                        [title]="r.key  + ' (' + (totalResultsPerText | async)[r.key] + ')'">
+                        <ng-template ngbTabContent>
+                            <ngb-tabset>
+                                <ngb-tab
+                                    *ngFor="let v of r.value | keyvalue"
+                                    [title]="'Book ' + v.key + ' ('+bookResNumber(v.value)+')'">
+                                    <ng-template ngbTabContent>
+                                        <cdk-virtual-scroll-viewport
+                                            itemSize="32"
+                                            class="min-h">
+                                            <ng-container *cdkVirtualFor="let res of v.value | keyvalue: keyNumOrder">
+                                                <app-search-result [words]="res.value"></app-search-result>
+                                            </ng-container>
+                                        </cdk-virtual-scroll-viewport>
+                                    </ng-template>
+                                </ngb-tab>
+                            </ngb-tabset>
+                        </ng-template>
+                    </ngb-tab>
+                </ng-container>
+            </ngb-tabset>
+        </div>
+    </ng-container>
 </div>

@@ -1,9 +1,9 @@
+import { KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
-import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-search',
@@ -11,6 +11,8 @@ import { KeyValue } from '@angular/common';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
+
+  currentQuery = this.searchService.queryString.pipe(shareReplay(1));
 
   resultsByText = this.searchService.results.pipe(
     map((x) => groupBy(x, 'source')),

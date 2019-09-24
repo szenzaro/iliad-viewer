@@ -45,6 +45,7 @@ export class SearchService {
         return ws;
       })
     )),
+    shareReplay(1),
   );
 
   results = combineLatest([
@@ -54,38 +55,91 @@ export class SearchService {
     debounceTime(150),
     filter(([q, ws]) => !!q && !!ws && (q.text !== '' || q.pos)),
     map(([q, ws]) => {
+      const sourceText = q.texts[0];
+      const targetText = q.texts[1];
       if (q.pos) {
         const words: Word[] = [];
-        Object.keys(ws)
-          .filter((t) => q.texts.includes(t))
-          .forEach((text) => {
-            Object.keys(ws[text]).forEach((wID) => {
-              const w = ws[text][wID];
-              if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
-                words.push(w);
-              }
+        if (!q.alignment) {
+          Object.keys(ws)
+            .filter((t) => q.texts.includes(t))
+            .forEach((text) => {
+              Object.keys(ws[text]).forEach((wID) => {
+                const w = ws[text][wID];
+                if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
+                  words.push(w);
+                }
+              });
             });
-          });
-        return of(words);
+          return of(words);
+        }
+
+        Object.keys(ws[sourceText]).forEach((wID) => {
+          const w = ws[sourceText][wID];
+          if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
+            words.push(w);
+          }
+        });
+
+
+        return forkJoin(words.map((w) => this.textService.getAlignment(sourceText, targetText, w.id))).pipe(
+          map((entries) => entries
+            .filter((e) => !!e && e.type !== 'del' && e.type !== 'ins')
+            .map((e) => e.target)
+            .reduce((x, y) => x.concat(y), [])
+          ),
+          map((targetIds) => targetIds.map((id) => ws[targetText][id])),
+          map((targetWords) => words.concat(targetWords)),
+        );
       }
 
-      return forkJoin(q.texts
-        .map((txt) => `./assets/data/texts/${txt}/index/${q.index}.json`)
-        .map((url) => this.cachedGet<Index>(url))
-      ).pipe(
-        map((indexes) => indexes.map((x) => {
+      if (!q.alignment) {
+        return forkJoin(q.texts
+          .map((txt) => `./assets/data/texts/${txt}/index/${q.index}.json`)
+          .map((url) => this.cachedGet<Index>(url))
+        ).pipe(
+          map((indexes) => indexes.map((x) => {
+            const keys = Object.keys(x);
+            const re = getRegexp(q);
+            return keys.filter((r) => re.test(q.diacriticSensitive ? r : removeAccents(r)))
+              .map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
+          })),
+          map((x) => x.map(((ids, i) => ({ text: q.texts[i], ids })))),
+          map((nestedIds) => q.texts.length > 0 ? nestedIds.map((ni, i) => ni.ids.map((id) => ws[q.texts[i]][id])) : []),
+          map((x) => [].concat(...x) as Word[]),
+        );
+      }
+
+      return this.cachedGet<Index>(`./assets/data/texts/${sourceText}/index/${q.index}.json`).pipe(
+        map((x) => {
           const keys = Object.keys(x);
           const re = getRegexp(q);
           return keys.filter((r) => re.test(q.diacriticSensitive ? r : removeAccents(r)))
             .map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
-        })),
-        map((x) => x.map(((ids, i) => ({ text: q.texts[i], ids })))),
-        map((nestedIds) => q.texts.length > 0 ? nestedIds.map((ni, i) => ni.ids.map((id) => ws[q.texts[i]][id])) : []),
-        map((x) => [].concat(...x) as Word[]),
+        }),
+        map((ids) => ids.map((id) => ws[sourceText][id])),
+        map((words) => forkJoin(words.map((w) => this.textService.getAlignment(sourceText, targetText, w.id))).pipe(
+          map((entries) => entries
+            .filter((e) => !!e && e.type !== 'del' && e.type !== 'ins')
+            .map((e) => e.target)
+            .reduce((x, y) => x.concat(y), [])
+          ),
+          map((targetIds) => targetIds.map((id) => ws[targetText][id])),
+          map((targetWords) => words.concat(targetWords)),
+        )),
+        switchMap((x) => x),
       );
     }),
     switchMap((x) => x),
     shareReplay(1),
+  );
+
+  alignmentResult = combineLatest([
+    this.queryString,
+    this.words
+  ]).pipe(
+    debounceTime(150),
+    filter(([q, ws]) => !!q && !!ws && (q.text !== '' || q.pos) && q.alignment),
+    map(([q, ws]) => ws),
   );
 
   constructor(
