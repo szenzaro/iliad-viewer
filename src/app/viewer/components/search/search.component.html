@@ -6,7 +6,11 @@
     <app-spinner *ngIf="searchService.loading | async"></app-spinner>
 
     <div *ngIf="results | async as res">
-        <p *ngIf="!(searchService.loading | async)" class="mr-3 text-right" >Number of results: {{ totalResults | async }}</p>
+        <p
+            *ngIf="!(searchService.loading | async)"
+            class="mr-3 text-right">
+            Number of results: {{ totalResults | async }}
+        </p>
         <ngb-tabset>
             <ng-container *ngIf="!(searchService.loading | async)">
                 <ngb-tab
@@ -16,13 +20,13 @@
                         <ngb-tabset>
                             <ngb-tab
                                 *ngFor="let v of r.value | keyvalue"
-                                [title]="'Book ' + v.key + ' ('+v.value.length+')'">
+                                [title]="'Book ' + v.key + ' ('+bookResNumber(v.value)+')'">
                                 <ng-template ngbTabContent>
                                     <cdk-virtual-scroll-viewport
                                         itemSize="32"
                                         class="min-h">
-                                        <ng-container *cdkVirtualFor="let res of v.value">
-                                            <app-search-result [word]="res"></app-search-result>
+                                        <ng-container *cdkVirtualFor="let res of v.value | keyvalue: keyNumOrder">
+                                            <app-search-result [words]="res.value"></app-search-result>
                                         </ng-container>
                                     </cdk-virtual-scroll-viewport>
                                 </ng-template>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
-import { filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { containsPOStoHighlight, Map, PosFilter, removeAccents } from '../utils/index';
 import { Word } from '../utils/models';
 import { TextService } from './text.service';
@@ -51,19 +51,21 @@ export class SearchService {
     this.queryString,
     this.words,
   ]).pipe(
-    filter(([q, ws]) => !!q && !!ws && q.text !== ''),
-    tap(() => this.loading.next(true)),
+    debounceTime(150),
+    filter(([q, ws]) => !!q && !!ws && (q.text !== '' || q.pos)),
     map(([q, ws]) => {
       if (q.pos) {
         const words: Word[] = [];
-        Object.keys(ws).forEach((text) => {
-          Object.keys(ws[text]).forEach((wID) => {
-            const w = ws[text][wID];
-            if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
-              words.push(w);
-            }
+        Object.keys(ws)
+          .filter((t) => q.texts.includes(t))
+          .forEach((text) => {
+            Object.keys(ws[text]).forEach((wID) => {
+              const w = ws[text][wID];
+              if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
+                words.push(w);
+              }
+            });
           });
-        });
         return of(words);
       }
 
@@ -80,11 +82,9 @@ export class SearchService {
         map((x) => x.map(((ids, i) => ({ text: q.texts[i], ids })))),
         map((nestedIds) => q.texts.length > 0 ? nestedIds.map((ni, i) => ni.ids.map((id) => ws[q.texts[i]][id])) : []),
         map((x) => [].concat(...x) as Word[]),
-        tap(() => this.loading.next(false)),
       );
     }),
     switchMap((x) => x),
-    tap(() => this.loading.next(false)),
     shareReplay(1),
   );
 
