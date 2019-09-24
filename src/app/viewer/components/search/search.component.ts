@@ -14,6 +14,28 @@ export class SearchComponent {
 
   currentQuery = this.searchService.queryString.pipe(shareReplay(1));
 
+  resultAlignment = this.searchService.results.pipe(
+    map((x) => [
+      Array.from(new Set(x.map(({ source }) => source))),
+      groupBy(x, 'chant'),
+    ] as [string[], Map<Word[]>]),
+    map(([texts, byChant]) => {
+      const chants = Object.keys(byChant);
+      const res: Map<Map<[Word[], Word[]]>> = {};
+      chants.forEach((c) => {
+        res[c] = {};
+        const byVerse = groupBy(byChant[c], 'verse');
+        Object.keys(byVerse).forEach((v) => res[c][v] = [
+          byVerse[v].filter((x) => x.source === texts[0]),
+          byVerse[v].filter((x) => x.source === texts[1]),
+        ]);
+      });
+      return res;
+    }),
+    tap(() => this.searchService.loading.next(false)),
+    tap(console.log),
+  );
+
   resultsByText = this.searchService.results.pipe(
     map((x) => groupBy(x, 'source')),
     shareReplay(1),

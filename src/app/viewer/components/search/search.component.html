@@ -1,3 +1,4 @@
+μηνιν
 <div class="d-flex flex-column">
     <app-search-box
         class="p-2"
@@ -6,7 +7,22 @@
     <app-spinner *ngIf="searchService.loading | async"></app-spinner>
 
     <ng-container *ngIf="(currentQuery | async)?.alignment">
-        <div *ngIf="results | async as res">hello</div>
+        <div *ngIf="resultAlignment | async as res">
+            <ngb-tabset>
+                <ngb-tab
+                    *ngFor="let r of res | keyvalue"
+                    [title]="'Βοοκ ' + r.key">
+                    <ng-template ngbTabContent>
+                        <app-search-alignment-result
+                            *ngFor="let v of r.value | keyvalue"
+                            [sourceWords]="v.value[0]"
+                            [targetWords]="v.value[1]"
+                            [verseNumber]="v.key">
+                        </app-search-alignment-result>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </div>
     </ng-container>
 
     <ng-container *ngIf="!(currentQuery | async)?.alignment">
