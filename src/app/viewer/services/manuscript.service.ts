@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, merge, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
 import { numberToOption, numberToOptions } from 'src/app/utils';
 
@@ -12,7 +12,6 @@ export class ManuscriptService {
   homericID = new BehaviorSubject<string>('homeric');
   paraphraseID = new BehaviorSubject<string>('paraphrase');
 
-
   chantInput = new Subject<number>();
   pageInput = new Subject<number>();
   verseInput = new Subject<number>();
@@ -21,6 +20,7 @@ export class ManuscriptService {
 
   chant = this.chantInput.asObservable().pipe(
     distinctUntilChanged(),
+    shareReplay(1),
   );
 
   pageFromVerse = combineLatest([this.chant, this.verseProxy]).pipe(
@@ -39,27 +39,48 @@ export class ManuscriptService {
     this.pageFromVerse,
   ).pipe(
     filter((x) => x !== NaN && x !== null && x !== undefined),
-    tap((x) => console.log('pagemerge ', x)),
+    debounceTime(150),
     distinctUntilChanged(),
+    shareReplay(1),
   );
 
   pageVersesRange = this.page.pipe(
     mergeMap((p) => this.textService.getVersesNumberFromPage(p)),
+    tap((range) => this.verseInput.next(range[0][0])),
+    shareReplay(1),
   );
 
   verse = combineLatest([
     this.verseInput,
     this.pageVersesRange.pipe(filter((x) => !!x)),
   ]).pipe(
-    map(([v, range]) => v <= range[0][1] && v >= range[0][0] ? v : range[0][0]),
+    map(([v, range]) => range[0][0] <= v && v <= range[0][1] ? range[0][0] : v),
     distinctUntilChanged(),
     tap((v) => this.verseProxy.next(v)),
+    shareReplay(1),
   );
 
   chants = this.homericID.pipe(
     switchMap((text) => this.textService.getNumberOfChants(text)),
     tap(() => this.chantInput.next(1)),
     map(numberToOptions),
+  );
+
+  private pagesByChant = this.homericID.pipe(
+    switchMap((text) => this.textService.getChantsPages(text)),
+  );
+
+  private checkChant = combineLatest([
+    this.pagesByChant,
+    this.page,
+    this.chant,
+  ]).pipe(
+    tap(([allPages, p, c]) => {
+      const newChant = +Object.keys(allPages).find((key) => allPages[key].includes(p));
+      if (newChant !== c) {
+        this.chantInput.next(newChant);
+      }
+    })
   );
 
   verses = this.chant.pipe(
@@ -71,6 +92,7 @@ export class ManuscriptService {
       }
     }),
     distinctUntilChanged(),
+    tap(() => this.verseInput.next(1)),
     map(numberToOptions),
   );
 
@@ -89,11 +111,6 @@ export class ManuscriptService {
   constructor(
     private readonly textService: TextService,
   ) {
-    this.chant.subscribe((x) => console.log('chant', x));
-    this.page.subscribe((x) => console.log('page', x));
-    this.pages.subscribe((x) => console.log('pages', x));
-    this.pageInput.subscribe((x) => console.log('pageInput ', x));
-    this.pageFromVerse.subscribe((x) => console.log('pageFromVerse ', x));
-    this.pageVerses.subscribe((x) => console.log('pageVerses', x));
+    this.checkChant.subscribe();
   }
 }

@@ -1,27 +1,34 @@
-
 <div class="d-flex">
-  <app-select 
-    class="flex-grow-1 mr-1" 
-    [options]="options" 
-    [label]="label" 
-    [inline]="inline"
-    [selectedId]="selectedOption | async"
-    (selectionChange)="selectionChange.next(toInt($event))">
-  </app-select>
-  <button 
-    class="btn btn-secondary btn-sm" 
-    (click)="selectionChange.next(prevNumber)"
-    [disabled]="isFirstOption">
-    <fa-icon 
-      [icon]="faArrowLeft">
-    </fa-icon>
-  </button>
-  <button 
-    class="btn btn-secondary btn-sm" 
-    (click)="selectionChange.next(nextNumber)"
-    [disabled]="isLastOption">
-    <fa-icon 
-      [icon]="faArrowRight">
-    </fa-icon>
-  </button>
+    <div
+        class="d-flex flex-grow-1"
+        [class.flex-column]="!inline">
+        <label
+            *ngIf="label"
+            class="m-0 p-1">
+            {{ label }}
+        </label>
+        <ng-select
+            class="flex-grow-1 mr-1"
+            [items]="options"
+            [hideSelected]="true"
+            [clearable]="false"
+            [ngModel]="selectedItem | async"
+            (ngModelChange)="selection = $event"
+            bindLabel="id">
+        </ng-select>
+    </div>
+    <button
+        *ngIf="selectedInfo | async as itemInfo"
+        class="btn btn-secondary btn-sm"
+        (click)="selectionChange.next(itemInfo.prev)"
+        [disabled]="itemInfo.first">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+    </button>
+    <button
+        *ngIf="selectedInfo | async as itemInfo"
+        class="btn btn-secondary btn-sm"
+        (click)="selectionChange.next(itemInfo.next)"
+        [disabled]="itemInfo.last">
+        <fa-icon [icon]="faArrowRight"></fa-icon>
+    </button>
 </div>

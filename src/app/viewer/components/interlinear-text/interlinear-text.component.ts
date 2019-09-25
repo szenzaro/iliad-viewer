@@ -44,6 +44,18 @@ export class InterlinearTextComponent {
   @Input() @InSubject() paraphrase: string;
   @Output() paraphraseChange = new BehaviorSubject<string>(undefined);
 
+  chant = this.manuscriptService.chant.pipe(
+    map(numberToOption),
+  );
+
+  page = this.manuscriptService.page.pipe(
+    map(numberToOption),
+  );
+
+  verse = this.manuscriptService.verse.pipe(
+    map(numberToOption),
+  );
+
   loading = new BehaviorSubject<boolean>(true);
 
   verses = combineLatest([
@@ -51,7 +63,6 @@ export class InterlinearTextComponent {
     this.showParaphfraseChange,
     this.manuscriptService.pageVerses,
   ]).pipe(
-    tap(console.log),
     debounceTime(150),
     tap(() => this.loading.next(true)),
     map(([showHomeric, showParaphfrase, [greek, paraph]]) => {
