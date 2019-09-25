@@ -1,26 +1,25 @@
 <div class="d-flex">
     <app-select-number
         [options]="manuscriptService.chants | async"
-        [selection]="manuscriptService.chant | async"
-        (selectionChange)="manuscriptService.chantInput.next($event)"
         label="Book"
         class="flex-grow-1">
     </app-select-number>
-    <app-select-number
+   <!--  <app-select-number
         [options]="manuscriptService.pages | async"
         [selection]="manuscriptService.page | async"
-        (selectionChange)="manuscriptService.pageInput.next($event)"
+        (selectionChange)="$event !== null && $event !== NaN ? manuscriptService.pageInput.next($event) : 0"
         label="Page"
         class="flex-grow-1">
-    </app-select-number>
-    <app-select-number
+    </app-select-number> -->
+    <!-- <app-select-number
         [options]="manuscriptService.verses | async"
         [selection]="manuscriptService.verse | async"
         (selectionChange)="manuscriptService.verseInput.next($event)"
         label="Verse"
         class="flex-grow-1">
-    </app-select-number>
+    </app-select-number> -->
 </div>
+{{ manuscriptService.chants | async | json}}
 <app-text
     [loading]="loading | async"
     [verses]="verses | async"

@@ -6,17 +6,15 @@
     (showParaphraseChange)="interlinearText.showParaphfrase = $event">
 </app-annotation-filter>
 <div class="d-flex">
-    <app-openseadragon
+    <!-- <app-openseadragon
         class="col"
         [page]="manuscriptService.page | async"
         (pageChange)="manuscriptService.pageInput.next($event)"
         [annotations]="filteredAnnotations | async"
         manifestURL="./assets/manuscript/manifest.json">
-    </app-openseadragon>
+    </app-openseadragon> -->
     <app-interlinear-text
         #interlinearText
-        class="col"
-        text="homeric"
-        paraphrase="paraphrase">
+        class="col">
     </app-interlinear-text>
 </div>

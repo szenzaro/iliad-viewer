@@ -1,5 +1,5 @@
 import { Component, Input, Output } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, map, skip } from 'rxjs/operators';
 import { InSubject } from '../../utils/InSubject';
 
@@ -14,8 +14,15 @@ export class SelectNumberComponent {
 
   @Input() inline = true;
   @Input() label: string;
-  @Input() @InSubject() selection: number;
-  @Output() selectionChange = new BehaviorSubject<number>(1);
+  _selection: number;
+  @Input() set selection(n: number) {
+    if (n !== NaN && n !== null && n !== this._selection) {
+      this._selection = n;
+      this.selectionChange.next(n);
+    }
+  }
+  get selection() { return this._selection; }
+  @Output() selectionChange = new Subject<number>();
 
   @Input() @InSubject() options: { id: string, label: string }[];
   optionsChange = new BehaviorSubject<{ id: string, label: string }[]>([]);

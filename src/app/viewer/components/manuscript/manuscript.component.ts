@@ -4,7 +4,7 @@ import { InSubject } from '../../utils/InSubject';
 import { TextService } from 'src/app/services/text.service';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, tap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Annotation, RecursivePartial, satisfies } from 'src/app/utils/models';
 import { ManuscriptService } from '../../services/manuscript.service';
 
