@@ -41,7 +41,7 @@ export class SelectNumberComponent {
 
   selectedInfo = combineLatest([
     this.selectedItem,
-    this.optionsChange,
+    this.optionsChange.pipe(filter((x) => !!x)),
   ]).pipe(
     map(([item, options]) => {
       const index = options.findIndex((x) => x.id === item.id);
