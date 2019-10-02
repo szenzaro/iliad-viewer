@@ -4,6 +4,11 @@ import { map } from 'rxjs/operators';
 import { SearchQuery } from 'src/app/services/search.service';
 import { TextService } from 'src/app/services/text.service';
 
+
+function removePunctuation(s: string) {
+  return s.replace(/[.,\/#!$%\\[\]^&\*;:{}=\-_`~()]/g, '').replace(/\s{2,}/g, ' ');
+}
+
 @Component({
   selector: 'app-search-box',
   templateUrl: './search-box.component.html',
@@ -32,7 +37,7 @@ export class SearchBoxComponent {
 
   texts = this.textService.getTextsList().pipe(
     map((manifest) => manifest.textsList),
-    map((x) => x.map(({id}) => id)),
+    map((x) => x.map(({ id }) => id)),
   );
 
   faSearch = faSearch;
@@ -41,5 +46,12 @@ export class SearchBoxComponent {
   constructor(
     private textService: TextService,
   ) {
+  }
+
+  checkChange(x: SearchQuery) {
+    const cleanText = removePunctuation(x.text);
+    if (cleanText !== '') {
+      this.queryChange.next({ ...x, text: cleanText});
+    }
   }
 }

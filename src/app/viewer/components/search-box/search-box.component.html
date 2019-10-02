@@ -12,12 +12,12 @@
             <input
                 type="text"
                 class="form-control"
-                (keyup.enter)="queryChange.next(searchQuery)"
+                (keyup.enter)="checkChange(searchQuery)"
                 [(ngModel)]="searchQuery.text"
                 placeholder="Search text">
             <div class="input-group-append">
                 <fa-icon
-                    (click)="queryChange.next(searchQuery)"
+                    (click)="checkChange(searchQuery)"
                     [icon]="faSearch"
                     class="search-button input-group-text">
                 </fa-icon>
