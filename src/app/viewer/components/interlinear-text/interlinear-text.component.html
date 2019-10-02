@@ -1,22 +1,22 @@
 <div class="d-flex">
     <app-select-number
         [options]="manuscriptService.chants | async"
-        [selection]="manuscriptService.chant | async"
-        (selectionChange)="manuscriptService.chantInput.next($event)"
+        [selection]="chant | async"
+        (selectedNumber)="manuscriptService.chantInput.next($event)"
         label="Book"
         class="flex-grow-1">
     </app-select-number>
     <app-select-number
         [options]="manuscriptService.pages | async"
-        [selection]="manuscriptService.page | async"
-        (selectionChange)="manuscriptService.pageInput.next($event)"
+        [selection]="page | async"
+        (selectedNumber)="manuscriptService.pageInput.next($event)"
         label="Page"
         class="flex-grow-1">
     </app-select-number>
     <app-select-number
         [options]="manuscriptService.verses | async"
-        [selection]="manuscriptService.verse | async"
-        (selectionChange)="manuscriptService.verseInput.next($event)"
+        [selection]="verse | async"
+        (selectedNumber)="manuscriptService.verseInput.next($event)"
         label="Verse"
         class="flex-grow-1">
     </app-select-number>

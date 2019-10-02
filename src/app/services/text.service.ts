@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { forkJoin, merge, of } from 'rxjs';
-import { filter, map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { arrayToMap, Map, uuid } from '../utils/index';
 import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
 
@@ -10,7 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnotationModalComponent } from '../viewer/components/annotation-modal/annotation-modal.component';
 import { OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 
-function mapWords(text: string, chant: number, position: number, verse: VerseRowType, data: WordData[], verseNumber: number): Word[] {
+function mapWords(text: string, chant: number, verse: VerseRowType, data: WordData[], verseNumber: number): Word[] {
   switch (verse[0]) {
     case 'o':
       return [{ text: 'OMISIT', data } as Word];
@@ -33,7 +33,7 @@ function getVerse(id: number, text: string, chant: number, verse: VerseRowType, 
   return {
     id,
     n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
-    words: mapWords(text, chant, id, verse, data, id),
+    words: mapWords(text, chant, verse, data, id),
   };
 }
 
@@ -159,7 +159,6 @@ export class TextService {
       );
   }
 
-  // TODO: cache result in an internal data structure instead of http calls for every request
   getNumberOfChants(text: string) {
     return this.getTextsList()
       .pipe(
@@ -168,6 +167,19 @@ export class TextService {
           return textInfo.chants;
         }),
       );
+  }
+
+  getChantsPages(text: string) {
+    return this.getNumberOfChants(text).pipe(
+      map((n) => new Array(n).fill(0).map((_, i) => i + 1)),
+      mergeMap((ns) => forkJoin(ns.map((x) => this.getPageNumbers(x))).pipe(
+        map((x) => {
+          const m: Map<number[]> = {};
+          x.forEach((n, i) => m[i + 1] = n);
+          return m;
+        }),
+      ))
+    );
   }
 
   getAnnotations() {
@@ -202,10 +214,10 @@ export class TextService {
         const span = document.createElement('span');
         span.classList.add('invisible');
         span.innerHTML = `${annotation.data.type === 'homeric' ? 'H.' : 'P.'}${annotation.data.book}.${annotation.data.verse}`;
-        element.onmouseenter = (e) => {
+        element.onmouseenter = () => {
           span.classList.remove('invisible');
         };
-        element.onmouseleave = (e) => {
+        element.onmouseleave = () => {
           span.classList.add('invisible');
         };
         element.appendChild(span);
@@ -215,10 +227,10 @@ export class TextService {
         const spanVaria = document.createElement('span');
         spanVaria.classList.add('invisible');
         spanVaria.innerHTML = `${annotation.data.text}`;
-        element.onmouseenter = (e) => {
+        element.onmouseenter = () => {
           spanVaria.classList.remove('invisible');
         };
-        element.onmouseleave = (e) => {
+        element.onmouseleave = () => {
           spanVaria.classList.add('invisible');
         };
         element.appendChild(spanVaria);
@@ -232,10 +244,10 @@ export class TextService {
         const spanRef = document.createElement('span');
         spanRef.classList.add('invisible');
         spanRef.innerHTML = `${annotation.data.text}`;
-        element.onmouseenter = (e) => {
+        element.onmouseenter = () => {
           spanRef.classList.remove('invisible');
         };
-        element.onmouseleave = (e) => {
+        element.onmouseleave = () => {
           spanRef.classList.add('invisible');
         };
         element.appendChild(spanRef);
@@ -245,10 +257,10 @@ export class TextService {
         const spanOrnament = document.createElement('span');
         spanOrnament.classList.add('invisible');
         spanOrnament.innerHTML = `${annotation.data.text}`;
-        element.onmouseenter = (e) => {
+        element.onmouseenter = () => {
           spanOrnament.classList.remove('invisible');
         };
-        element.onmouseleave = (e) => {
+        element.onmouseleave = () => {
           spanOrnament.classList.add('invisible');
         };
         element.onclick = () => this.openAnnotation(annotation.data.description);
@@ -267,10 +279,10 @@ export class TextService {
         const spanTitle = document.createElement('span');
         spanTitle.classList.add('invisible');
         spanTitle.innerHTML = `${annotation.data.text}`;
-        element.onmouseenter = (e) => {
+        element.onmouseenter = () => {
           spanTitle.classList.remove('invisible');
         };
-        element.onmouseleave = (e) => {
+        element.onmouseleave = () => {
           spanTitle.classList.add('invisible');
         };
         element.onclick = () => this.openAnnotation(annotation.data.description);

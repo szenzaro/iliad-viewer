@@ -1,9 +1,17 @@
 import { Component, Input, Output } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { debounceTime, map, skip } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { debounceTime, filter, map, shareReplay, distinctUntilChanged } from 'rxjs/operators';
 import { InSubject } from '../../utils/InSubject';
 
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+
+interface ItemInfo {
+  index?: number;
+  first: boolean;
+  last: boolean;
+  next: { id: string, label: string };
+  prev: { id: string, label: string };
+}
 
 @Component({
   selector: 'app-select-number',
@@ -14,47 +22,42 @@ export class SelectNumberComponent {
 
   @Input() inline = true;
   @Input() label: string;
-  @Input() @InSubject() selection: number;
-  @Output() selectionChange = new BehaviorSubject<number>(1);
+  @Input() showButtons = true;
+
+  @Input() @InSubject() selection: { id: string, label: string };
+  @Output() selectionChange = new BehaviorSubject<{ id: string, label: string }>(undefined);
 
   @Input() @InSubject() options: { id: string, label: string }[];
   optionsChange = new BehaviorSubject<{ id: string, label: string }[]>([]);
 
-  selectedOption = this.selectionChange.pipe(
+  selectedItem = this.selectionChange.pipe(
+    filter((x) => !!x && +x.id !== NaN),
     debounceTime(150),
-    map((n) => `${n}`),
-    skip(1),
+  );
+
+  @Output() selectedNumber = this.selectedItem.pipe(
+    filter((x) => !!x && +x.id !== NaN),
+    map((x) => +x.id),
+    distinctUntilChanged(),
+  );
+
+  selectedInfo = combineLatest([
+    this.selectedItem,
+    this.optionsChange.pipe(filter((x) => !!x)),
+  ]).pipe(
+    map(([item, options]) => {
+      const index = options.findIndex((x) => x.id === item.id);
+      return {
+        index,
+        first: index === 0,
+        last: index === options.length - 1,
+        next: options[index + 1],
+        prev: options[index - 1],
+      } as ItemInfo;
+    }),
+    shareReplay(1),
   );
 
   faArrowLeft = faArrowLeft;
   faArrowRight = faArrowRight;
-
-  get isFirstOption() {
-    return !!this.options
-      && this.options.length > 0
-      && this.selection === parseInt(this.options[0].id, 10);
-  }
-
-  get isLastOption() {
-    return !!this.options
-      && this.options.length > 0
-      && this.selection === parseInt(this.options[this.options.length - 1].id, 10);
-  }
-
-  private get currentValueIndex() {
-    return this.options.findIndex(({ id }) => id === `${this.selection}`);
-  }
-
-  get nextNumber() {
-    return parseInt(this.options[this.currentValueIndex + 1].id, 10);
-  }
-
-  get prevNumber() {
-    return parseInt(this.options[this.currentValueIndex - 1].id, 10);
-  }
-
-
-  toInt(x: string) {
-    return parseInt(x, 10);
-  }
 }

@@ -43,7 +43,7 @@ export class ComparableTextComponent {
     );
 
   actualChant = merge(
-    this.chantChange.pipe(filter((x) => x !== NaN)),
+    this.chantChange.pipe(filter((x) => !!x && x !== NaN)),
     this.chantsNumber.pipe(map((x) => +x[0].id)),
   ).pipe(
     filter((x) => x !== NaN && x !== null),
