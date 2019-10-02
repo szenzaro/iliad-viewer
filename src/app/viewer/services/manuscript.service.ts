@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, forkJoin, of, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, merge, of, Subject, pipe, Observable } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -16,6 +16,12 @@ import {
 import { TextService } from 'src/app/services/text.service';
 import { numberToOption, numberToOptions } from 'src/app/utils';
 
+interface InputTriple {
+  chant: number;
+  page: number;
+  verse: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,87 +34,105 @@ export class ManuscriptService {
   pageInput = new Subject<number>();
   verseInput = new Subject<number>();
 
-  private lastTriple = new BehaviorSubject<[number, number, number]>([1, 1, 1]);
+  private lastTriple = new BehaviorSubject<InputTriple>({ chant: 1, page: 1, verse: 1 });
 
-  private triple = combineLatest([
-    this.chantInput.pipe(distinctUntilChanged()),
-    this.pageInput.pipe(distinctUntilChanged()),
-    this.verseInput.pipe(distinctUntilChanged()),
+  private chantChanged = combineLatest([
+    this.chantInput.pipe(filter((x) => !!x)),
     this.lastTriple,
   ]).pipe(
-    debounceTime(150),
+    debounceTime(500),
     pairwise(),
-    filter(([[pc, pp, pv, pt], [cc, cp, cv, ct]]) => (pc !== cc || pp !== cp || pv !== cv)
-      && (cv !== ct[2] || cp !== ct[1] || cc !== ct[0])),
-    tap((x) => console.log('pair', x)),
-    map(([[pc, pp, pv], [cc, cp, cv]]) => {
-      if (pc !== cc) { // chant changed, update page
-        console.log('chant changed!');
-        return forkJoin([
-          of(cc),
-          this.textService.getPageNumbers(cc).pipe(map((ps) => ps[0])),
-          of(cv),
-        ]).pipe(
-          shareReplay(1),
-        );
-      }
-      if (pp !== cp) { // page changed, update verse and chant
-        console.log('page changed!');
-        const newPageAndChant = this.pagesByChant.pipe(
-          map((m) => {
-            if (m[`${cc}`].includes(cp)) {
-              return [cc, cp];
-            }
-            const chant = Object.keys(m).find((n) => m[n].includes(cp));
-            // return [+chant, m[chant][0]];
-            return [+chant, cp];
-          }),
-          shareReplay(1),
-        );
-        //  TODO check going from page 41 to 40 using OSD arrows
-        return forkJoin([
-          newPageAndChant.pipe(
-            map(([c]) => c),
-            take(1),
-          ),
-          of(cp),
-          newPageAndChant.pipe(
-            switchMap(([c, p]) => this.textService.getVersesNumberFromPage(p, c)),
-            map((x) => x[0]),
-            map(([l, t]) => l <= cv && cv <= t ? cv : l),
-            take(1),
-          ),
-        ]);
-      }
-      if (pv !== cv) { // verse changed, update page
-        console.log('verse changed!');
-        return forkJoin([
-          of(cc),
-          this.textService.getPageFromVerse(cc, cv),
-          of(cv),
-        ]);
-      }
+    filter(([x, y]) => x[0] !== y[0]),
+    map(([x, y]) => y),
+    filter(([c, { chant }]) => (chant !== c)),
+    switchMap(([c, { chant, verse }]) => forkJoin([
+      of(c),
+      this.textService.getPageNumbers(c).pipe(map((ps) => ps[0])),
+      this.textService.getPageNumbers(c).pipe(
+        switchMap((ps) => this.textService.getVersesNumberFromPage(ps[0])),
+        map((x) => x[0][0]),
+      ),
+    ])),
+    map(([chant, page, verse]) => ({ chant, page, verse } as InputTriple)),
+    shareReplay(1),
+  );
+
+  private pageChanged = combineLatest([
+    this.pageInput.pipe(filter((x) => !!x)),
+    this.lastTriple,
+  ]).pipe(
+    debounceTime(500),
+    pairwise(),
+    filter(([x, y]) => x[0] !== y[0]),
+    map(([x, y]) => y),
+    filter(([p, { page }]) => page !== p),
+    switchMap(([p, { chant, verse }]) => {
+      const newChantAndPage = this.pagesByChant.pipe(
+        map((m) => {
+          if (m[`${chant}`].includes(p)) {
+            return [chant, p];
+          }
+          const ch = Object.keys(m).find((n) => m[n].includes(p));
+          return [+ch, p];
+        }),
+        shareReplay(1),
+      );
+      return forkJoin([
+        newChantAndPage.pipe(
+          map(([c]) => c),
+          take(1),
+        ),
+        of(p),
+        newChantAndPage.pipe(
+          switchMap(([c, np]) => this.textService.getVersesNumberFromPage(np, c)),
+          map((x) => x[0]),
+          map(([l, t]) => l <= verse && verse <= t ? verse : l),
+          take(1),
+        ),
+      ]);
     }),
-    switchMap((x) => x),
-    startWith([1, 1, 1]),
+    map(([chant, page, verse]) => ({ chant, page, verse } as InputTriple)),
+    shareReplay(1),
+  );
+
+  private verseChanged = combineLatest([
+    this.verseInput.pipe(filter((x) => !!x)),
+    this.lastTriple,
+  ]).pipe(
+    debounceTime(500),
+    pairwise(),
+    filter(([x, y]) => x[0] !== y[0]),
+    map(([x, y]) => y),
+    filter(([v, { verse }]) => verse !== v),
+    switchMap(([v, { chant }]) => forkJoin([
+      of(chant),
+      this.textService.getPageFromVerse(chant, v),
+      of(v),
+    ])),
+    map(([chant, page, verse]) => ({ chant, page, verse } as InputTriple)),
+    shareReplay(1),
+  );
+
+  private triple = merge(
+    this.chantChanged,
+    this.pageChanged,
+    this.verseChanged,
+  ).pipe(
     tap((x) => this.lastTriple.next(x)),
-    tap((x) => console.log(x)),
+    startWith({ chant: 1, page: 1, verse: 1 } as InputTriple),
     shareReplay(1),
   );
 
   chant = this.triple.pipe(
-    debounceTime(150),
-    map(([c]) => c),
+    map(({ chant }) => chant),
     shareReplay(1),
   );
   page = this.triple.pipe(
-    debounceTime(150),
-    map(([_, p]) => p),
+    map(({ page }) => page),
     shareReplay(1),
   );
   verse = this.triple.pipe(
-    debounceTime(150),
-    map((t) => t[2]),
+    map(({ verse }) => verse),
     shareReplay(1),
   );
 
@@ -143,7 +167,7 @@ export class ManuscriptService {
 
   pageVersesRange = this.triple.pipe(
     debounceTime(150),
-    mergeMap(([c, p, _]) => this.textService.getVersesNumberFromPage(p, c)),
+    mergeMap(({ chant, page }) => this.textService.getVersesNumberFromPage(page, chant)),
     filter((x) => !!x),
     shareReplay(1),
   );
@@ -154,9 +178,9 @@ export class ManuscriptService {
     this.triple,
     this.pageVersesRange,
   ]).pipe(
-    switchMap(([h, p, [c, _], rng]) => forkJoin([
-      this.textService.getVerses(h, c, [rng[0][0] - 1, rng[0][1]]),
-      this.textService.getVerses(p, c, [rng[1][0] - 1, rng[0][1]]),
+    switchMap(([h, p, { chant }, rng]) => forkJoin([
+      this.textService.getVerses(h, chant, [rng[0][0] - 1, rng[0][1]]),
+      this.textService.getVerses(p, chant, [rng[1][0] - 1, rng[0][1]]),
     ])),
   );
 
