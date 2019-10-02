@@ -1,15 +1,16 @@
 <div class="d-flex">
     <app-select-text
         [(text)]="text"
-        class="flex-grow-1"
-    ></app-select-text>
+        class="flex-grow-1">
+    </app-select-text>
     <app-select-number
+        [showButtons]="false"
         [options]="chantsNumber | async"
         label="Book"
         class="flex-grow-1"
         [selection]="actualChant | async"
-        (selectionChange)="chantChange.next($event)"
-    ></app-select-number>
+        (selectedNumber)="chant = $event">
+    </app-select-number>
 </div>
 <div class="overflow-scroll mt-1">
     <app-text
@@ -18,6 +19,6 @@
         [posHighlight]="posFilterChange | async"
         [highlightIds]="highlightIds"
         [verses]="verses | async"
-        [loading]="loading | async"
-    ></app-text>
+        [loading]="loading | async">
+    </app-text>
 </div>
