@@ -6,8 +6,8 @@ import { debounceTime, map, tap } from 'rxjs/operators';
 
 import { InSubject } from '../../utils/InSubject';
 
-import { ManuscriptService } from '../../services/manuscript.service';
 import { numberToOption } from 'src/app/utils';
+import { ManuscriptService } from '../../services/manuscript.service';
 
 function pairwiseMerge<T>(arr: T[], arr2: T[], initial: T[] = []): T[] {
   if (arr.length === 0) {
