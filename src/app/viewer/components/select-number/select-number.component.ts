@@ -22,6 +22,7 @@ export class SelectNumberComponent {
 
   @Input() inline = true;
   @Input() label: string;
+  @Input() showButtons = true;
 
   @Input() @InSubject() selection: { id: string, label: string };
   @Output() selectionChange = new BehaviorSubject<{ id: string, label: string }>(undefined);

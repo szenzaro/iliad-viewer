@@ -17,18 +17,20 @@
             bindLabel="id">
         </ng-select>
     </div>
-    <button
-        *ngIf="selectedInfo | async as itemInfo"
-        class="btn btn-secondary btn-sm"
-        (click)="selectionChange.next(itemInfo.prev)"
-        [disabled]="itemInfo.first">
-        <fa-icon [icon]="faArrowLeft"></fa-icon>
-    </button>
-    <button
-        *ngIf="selectedInfo | async as itemInfo"
-        class="btn btn-secondary btn-sm"
-        (click)="selectionChange.next(itemInfo.next)"
-        [disabled]="itemInfo.last">
-        <fa-icon [icon]="faArrowRight"></fa-icon>
-    </button>
+    <ng-container *ngIf="showButtons">
+        <button
+            *ngIf="selectedInfo | async as itemInfo"
+            class="btn btn-secondary btn-sm"
+            (click)="selectionChange.next(itemInfo.prev)"
+            [disabled]="itemInfo.first">
+            <fa-icon [icon]="faArrowLeft"></fa-icon>
+        </button>
+        <button
+            *ngIf="selectedInfo | async as itemInfo"
+            class="btn btn-secondary btn-sm"
+            (click)="selectionChange.next(itemInfo.next)"
+            [disabled]="itemInfo.last">
+            <fa-icon [icon]="faArrowRight"></fa-icon>
+        </button>
+    </ng-container>
 </div>
