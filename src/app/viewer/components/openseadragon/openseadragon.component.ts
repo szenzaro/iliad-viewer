@@ -88,7 +88,7 @@ function manifestResourcetoTileSource(manifestResource) {
   styleUrls: ['./openseadragon.component.scss']
 })
 export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('osd', { read: ElementRef }) div: ElementRef;
+  @ViewChild('osd', { read: ElementRef, static: true }) div: ElementRef;
 
   @Input() @InSubject() options; // TODO: add interface to better type this object
   optionsChange = new BehaviorSubject({});
