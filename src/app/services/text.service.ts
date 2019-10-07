@@ -38,8 +38,16 @@ function getVerse(id: number, text: string, chant: number, verse: VerseRowType, 
 }
 
 function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], data: WordData[][]) {
+
+  const verseIdx = (i) => {
+    const incrWithTitle = verses[0][0] === 't' ? 0 : 1;
+    const finalIdx = verses.findIndex((v) => v[0] === 'f');
+    const incrFinalIdx = finalIdx > i ? 0 : 1;
+    return i + incrWithTitle + incrFinalIdx;
+  };
+
   return verses
-    .map((verse, i) => getVerse(verses[0][0] === 't' ? i : i + 1, text, chant, verse, data[i]));
+    .map((verse, i) => getVerse(verseIdx(i), text, chant, verse, data[i]));
 }
 
 function toWordData(versesData: [string, string, string, string][][]): WordData[][] {
