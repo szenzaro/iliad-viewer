@@ -4,7 +4,7 @@ import { TextService } from 'src/app/services/text.service';
 import { BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 
-import { numberToOptions, POS, PosFilter } from 'src/app/utils';
+import { numberToOptions, PosFilter } from 'src/app/utils';
 import { InSubject } from '../../utils/InSubject';
 
 @Component({
@@ -56,6 +56,7 @@ export class ComparableTextComponent {
       tap(() => this.loading.next(true)),
       filter(([text]) => !!text),
       switchMap(([text, chant]) => this.textService.getVerses(text, chant)),
+      map((verses) => verses.filter((v) => v.n !== 't' && v.n !== 'f')),
       tap(() => this.loading.next(false)),
     );
 
