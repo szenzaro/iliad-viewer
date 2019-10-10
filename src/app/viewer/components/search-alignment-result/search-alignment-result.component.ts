@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { filter, switchMap, map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
 import { Word } from 'src/app/utils/models';
 import { InSubject } from '../../utils/InSubject';
@@ -12,24 +12,39 @@ import { InSubject } from '../../utils/InSubject';
 })
 export class SearchAlignmentResultComponent {
 
-  @Input() verseNumber: number;
+  @Input() @InSubject() book: number;
+  private bookChange = new BehaviorSubject<number>(undefined);
+  @Input() @InSubject() verseNumber: number;
+  private verseNumberChange = new BehaviorSubject<number>(undefined);
+  @Input() @InSubject() sourceText: string;
+  private sourceTextChange = new BehaviorSubject<string>(undefined);
+  @Input() @InSubject() targetText: string;
+  private targetTextChange = new BehaviorSubject<string>(undefined);
   @Input() @InSubject() sourceWords: Word[];
   sourceWordsChange = new BehaviorSubject<Word[]>([]);
   @Input() @InSubject() targetWords: Word[];
   targetWordsChange = new BehaviorSubject<Word[]>([]);
 
-  sourceVerse = this.sourceWordsChange.pipe(
-    filter((x) => x !== undefined && x !== null && x.length > 0),
-    switchMap((ws) => this.textService.getVerseFromNumber(ws[0].source, ws[0].chant, ws[0].verse)),
+  sourceVerse = combineLatest([
+    this.bookChange,
+    this.verseNumberChange,
+    this.sourceTextChange,
+  ]).pipe(
+    filter(([c, v, t]) => c !== undefined && v !== undefined && !!t),
+    switchMap(([c, v, t]) => this.textService.getVerseFromNumber(t, c, v)),
   );
 
   sourceIds = this.sourceWordsChange.pipe(
     map((ws) => ws.map(({ id }) => id)),
   );
 
-  targetVerse = this.targetWordsChange.pipe(
-    filter((x) => x !== undefined && x !== null && x.length > 0),
-    switchMap((ws) => this.textService.getVerseFromNumber(ws[0].source, ws[0].chant, ws[0].verse)),
+  targetVerse = combineLatest([
+    this.bookChange,
+    this.verseNumberChange,
+    this.targetTextChange,
+  ]).pipe(
+    filter(([c, v, t]) => c !== undefined && v !== undefined && !!t),
+    switchMap(([c, v, t]) => this.textService.getVerseFromNumber(t, c, v)),
   );
 
   targetIds = this.targetWordsChange.pipe(
@@ -39,6 +54,5 @@ export class SearchAlignmentResultComponent {
   constructor(
     private textService: TextService,
   ) {
-    this.targetVerse.subscribe(console.log);
   }
 }

@@ -16,8 +16,11 @@
                         <app-search-alignment-result
                             *ngFor="let v of r.value | keyvalue"
                             [sourceWords]="v.value[0]"
+                            [sourceText]="(currentQuery | async)?.texts[0]"
+                            [targetText]="(currentQuery | async)?.texts[1]"
                             [targetWords]="v.value[1]"
-                            [verseNumber]="v.key">
+                            [book]="r.key"
+                            [verseNumber]="+v.key">
                         </app-search-alignment-result>
                     </ng-template>
                 </ngb-tab>
