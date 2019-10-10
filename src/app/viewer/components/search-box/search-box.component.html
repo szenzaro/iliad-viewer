@@ -1,3 +1,4 @@
+{{  searchQuery | json }}
 <div class="d-flex align-items-baseline">
     <div class="w-75 d-flex flex-column">
         <app-word-filters
@@ -23,7 +24,9 @@
                 </fa-icon>
             </div>
         </div>
-        <div class="d-flex pt-3">
+        <div
+            *ngIf="!searchQuery.alignment"
+            class="d-flex pt-3">
             <label
                 class="mr-2 align-self-center"
                 for="texts">
@@ -38,6 +41,20 @@
                 labelForId="texts"
                 [(ngModel)]="searchQuery.texts">
             </ng-select>
+        </div>
+        <div
+            *ngIf="searchQuery.alignment"
+            class="d-flex pt-3">
+            <app-select-text
+                label="From:"
+                [(text)]="sourceText"
+                class="flex-grow-1">
+            </app-select-text>
+            <app-select-text
+                label="To:"
+                [(text)]="targetText"
+                class="flex-grow-1">
+            </app-select-text>
         </div>
     </div>
     <div class="w-50 p-3 d-flex justify-content-between">

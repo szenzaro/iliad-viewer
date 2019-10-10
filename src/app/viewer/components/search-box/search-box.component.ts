@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { faSearch, faSlidersH } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import { SearchQuery } from 'src/app/services/search.service';
-import { TextService } from 'src/app/services/text.service';
+import { TextService, TextItem } from 'src/app/services/text.service';
 
 
 function removePunctuation(s: string) {
@@ -43,6 +43,26 @@ export class SearchBoxComponent {
   faSearch = faSearch;
   faSlidersH = faSlidersH;
 
+  get sourceText() {
+    return { id: this.searchQuery.texts[0], label: this.searchQuery.texts[0] };
+  }
+
+  set sourceText(t: Partial<TextItem>) {
+    if (!!t) {
+      this.searchQuery.texts[0] = t.id;
+    }
+  }
+
+  get targetText() {
+    return { id: this.searchQuery.texts[1], label: this.searchQuery.texts[1] };
+  }
+
+  set targetText(t: Partial<TextItem>) {
+    if (!!t) {
+      this.searchQuery.texts[1] = t.id;
+    }
+  }
+
   constructor(
     private textService: TextService,
   ) {
@@ -51,7 +71,7 @@ export class SearchBoxComponent {
   checkChange(x: SearchQuery) {
     const cleanText = removePunctuation(x.text);
     if (cleanText !== '') {
-      this.queryChange.next({ ...x, text: cleanText});
+      this.queryChange.next({ ...x, text: cleanText });
     }
   }
 }
