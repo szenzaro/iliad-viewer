@@ -63,6 +63,11 @@ export class SearchBoxComponent {
     }
   }
 
+  get searchDisabled() {
+    return Array.from(new Set(this.searchQuery.texts)).length < 2 ||
+      (this.searchQuery.text.length === 0 && !this.searchQuery.pos);
+  }
+
   constructor(
     private textService: TextService,
   ) {

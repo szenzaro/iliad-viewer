@@ -3,6 +3,7 @@
     <div class="w-75 d-flex flex-column">
         <app-word-filters
             *ngIf="searchQuery.pos"
+            [disabled]="searchDisabled"
             [submitBtn]="true"
             (filterChange)="searchQuery.posFilter = $event"
             (submitFilter)="queryChange.next(searchQuery)">
@@ -13,16 +14,15 @@
             <input
                 type="text"
                 class="form-control"
-                (keyup.enter)="checkChange(searchQuery)"
+                (keyup.enter)="searchDisabled ? 0 : checkChange(searchQuery)"
                 [(ngModel)]="searchQuery.text"
                 placeholder="Search text">
-            <div class="input-group-append">
-                <fa-icon
+                <button
+                    [disabled]="searchDisabled"
                     (click)="checkChange(searchQuery)"
-                    [icon]="faSearch"
-                    class="search-button input-group-text">
-                </fa-icon>
-            </div>
+                    class="btn btn-secondary">
+                    <fa-icon [icon]="faSearch"></fa-icon>
+                </button>
         </div>
         <div
             *ngIf="!searchQuery.alignment"
