@@ -16,17 +16,19 @@
                 <fa-icon [icon]="faBroom"></fa-icon>
             </button>
             <button
+                [disabled]="disabled"
                 *ngIf="submitBtn"
                 (click)="submitFilter.next()"
                 class="m-1 btn btn-sm btn-secondary">
-                <fa-icon [icon]="faSearch"></fa-icon> 
+                <fa-icon [icon]="faSearch"></fa-icon>
             </button>
             <ui-switch
                 (change)="switchChange.next($event)"
                 checkedLabel="And"
                 uncheckedLabel="Or"
                 size="small"
-                class="m-1"></ui-switch>
+                class="m-1">
+            </ui-switch>
         </div>
         <ngb-tabset
             [destroyOnHide]="false"
