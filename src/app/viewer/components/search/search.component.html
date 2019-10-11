@@ -14,7 +14,7 @@
                     [title]="'Βοοκ ' + r.key">
                     <ng-template ngbTabContent>
                         <app-search-alignment-result
-                            *ngFor="let v of r.value | keyvalue"
+                            *ngFor="let v of r.value | keyvalue: keyNumOrder"
                             [sourceWords]="v.value[0]"
                             [sourceText]="(currentQuery | async)?.texts[0]"
                             [targetText]="(currentQuery | async)?.texts[1]"
