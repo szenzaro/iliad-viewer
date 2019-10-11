@@ -117,15 +117,17 @@ export class SearchService {
             .map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
         }),
         map((ids) => ids.map((id) => ws[sourceText][id])),
-        map((words) => forkJoin(words.map((w) => this.textService.getAlignment(sourceText, targetText, w.id))).pipe(
-          map((entries) => entries
-            .filter((e) => !!e && e.type !== 'del' && e.type !== 'ins')
-            .map((e) => e.target)
-            .reduce((x, y) => x.concat(y), [])
-          ),
-          map((targetIds) => targetIds.map((id) => ws[targetText][id])),
-          map((targetWords) => words.concat(targetWords)),
-        )),
+        map((words) => words.length <= 0
+          ? of([] as Word[])
+          : forkJoin(words.map((w) => this.textService.getAlignment(sourceText, targetText, w.id))).pipe(
+            map((entries) => entries
+              .filter((e) => !!e && e.type !== 'del' && e.type !== 'ins')
+              .map((e) => e.target)
+              .reduce((x, y) => x.concat(y), [])
+            ),
+            map((targetIds) => targetIds.map((id) => ws[targetText][id])),
+            map((targetWords) => words.concat(targetWords)),
+          )),
         switchMap((x) => x),
       );
     }),
