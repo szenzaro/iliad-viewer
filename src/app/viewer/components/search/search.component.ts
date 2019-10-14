@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, tap } from 'rxjs/operators';
 import { SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
@@ -13,6 +13,16 @@ import { Word } from 'src/app/utils/models';
 export class SearchComponent {
 
   currentQuery = this.searchService.queryString.pipe(shareReplay(1));
+
+  sourceText = this.currentQuery.pipe(
+    map((q) => q.alignment ? q.texts[0] : undefined),
+    filter((x) => !!x),
+  );
+
+  targetText = this.currentQuery.pipe(
+    map((q) => q.alignment ? q.texts[1] : undefined),
+    filter((x) => !!x),
+  );
 
   resultAlignment = this.searchService.results.pipe(
     map((x) => [

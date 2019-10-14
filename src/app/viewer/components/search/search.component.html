@@ -16,8 +16,8 @@
                         <app-search-alignment-result
                             *ngFor="let v of r.value | keyvalue: keyNumOrder"
                             [sourceWords]="v.value[0]"
-                            [sourceText]="(currentQuery | async)?.texts[0]"
-                            [targetText]="(currentQuery | async)?.texts[1]"
+                            [sourceText]="sourceText | async"
+                            [targetText]="targetText | async"
                             [targetWords]="v.value[1]"
                             [book]="r.key"
                             [verseNumber]="+v.key">
