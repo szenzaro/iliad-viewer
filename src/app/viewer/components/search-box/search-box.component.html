@@ -17,12 +17,12 @@
                 (keyup.enter)="searchDisabled ? 0 : checkChange(searchQuery)"
                 [(ngModel)]="searchQuery.text"
                 placeholder="Search text">
-                <button
-                    [disabled]="searchDisabled"
-                    (click)="checkChange(searchQuery)"
-                    class="btn btn-secondary">
-                    <fa-icon [icon]="faSearch"></fa-icon>
-                </button>
+            <button
+                [disabled]="searchDisabled"
+                (click)="checkChange(searchQuery)"
+                class="btn btn-secondary">
+                <fa-icon [icon]="faSearch"></fa-icon>
+            </button>
         </div>
         <div
             *ngIf="!searchQuery.alignment"
