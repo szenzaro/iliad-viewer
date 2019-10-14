@@ -18,15 +18,20 @@
                     *ngFor="let r of res | keyvalue"
                     [title]="'Βοοκ ' + r.key + ' ('+ (perBookAlignmentResult | async)[r.key] + ')'">
                     <ng-template ngbTabContent>
-                        <app-search-alignment-result
-                            *ngFor="let v of r.value | keyvalue: keyNumOrder"
-                            [sourceWords]="v.value[0]"
-                            [sourceText]="sourceText | async"
-                            [targetText]="targetText | async"
-                            [targetWords]="v.value[1]"
-                            [book]="r.key"
-                            [verseNumber]="+v.key">
-                        </app-search-alignment-result>
+                        <cdk-virtual-scroll-viewport
+                            itemSize="32"
+                            class="min-h">
+                            <ng-container *cdkVirtualFor="let v of r.value | keyvalue: keyNumOrder">
+                                <app-search-alignment-result
+                                    [sourceWords]="v.value[0]"
+                                    [sourceText]="sourceText | async"
+                                    [targetText]="targetText | async"
+                                    [targetWords]="v.value[1]"
+                                    [book]="r.key"
+                                    [verseNumber]="+v.key">
+                                </app-search-alignment-result>
+                            </ng-container>
+                        </cdk-virtual-scroll-viewport>
                     </ng-template>
                 </ngb-tab>
             </ngb-tabset>
