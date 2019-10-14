@@ -4,7 +4,7 @@
         class="p-2"
         (queryChange)="searchService.loading.next(true)"
         (queryChange)="searchService.queryString.next($event)"></app-search-box>
-    <app-spinner *ngIf="searchService.loading | async"></app-spinner>
+    <app-spinner *ngIf="loading | async"></app-spinner>
 
     <ng-container *ngIf="(currentQuery | async)?.alignment">
         <div *ngIf="resultAlignment | async as res">

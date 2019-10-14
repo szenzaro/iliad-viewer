@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
-import { filter, map, shareReplay, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, shareReplay, tap } from 'rxjs/operators';
 import { SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
@@ -12,6 +12,7 @@ import { Word } from 'src/app/utils/models';
 })
 export class SearchComponent {
 
+  loading = this.searchService.loading.pipe(debounceTime(150));
   currentQuery = this.searchService.queryString.pipe(shareReplay(1));
 
   sourceText = this.currentQuery.pipe(
