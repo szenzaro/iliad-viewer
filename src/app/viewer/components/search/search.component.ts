@@ -4,6 +4,7 @@ import { debounceTime, filter, map, shareReplay, tap } from 'rxjs/operators';
 import { SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -50,6 +51,19 @@ export class SearchComponent {
   resultsByText = this.searchService.results.pipe(
     map((x) => groupBy(x, 'source')),
     shareReplay(1),
+  );
+
+  perBookAlignmentResult = this.resultAlignment.pipe(
+    map((r) => {
+      const perBook: Map<number> = {};
+      Object.keys(r).forEach((x) => perBook[x] = Object.keys(r[x]).length);
+      return perBook;
+    }),
+    shareReplay(1),
+  );
+
+  totalAlignmentResults = this.perBookAlignmentResult.pipe(
+    map((r) => Object.keys(r).map((k) => r[k]).reduce((a, b) => a + b, 0)),
   );
 
   results = this.resultsByText.pipe(

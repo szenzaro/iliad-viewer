@@ -8,10 +8,15 @@
 
     <ng-container *ngIf="(currentQuery | async)?.alignment">
         <div *ngIf="resultAlignment | async as res">
+            <p
+                *ngIf="!(searchService.loading | async)"
+                class="mr-3 text-right">
+                Number of results: {{ totalAlignmentResults | async }}
+            </p>
             <ngb-tabset>
                 <ngb-tab
                     *ngFor="let r of res | keyvalue"
-                    [title]="'Βοοκ ' + r.key">
+                    [title]="'Βοοκ ' + r.key + ' ('+ (perBookAlignmentResult | async)[r.key] + ')'">
                     <ng-template ngbTabContent>
                         <app-search-alignment-result
                             *ngFor="let v of r.value | keyvalue: keyNumOrder"
