@@ -23,7 +23,7 @@ export interface SearchQuery {
 
 function getRegexp(q: SearchQuery): RegExp {
   const txt = `${q.exactMatch ? '^' : '.*'}${q.diacriticSensitive ? q.text : removeAccents(q.text)}${q.exactMatch ? '$' : '.*'}`;
-  return new RegExp(txt, `g${q.caseSensitive ? '' : 'i'}`);
+  return new RegExp(txt, `${q.caseSensitive ? '' : 'i'}`);
 }
 
 @Injectable({
