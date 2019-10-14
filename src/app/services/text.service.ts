@@ -30,10 +30,11 @@ function mapWords(text: string, chant: number, verse: VerseRowType, data: WordDa
 }
 
 function getVerse(id: number, text: string, chant: number, verse: VerseRowType, data: WordData[]): Verse {
+  const verseN = verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1];
   return {
     id,
-    n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
-    words: mapWords(text, chant, verse, data, id),
+    n: verseN,
+    words: mapWords(text, chant, verse, data, +verseN),
   };
 }
 
