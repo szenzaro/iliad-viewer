@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { faSearch, faSlidersH } from '@fortawesome/free-solid-svg-icons';
+import { faExchangeAlt, faSearch, } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import { SearchQuery } from 'src/app/services/search.service';
-import { TextService, TextItem } from 'src/app/services/text.service';
+import { TextItem, TextService } from 'src/app/services/text.service';
 
 
 function removePunctuation(s: string) {
@@ -41,7 +41,7 @@ export class SearchBoxComponent {
   );
 
   faSearch = faSearch;
-  faSlidersH = faSlidersH;
+  faExchange = faExchangeAlt;
 
   get sourceText() {
     return { id: this.searchQuery.texts[0], label: this.searchQuery.texts[0] };
@@ -71,6 +71,10 @@ export class SearchBoxComponent {
   constructor(
     private textService: TextService,
   ) {
+  }
+
+  swapTexts() {
+    this.searchQuery.texts = this.searchQuery.texts.reverse();
   }
 
   checkChange(x: SearchQuery) {

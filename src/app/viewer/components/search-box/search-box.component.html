@@ -45,6 +45,11 @@
         <div
             *ngIf="searchQuery.alignment"
             class="d-flex pt-3">
+            <button
+                (click)="swapTexts()"
+                class="btn btn-secondary btn-sm">
+                <fa-icon [icon]="faExchange"></fa-icon>
+            </button>
             <app-select-text
                 label="From:"
                 [(text)]="sourceText"
