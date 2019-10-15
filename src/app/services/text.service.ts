@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { forkJoin, of } from 'rxjs';
-import { filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { arrayToMap, Map, uuid } from '../utils/index';
 import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
 
@@ -30,24 +30,17 @@ function mapWords(text: string, chant: number, verse: VerseRowType, data: WordDa
 }
 
 function getVerse(id: number, text: string, chant: number, verse: VerseRowType, data: WordData[]): Verse {
+  const verseN = verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1];
   return {
     id,
-    n: verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1],
-    words: mapWords(text, chant, verse, data, id),
+    n: verseN,
+    words: mapWords(text, chant, verse, data, +verseN),
   };
 }
 
 function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], data: WordData[][]) {
-
-  const verseIdx = (i) => {
-    const incrWithTitle = verses[0][0] === 't' ? 0 : 1;
-    const finalIdx = verses.findIndex((v) => v[0] === 'f');
-    const incrFinalIdx = finalIdx > i ? 0 : 1;
-    return i + incrWithTitle + incrFinalIdx;
-  };
-
   return verses
-    .map((verse, i) => getVerse(verseIdx(i), text, chant, verse, data[i]));
+    .map((verse, i) => getVerse(verses[0][0] === 't' ? i : i + 1, text, chant, verse, data[i]));
 }
 
 function toWordData(versesData: [string, string, string, string][][]): WordData[][] {
@@ -66,6 +59,7 @@ export interface TextItem {
 interface TextManifest {
   textsList: TextItem[];
   mainText: string;
+  alignments: { source: string, target: string }[];
 }
 
 type PageInfo = [number, [number, number], [number, number]];
@@ -87,12 +81,32 @@ export class TextService {
     private readonly http: HttpClient,
     private readonly modalService: NgbModal,
   ) {
+    this.alignments.subscribe();
   }
 
-  getAlignment(text1: string, text2: string, wordId: string) {
-    return this.cachedGet<Map<AlignmentEntry>>(`./assets/data/alignments/${text1}-${text2}.json`)
+  private manifest = this.cachedGet<TextManifest>(`./assets/data/manifest.json`).pipe(shareReplay(1));
+
+  private alignments = this.manifest.pipe(
+    map(({ alignments }) => alignments),
+    map((al) => al.map(({ source, target }) => `./assets/data/alignments/${source}-${target}.json`)),
+    map((al) => al.map((a) => this.cachedGet<Map<AlignmentEntry>>(a))),
+    switchMap((al) => forkJoin(al).pipe(
+      combineLatest(this.manifest),
+      map(([als, { alignments }]) => {
+        const ret: Map<Map<AlignmentEntry>> = {};
+        alignments.forEach((a, i) => {
+          ret[`${alignments[i].source}-${alignments[i].target}`] = als[i];
+        });
+        return ret;
+      })
+    )),
+    shareReplay(1),
+  );
+
+  getAlignment(source: string, target: string, wordId: string) {
+    return this.alignments
       .pipe(
-        map((alignment) => alignment[wordId]), // Can be undefined!
+        map((alignment) => alignment[`${source}-${target}`][wordId]), // Can be undefined!
       );
   }
 

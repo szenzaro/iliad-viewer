@@ -2,6 +2,7 @@
     <div class="w-75 d-flex flex-column">
         <app-word-filters
             *ngIf="searchQuery.pos"
+            [disabled]="searchDisabled"
             [submitBtn]="true"
             (filterChange)="searchQuery.posFilter = $event"
             (submitFilter)="queryChange.next(searchQuery)">
@@ -12,18 +13,19 @@
             <input
                 type="text"
                 class="form-control"
-                (keyup.enter)="checkChange(searchQuery)"
+                (keyup.enter)="searchDisabled ? 0 : checkChange(searchQuery)"
                 [(ngModel)]="searchQuery.text"
                 placeholder="Search text">
-            <div class="input-group-append">
-                <fa-icon
-                    (click)="checkChange(searchQuery)"
-                    [icon]="faSearch"
-                    class="search-button input-group-text">
-                </fa-icon>
-            </div>
+            <button
+                [disabled]="searchDisabled"
+                (click)="checkChange(searchQuery)"
+                class="btn btn-secondary">
+                <fa-icon [icon]="faSearch"></fa-icon>
+            </button>
         </div>
-        <div class="d-flex pt-3">
+        <div
+            *ngIf="!searchQuery.alignment"
+            class="d-flex pt-3">
             <label
                 class="mr-2 align-self-center"
                 for="texts">
@@ -39,13 +41,31 @@
                 [(ngModel)]="searchQuery.texts">
             </ng-select>
         </div>
+        <div
+            *ngIf="searchQuery.alignment"
+            class="d-flex pt-3">
+            <button
+                (click)="swapTexts()"
+                class="btn btn-secondary btn-sm">
+                <fa-icon [icon]="faExchange"></fa-icon>
+            </button>
+            <app-select-text
+                label="From:"
+                [(text)]="sourceText"
+                class="flex-grow-1">
+            </app-select-text>
+            <app-select-text
+                label="To:"
+                [(text)]="targetText"
+                class="flex-grow-1">
+            </app-select-text>
+        </div>
     </div>
     <div class="w-50 p-3 d-flex justify-content-between">
         <div class="d-flex flex-column">
             <label>Subject:</label>
             <div class="form-check">
                 <input
-                    disabled="true"
                     type="checkbox"
                     class="form-check-input"
                     [(ngModel)]="searchQuery.alignment"

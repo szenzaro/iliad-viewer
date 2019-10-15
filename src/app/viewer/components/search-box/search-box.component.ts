@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { faSearch, faSlidersH } from '@fortawesome/free-solid-svg-icons';
+import { faExchangeAlt, faSearch, } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import { SearchQuery } from 'src/app/services/search.service';
-import { TextService } from 'src/app/services/text.service';
+import { TextItem, TextService } from 'src/app/services/text.service';
 
 
 function removePunctuation(s: string) {
@@ -23,7 +23,7 @@ export class SearchBoxComponent {
     diacriticSensitive: false,
     caseSensitive: false,
     exactMatch: false,
-    alignment: false, // TODO: make default true
+    alignment: true,
     pos: false,
     index: 'text',
     mode: 'words',
@@ -41,17 +41,46 @@ export class SearchBoxComponent {
   );
 
   faSearch = faSearch;
-  faSlidersH = faSlidersH;
+  faExchange = faExchangeAlt;
+
+  get sourceText() {
+    return { id: this.searchQuery.texts[0], label: this.searchQuery.texts[0] };
+  }
+
+  set sourceText(t: Partial<TextItem>) {
+    if (!!t) {
+      this.searchQuery.texts[0] = t.id;
+    }
+  }
+
+  get targetText() {
+    return { id: this.searchQuery.texts[1], label: this.searchQuery.texts[1] };
+  }
+
+  set targetText(t: Partial<TextItem>) {
+    if (!!t) {
+      this.searchQuery.texts[1] = t.id;
+    }
+  }
+
+  get searchDisabled() {
+    return Array.from(new Set(this.searchQuery.texts)).length < 2 ||
+      (this.searchQuery.text.length === 0 && !this.searchQuery.pos);
+  }
 
   constructor(
     private textService: TextService,
   ) {
   }
 
+  swapTexts() {
+    this.searchQuery.texts = this.searchQuery.texts.reverse();
+  }
+
   checkChange(x: SearchQuery) {
     const cleanText = removePunctuation(x.text);
     if (cleanText !== '') {
-      this.queryChange.next({ ...x, text: cleanText});
+      this.queryChange.next({ ...x, text: cleanText });
     }
   }
 }

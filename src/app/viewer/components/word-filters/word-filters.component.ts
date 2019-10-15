@@ -27,6 +27,7 @@ export class WordFiltersComponent {
     startWith<POS_OP>('or')
   );
 
+  @Input() disabled = false;
   @Output() filterChange = combineLatest(
     this.currentFilter,
     this.opChange,

@@ -5,6 +5,7 @@
         { "id": "paraphrase", "label": "Paraphrase", "chants": 3 }
     ],
     "alignments": [
-        { "texts": ["homeric", "paraphrase"], "folder": "h-p" }
+        { "source": "homeric", "target": "paraphrase" },
+        { "source": "paraphrase", "target": "homeric" }
     ]
 }

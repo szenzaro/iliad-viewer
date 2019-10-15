@@ -14,6 +14,7 @@ import { map } from 'rxjs/operators';
 export class SelectTextComponent {
 
   @Input() inline = true;
+  @Input() label: string;
 
   textsList = this.textService.getTextsList()
     .pipe(

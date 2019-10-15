@@ -1,9 +1,9 @@
+import { KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, shareReplay, tap } from 'rxjs/operators';
 import { SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
-import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-search',
@@ -12,9 +12,56 @@ import { KeyValue } from '@angular/common';
 })
 export class SearchComponent {
 
+  loading = this.searchService.loading.pipe(debounceTime(150));
+  currentQuery = this.searchService.queryString.pipe(shareReplay(1));
+
+  sourceText = this.currentQuery.pipe(
+    map((q) => q.alignment ? q.texts[0] : undefined),
+    filter((x) => !!x),
+  );
+
+  targetText = this.currentQuery.pipe(
+    map((q) => q.alignment ? q.texts[1] : undefined),
+    filter((x) => !!x),
+  );
+
+  resultAlignment = this.searchService.results.pipe(
+    map((x) => [
+      Array.from(new Set(x.filter((a) => !!a).map(({ source }) => source))),
+      groupBy(x, 'chant'),
+    ] as [string[], Map<Word[]>]),
+    map(([texts, byChant]) => {
+      const chants = Object.keys(byChant);
+      const res: Map<Map<[Word[], Word[]]>> = {};
+      chants.forEach((c) => {
+        res[c] = {};
+        const byVerse = groupBy(byChant[c], 'verse');
+        Object.keys(byVerse).forEach((v) => res[c][v] = [
+          byVerse[v].filter((x) => x.source === texts[0]),
+          byVerse[v].filter((x) => x.source === texts[1]),
+        ]);
+      });
+      return res;
+    }),
+    tap(() => this.searchService.loading.next(false)),
+  );
+
   resultsByText = this.searchService.results.pipe(
     map((x) => groupBy(x, 'source')),
     shareReplay(1),
+  );
+
+  perBookAlignmentResult = this.resultAlignment.pipe(
+    map((r) => {
+      const perBook: Map<number> = {};
+      Object.keys(r).forEach((x) => perBook[x] = Object.keys(r[x]).length);
+      return perBook;
+    }),
+    shareReplay(1),
+  );
+
+  totalAlignmentResults = this.perBookAlignmentResult.pipe(
+    map((r) => Object.keys(r).map((k) => r[k]).reduce((a, b) => a + b, 0)),
   );
 
   results = this.resultsByText.pipe(

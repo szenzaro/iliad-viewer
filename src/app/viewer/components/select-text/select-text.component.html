@@ -1,7 +1,17 @@
-<app-select 
-  label="Text"
-  [inline]="inline"
-  [options]="textsList | async" 
-  [selectedId]="text"
-  (selectionChange)="textChange.next($event) ">
-</app-select>
+<div
+    class="d-flex flex-grow-1"
+    [class.flex-column]="!inline">
+    <label
+        *ngIf="label"
+        class="m-0 p-1">
+        {{ label }}
+    </label>
+    <ng-select
+        class="flex-grow-1 mr-1"
+        [items]="textsList | async"
+        [hideSelected]="true"
+        [clearable]="false"
+        [(ngModel)]="text"
+        bindLabel="id">
+    </ng-select>
+</div>
