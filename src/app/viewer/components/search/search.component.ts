@@ -4,7 +4,6 @@ import { debounceTime, filter, map, shareReplay, tap } from 'rxjs/operators';
 import { SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
-import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-search',

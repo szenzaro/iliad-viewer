@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { forkJoin, of } from 'rxjs';
-import { filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { arrayToMap, Map, uuid } from '../utils/index';
 import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
 
@@ -59,6 +59,7 @@ export interface TextItem {
 interface TextManifest {
   textsList: TextItem[];
   mainText: string;
+  alignments: { source: string, target: string }[];
 }
 
 type PageInfo = [number, [number, number], [number, number]];
@@ -80,12 +81,32 @@ export class TextService {
     private readonly http: HttpClient,
     private readonly modalService: NgbModal,
   ) {
+    this.alignments.subscribe();
   }
 
-  getAlignment(text1: string, text2: string, wordId: string) {
-    return this.cachedGet<Map<AlignmentEntry>>(`./assets/data/alignments/${text1}-${text2}.json`)
+  private manifest = this.cachedGet<TextManifest>(`./assets/data/manifest.json`).pipe(shareReplay(1));
+
+  private alignments = this.manifest.pipe(
+    map(({ alignments }) => alignments),
+    map((al) => al.map(({ source, target }) => `./assets/data/alignments/${source}-${target}.json`)),
+    map((al) => al.map((a) => this.cachedGet<Map<AlignmentEntry>>(a))),
+    switchMap((al) => forkJoin(al).pipe(
+      combineLatest(this.manifest),
+      map(([als, { alignments }]) => {
+        const ret: Map<Map<AlignmentEntry>> = {};
+        alignments.forEach((a, i) => {
+          ret[`${alignments[i].source}-${alignments[i].target}`] = als[i];
+        });
+        return ret;
+      })
+    )),
+    shareReplay(1),
+  );
+
+  getAlignment(source: string, target: string, wordId: string) {
+    return this.alignments
       .pipe(
-        map((alignment) => alignment[wordId]), // Can be undefined!
+        map((alignment) => alignment[`${source}-${target}`][wordId]), // Can be undefined!
       );
   }
 
