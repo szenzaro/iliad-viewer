@@ -44,7 +44,6 @@ export class SearchComponent {
       return res;
     }),
     tap(() => this.searchService.loading.next(false)),
-    tap(console.log),
   );
 
   resultsByText = this.searchService.results.pipe(
