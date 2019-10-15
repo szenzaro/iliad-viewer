@@ -28,7 +28,7 @@ export class SearchComponent {
 
   resultAlignment = this.searchService.results.pipe(
     map((x) => [
-      Array.from(new Set(x.map(({ source }) => source))),
+      Array.from(new Set(x.filter((a) => !!a).map(({ source }) => source))),
       groupBy(x, 'chant'),
     ] as [string[], Map<Word[]>]),
     map(([texts, byChant]) => {
