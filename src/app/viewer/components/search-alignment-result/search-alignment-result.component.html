@@ -1,11 +1,15 @@
 <div class="d-flex">
     <app-verse
         class="w-50"
+        (openWordId)="sourceOpenedWordId = $event"
+        [wordDetailsId]="sourceOpenedWordId"
         [verse]="sourceVerse | async"
         [highlightIds]="sourceIds | async">
     </app-verse>
     <app-verse
         class="w-50"
+        (openWordId)="targetOpenedWordId = $event"
+        [wordDetailsId]="targetOpenedWordId"
         [verse]="targetVerse | async"
         [highlightIds]="targetIds | async">
     </app-verse>
