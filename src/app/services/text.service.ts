@@ -1,14 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, of } from 'rxjs';
 import { combineLatest, filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { arrayToMap, Map, uuid } from '../utils/index';
 import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
-
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnotationModalComponent } from '../viewer/components/annotation-modal/annotation-modal.component';
 import { OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
+import { CacheService } from './cache.service';
 
 function mapWords(text: string, chant: number, verse: VerseRowType, data: WordData[], verseNumber: number): Word[] {
   switch (verse[0]) {
@@ -78,18 +76,18 @@ export class TextService {
   cache: Map<any> = {};
 
   constructor(
-    private readonly http: HttpClient,
+    private readonly cacheService: CacheService,
     private readonly modalService: NgbModal,
   ) {
     this.alignments.subscribe();
   }
 
-  private manifest = this.cachedGet<TextManifest>(`./assets/data/manifest.json`).pipe(shareReplay(1));
+  private manifest = this.cacheService.cachedGet<TextManifest>(`./assets/data/manifest.json`).pipe(shareReplay(1));
 
   private alignments = this.manifest.pipe(
     map(({ alignments }) => alignments),
     map((al) => al.map(({ source, target }) => `./assets/data/alignments/${source}-${target}.json`)),
-    map((al) => al.map((a) => this.cachedGet<Map<AlignmentEntry>>(a))),
+    map((al) => al.map((a) => this.cacheService.cachedGet<Map<AlignmentEntry>>(a))),
     switchMap((al) => forkJoin(al).pipe(
       combineLatest(this.manifest),
       map(([als, { alignments }]) => {
@@ -111,7 +109,7 @@ export class TextService {
   }
 
   getPageFromVerse(chant: number, verse: number) {
-    return this.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
+    return this.cacheService.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[][]) => (pages.findIndex((x) => {
           const entry = x.filter((e) => e[0] === chant).map((v) => verse <= v[1][1] && verse >= v[1][0]);
@@ -126,8 +124,8 @@ export class TextService {
       return of<Verse[]>(!!range ? this.cache[cacheKey].slice(range[0], range[1]) : this.cache[cacheKey]);
     }
     return forkJoin([
-      this.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
-      this.cachedGet<[string, string, string, string][][]>(`./assets/data/texts/${text}/${chant}/data.json`),
+      this.cacheService.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
+      this.cacheService.cachedGet<[string, string, string, string][][]>(`./assets/data/texts/${text}/${chant}/data.json`),
     ]).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
       tap((verses) => this.cache[cacheKey] = verses),
@@ -159,7 +157,7 @@ export class TextService {
   }
 
   getVersesNumberFromPage(n: number, chant?: number) {
-    return this.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
+    return this.cacheService.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
         map((pages: PageInfo[][]) => {
           const entry = chant !== undefined
@@ -171,11 +169,11 @@ export class TextService {
   }
 
   getTextsList() {
-    return this.cachedGet<TextManifest>(`./assets/data/manifest.json`);
+    return this.cacheService.cachedGet<TextManifest>(`./assets/data/manifest.json`);
   }
 
   getPageNumbers(chant: number) {
-    return this.cachedGet<number[][]>(`./assets/manuscript/booksToPages.json`)
+    return this.cacheService.cachedGet<number[][]>(`./assets/manuscript/booksToPages.json`)
       .pipe(
         map((pages) => pages[chant - 1]),
       );
@@ -205,7 +203,7 @@ export class TextService {
   }
 
   getAnnotations() {
-    return this.cachedGet<Annotation[]>(`./assets/manuscript/annotations.json`)
+    return this.cacheService.cachedGet<Annotation[]>(`./assets/manuscript/annotations.json`)
       .pipe(
         map((arr) => {
           const annotations: Map<OsdAnnotation[]> = {};
@@ -322,11 +320,5 @@ export class TextService {
       text: annotation.data.description,
       annotation,
     };
-  }
-
-  private cachedGet<T>(path: string) {
-    return !!this.cache[path]
-      ? of<T>(this.cache[path])
-      : this.http.get<T>(path).pipe(tap((x) => this.cache[path] = x));
   }
 }

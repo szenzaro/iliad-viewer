@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
-import { debounceTime, filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, forkJoin, of, Subject } from 'rxjs';
+import { debounceTime, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { containsPOStoHighlight, Map, PosFilter, removeAccents } from '../utils/index';
 import { Word } from '../utils/models';
+import { CacheService } from './cache.service';
 import { TextService } from './text.service';
 
 export type Index = Map<number[]>;
@@ -95,7 +95,7 @@ export class SearchService {
       if (!q.alignment) {
         return forkJoin(q.texts
           .map((txt) => `./assets/data/texts/${txt}/index/${q.index}.json`)
-          .map((url) => this.cachedGet<Index>(url))
+          .map((url) => this.cacheService.cachedGet<Index>(url))
         ).pipe(
           map((indexes) => indexes.map((x) => {
             const keys = Object.keys(x);
@@ -109,7 +109,7 @@ export class SearchService {
         );
       }
 
-      return this.cachedGet<Index>(`./assets/data/texts/${sourceText}/index/${q.index}.json`).pipe(
+      return this.cacheService.cachedGet<Index>(`./assets/data/texts/${sourceText}/index/${q.index}.json`).pipe(
         map((x) => {
           const keys = Object.keys(x);
           const re = getRegexp(q);
@@ -141,18 +141,12 @@ export class SearchService {
   ]).pipe(
     debounceTime(150),
     filter(([q, ws]) => !!q && !!ws && (q.text !== '' || q.pos) && q.alignment),
-    map(([q, ws]) => ws),
+    map(([, ws]) => ws),
   );
 
   constructor(
-    private http: HttpClient,
     private textService: TextService,
+    private cacheService: CacheService,
   ) {
-  }
-
-  private cachedGet<T>(path: string): Observable<T> {
-    return !!this.cache[path]
-      ? of<T>(this.cache[path])
-      : this.http.get<T>(path).pipe(tap((x) => this.cache[path] = x));
   }
 }
