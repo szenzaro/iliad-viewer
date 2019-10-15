@@ -41,7 +41,8 @@ export class TextComponent implements OnDestroy {
     this.viewPort.scrollToIndex(index, 'smooth');
   }
 
-  constructor() {
+  constructor(
+  ) {
     this.scrollSubscription = this.scrollIndexChange.pipe(
       skip(1),
       tap(() => this.openedWordId = undefined),

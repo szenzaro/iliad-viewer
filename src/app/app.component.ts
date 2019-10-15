@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-
 interface OptionItem {
   label: string;
   path: string;

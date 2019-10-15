@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, forkJoin, merge, of, Subject, pipe, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, merge, of, Subject } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -43,9 +43,9 @@ export class ManuscriptService {
     debounceTime(500),
     pairwise(),
     filter(([x, y]) => x[0] !== y[0]),
-    map(([x, y]) => y),
+    map(([, y]) => y),
     filter(([c, { chant }]) => (chant !== c)),
-    switchMap(([c, { chant, verse }]) => forkJoin([
+    switchMap(([c]) => forkJoin([
       of(c),
       this.textService.getPageNumbers(c).pipe(map((ps) => ps[0])),
       this.textService.getPageNumbers(c).pipe(
@@ -64,7 +64,7 @@ export class ManuscriptService {
     debounceTime(500),
     pairwise(),
     filter(([x, y]) => x[0] !== y[0]),
-    map(([x, y]) => y),
+    map(([, y]) => y),
     filter(([p, { page }]) => page !== p),
     switchMap(([p, { chant, verse }]) => {
       const newChantAndPage = this.pagesByChant.pipe(
@@ -102,7 +102,7 @@ export class ManuscriptService {
     debounceTime(500),
     pairwise(),
     filter(([x, y]) => x[0] !== y[0]),
-    map(([x, y]) => y),
+    map(([, y]) => y),
     filter(([v, { verse }]) => verse !== v),
     switchMap(([v, { chant }]) => forkJoin([
       of(chant),

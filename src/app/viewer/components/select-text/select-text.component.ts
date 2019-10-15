@@ -24,6 +24,8 @@ export class SelectTextComponent {
   @Input() @InSubject() text: string;
   @Output() textChange = new BehaviorSubject<string>(undefined);
 
-  constructor(private textService: TextService) {
+  constructor(
+    private textService: TextService,
+  ) {
   }
 }

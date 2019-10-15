@@ -13,7 +13,8 @@
         [posHighlight]="posHighlight"
         [highlighted]="isHighlighted(w.id)"
         (wordOver)="wordOver.next($event)"
-        (openWordId)="openWordId.next($event)"></app-word>
+        (openWordId)="openWordId.next($event)">
+    </app-word>
 </div>
 <div
     *ngIf="openedDataPanel(wordDetailsId) as w"

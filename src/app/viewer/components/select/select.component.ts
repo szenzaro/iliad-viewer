@@ -22,7 +22,8 @@ export class SelectComponent {
 
   @Output() selectionChange = this.selected.valueChanges;
 
-  constructor() {
+  constructor(
+  ) {
     this.selectedIdChange.subscribe((x) => {
       if (x !== this.selected.value) {
         this.selected.setValue(this.selectedId);

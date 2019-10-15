@@ -32,4 +32,5 @@ import { TextService } from './services/text.service';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

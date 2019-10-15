@@ -1,12 +1,14 @@
 <div class="d-flex justify-content-between align-items-start">
     <app-word-filters
         class="m-1 flex-grow-1"
-        (filterChange)="filter = $event"></app-word-filters>
+        (filterChange)="filter = $event">
+    </app-word-filters>
     <ui-switch
         (change)="showText = !showText"
         checkedLabel="Show text"
         uncheckedLabel="Hide text"
-        class="m-1"></ui-switch>
+        class="m-1">
+    </ui-switch>
 </div>
 <div
     [class.d-flex]="showText"

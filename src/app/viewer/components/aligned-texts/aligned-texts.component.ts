@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input } from '@angular/core';
 import { combineLatest, merge } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
 
 @Component({

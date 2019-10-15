@@ -7,7 +7,7 @@ import { Map, uuid } from 'src/app/utils';
 import { InSubject } from '../../utils/InSubject';
 
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { Annotation } from 'src/app/utils/models';
 
 declare var OpenSeadragon: any;
@@ -197,24 +197,6 @@ export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
 
         this.viewer.addHandler('open', (e) => { // TODO: remove after getting all the coordinates for the annotations
           const viewer = e.eventSource;
-          const tracker = new OpenSeadragon.MouseTracker({
-            element: viewer.container,
-            moveHandler: (event) => {
-              const webPoint = event.position;
-              const viewportPoint = this.viewer.viewport.pointFromPixel(webPoint);
-              const imagePoint = this.viewer.viewport.viewportToImageCoordinates(viewportPoint);
-              const zoom = this.viewer.viewport.getZoom(true);
-              const imageZoom = this.viewer.viewport.viewportToImageZoom(zoom);
-
-              console.log(
-                'Web', webPoint.toString(),
-                'Viewport', viewportPoint.toString(),
-                'Image' + imagePoint.toString(),
-                'imageZoom', imageZoom.toString()
-              );
-
-            }
-          });
         });
         this.initAnnotationsEventSource();
         this.annotationsHandle.addElements(this.pageAnnotations(0));

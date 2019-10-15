@@ -17,8 +17,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { useHash: true }),
   ],
   exports: [
-    RouterModule
+    RouterModule,
   ],
-  declarations: []
+  declarations: [
+  ],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

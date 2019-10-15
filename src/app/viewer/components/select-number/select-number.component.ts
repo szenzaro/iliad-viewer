@@ -1,6 +1,6 @@
 import { Component, Input, Output } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { debounceTime, filter, map, shareReplay, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, shareReplay } from 'rxjs/operators';
 import { InSubject } from '../../utils/InSubject';
 
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';

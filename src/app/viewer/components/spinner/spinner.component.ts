@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -7,7 +7,5 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./spinner.component.scss']
 })
 export class SpinnerComponent {
-
   faSpinner = faSpinner;
-
 }
