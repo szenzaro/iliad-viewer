@@ -6,10 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "build:dev": "ng build --prod --base-href /test/",
+    "build:unil": "ng build --prod --base-href /iliade/",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "build-dev": "ng build --prod --base-href=test"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
