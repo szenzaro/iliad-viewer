@@ -19,11 +19,11 @@ export class SearchBoxComponent {
   @Output() queryChange = new EventEmitter<SearchQuery>();
 
   isCollapsed = true;
-  searchQuery: SearchQuery = { ...this.searchService.getDefaultQuery() };
+  searchQuery: SearchQuery = { ...this.searchService.defaultQuery };
 
   @Input() set query(q: SearchQuery) {
     if (!!q) {
-      this.searchQuery = q;
+      this.searchQuery = { ...q };
     }
   }
   get query() { return this.searchQuery; }
