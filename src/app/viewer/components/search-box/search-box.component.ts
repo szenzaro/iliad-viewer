@@ -26,7 +26,6 @@ export class SearchBoxComponent {
     alignment: true,
     pos: false,
     index: 'text',
-    mode: 'words',
     texts: ['homeric', 'paraphrase'],
     posFilter: undefined,
   };

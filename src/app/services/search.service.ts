@@ -11,7 +11,6 @@ export type Index = Map<number[]>;
 export interface SearchQuery {
   text: string;
   index: 'text' | 'lemma';
-  mode: 'words' | 'alignment';
   caseSensitive: boolean;
   diacriticSensitive: boolean;
   exactMatch: boolean;
