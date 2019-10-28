@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faExchangeAlt, faSearch, } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import { SearchQuery } from 'src/app/services/search.service';
@@ -32,6 +32,13 @@ export class SearchBoxComponent {
   };
   isCollapsed = true;
   searchQuery: SearchQuery = { ...this.defaultQuery };
+
+  @Input() set query(q: SearchQuery) {
+    if (!!q) {
+      this.searchQuery = q;
+    }
+  }
+  get query() { return this.searchQuery; }
 
   indexes = [{ id: 'text', label: 'Text' }, { id: 'lemma', label: 'Lemma' }];
 
