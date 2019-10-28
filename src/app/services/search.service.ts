@@ -30,6 +30,18 @@ function getRegexp(q: SearchQuery): RegExp {
 })
 export class SearchService {
 
+  private _defaultQuery: SearchQuery = {
+    text: '',
+    diacriticSensitive: false,
+    caseSensitive: false,
+    exactMatch: false,
+    alignment: true,
+    pos: false,
+    index: 'text',
+    texts: ['homeric', 'paraphrase'],
+    posFilter: undefined,
+  };
+
   cache: Map<any> = {};
   queryString = new Subject<SearchQuery>();
   loading = new BehaviorSubject<boolean>(false);
@@ -142,6 +154,10 @@ export class SearchService {
     filter(([q, ws]) => !!q && !!ws && (q.text !== '' || q.pos) && q.alignment),
     map(([, ws]) => ws),
   );
+
+  get defaultQuery(): SearchQuery {
+    return { ...this._defaultQuery };
+  }
 
   constructor(
     private textService: TextService,

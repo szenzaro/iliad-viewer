@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faExchangeAlt, faSearch, } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
-import { SearchQuery } from 'src/app/services/search.service';
+import { SearchQuery, SearchService } from 'src/app/services/search.service';
 import { TextItem, TextService } from 'src/app/services/text.service';
 
 
@@ -18,19 +18,8 @@ export class SearchBoxComponent {
 
   @Output() queryChange = new EventEmitter<SearchQuery>();
 
-  defaultQuery: SearchQuery = {
-    text: '',
-    diacriticSensitive: false,
-    caseSensitive: false,
-    exactMatch: false,
-    alignment: true,
-    pos: false,
-    index: 'text',
-    texts: ['homeric', 'paraphrase'],
-    posFilter: undefined,
-  };
   isCollapsed = true;
-  searchQuery: SearchQuery = { ...this.defaultQuery };
+  searchQuery: SearchQuery = { ...this.searchService.getDefaultQuery() };
 
   @Input() set query(q: SearchQuery) {
     if (!!q) {
@@ -76,6 +65,7 @@ export class SearchBoxComponent {
 
   constructor(
     private textService: TextService,
+    private searchService: SearchService,
   ) {
   }
 
