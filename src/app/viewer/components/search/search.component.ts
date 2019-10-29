@@ -1,4 +1,4 @@
-import { KeyValue, Location } from '@angular/common';
+import { KeyValue } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -106,7 +106,6 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     public readonly searchService: SearchService,
-    private readonly location: Location,
     private readonly router: Router,
     private readonly activeRoute: ActivatedRoute,
   ) {
