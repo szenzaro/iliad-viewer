@@ -62,10 +62,6 @@ export class WordFiltersComponent {
     );
   }
 
-  constructor() {
-    this.posChange.subscribe((x) => console.log('posChange', x));
-  }
-
   filterFromLabel(label: string, value: boolean): Map<boolean> {
     const obj = {};
     obj[label] = value;
