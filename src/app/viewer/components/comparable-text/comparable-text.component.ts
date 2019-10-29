@@ -14,6 +14,7 @@ import { InSubject } from '../../utils/InSubject';
 })
 export class ComparableTextComponent {
 
+  @Input() disableText = false;
   @Input() @InSubject() text: string;
   textChange = new BehaviorSubject<string>(undefined);
 
