@@ -16,7 +16,6 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
 
   loading = this.searchService.loading.pipe(debounceTime(150));
   currentQuery = this.searchService.queryString.pipe(
-    tap((x) => console.log('current query:', x)),
     filter((x) => !!x),
     shareReplay(1)
   );
@@ -157,7 +156,6 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
               pos: params.pos.split(','),
             },
           };
-          console.log(nq.posFilter);
           this.searchService.queryString.next(nq);
         }
         if (!!params.text) {
