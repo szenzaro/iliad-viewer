@@ -4,7 +4,8 @@
         [(scrollIndex)]="scrollIndex"
         [highlightIds]="sourceIds | async"
         class="container"
-        [chant]="1"
+        [chant]="chant1 | async"
+        (chantChange)="chant1.next($event)"
         [text]="'homeric'">
     </app-comparable-text>
 
@@ -13,7 +14,8 @@
         [(scrollIndex)]="scrollIndex"
         [highlightIds]="targetIds | async"
         class="container"
-        [chant]="1"
+        [chant]="chant2 | async"
+        (chantChange)="chant2.next($event)"
         [text]="'paraphrase'">
     </app-comparable-text>
 </div>
