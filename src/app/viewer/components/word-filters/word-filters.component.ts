@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Map, POS, POS_OP, PosFilter } from 'src/app/utils';
 
-import { debounceTime, distinctUntilChanged, map, scan, shareReplay, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, scan, shareReplay, startWith, filter } from 'rxjs/operators';
 
 import { faBroom, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, merge, Subject } from 'rxjs';
@@ -56,6 +56,7 @@ export class WordFiltersComponent {
 
   filterSelected = (label: POS) => {
     return this.filterChange.pipe(
+      filter((x) => !!x),
       distinctUntilChanged(),
       map((x) => x.pos.includes(label)),
       startWith(false),
