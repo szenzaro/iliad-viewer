@@ -15,7 +15,7 @@ import { InSubject } from '../../utils/InSubject';
 export class ComparableTextComponent {
 
   @Input() @InSubject() text: string;
-  textChange = new BehaviorSubject<string>(undefined);
+  @Output() textChange = new BehaviorSubject<string>(undefined);
 
   @Input() @InSubject() chant: number;
   @Output() chantChange = new BehaviorSubject<number>(1);
