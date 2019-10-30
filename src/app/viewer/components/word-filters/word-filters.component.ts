@@ -38,12 +38,12 @@ export class WordFiltersComponent {
   @Input() disabled = false;
   @Output() filterChange = merge(
     this.posChange,
-    combineLatest(
+    combineLatest([
       this.currentFilter.pipe(
         map((currentFilter) => Object.keys(currentFilter).filter((k) => currentFilter[k]) as POS[]),
       ),
       this.opChange,
-    ).pipe(
+    ]).pipe(
       debounceTime(100),
       map(([pos, op]) => ({ op, pos } as PosFilter)),
     ),
