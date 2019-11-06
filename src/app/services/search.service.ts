@@ -11,7 +11,6 @@ export type Index = Map<number[]>;
 export interface SearchQuery {
   text: string;
   index: 'text' | 'lemma';
-  mode: 'words' | 'alignment';
   caseSensitive: boolean;
   diacriticSensitive: boolean;
   exactMatch: boolean;
@@ -30,6 +29,18 @@ function getRegexp(q: SearchQuery): RegExp {
   providedIn: 'root'
 })
 export class SearchService {
+
+  private _defaultQuery: SearchQuery = {
+    text: '',
+    diacriticSensitive: false,
+    caseSensitive: false,
+    exactMatch: false,
+    alignment: true,
+    pos: false,
+    index: 'text',
+    texts: ['homeric', 'paraphrase'],
+    posFilter: undefined,
+  };
 
   cache: Map<any> = {};
   queryString = new Subject<SearchQuery>();
@@ -143,6 +154,10 @@ export class SearchService {
     filter(([q, ws]) => !!q && !!ws && (q.text !== '' || q.pos) && q.alignment),
     map(([, ws]) => ws),
   );
+
+  get defaultQuery(): SearchQuery {
+    return { ...this._defaultQuery };
+  }
 
   constructor(
     private textService: TextService,

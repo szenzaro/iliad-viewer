@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Map, POS, POS_OP, PosFilter } from 'src/app/utils';
 
-import { debounceTime, distinctUntilChanged, map, scan, shareReplay, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, scan, shareReplay, startWith } from 'rxjs/operators';
 
 import { faBroom, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { combineLatest } from 'rxjs';
+import { combineLatest, merge, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-word-filters',
@@ -27,16 +27,27 @@ export class WordFiltersComponent {
     startWith<POS_OP>('or')
   );
 
+  private _pos: PosFilter;
+  @Input() set pos(data: PosFilter) {
+    this._pos = data;
+    this.posChange.next(data);
+  }
+  get pos() { return this._pos; }
+  posChange = new Subject<PosFilter>();
+
   @Input() disabled = false;
-  @Output() filterChange = combineLatest(
-    this.currentFilter,
-    this.opChange,
+  @Output() filterChange = merge(
+    this.posChange,
+    combineLatest([
+      this.currentFilter.pipe(
+        map((currentFilter) => Object.keys(currentFilter).filter((k) => currentFilter[k]) as POS[]),
+      ),
+      this.opChange,
+    ]).pipe(
+      debounceTime(100),
+      map(([pos, op]) => ({ op, pos } as PosFilter)),
+    ),
   ).pipe(
-    debounceTime(100),
-    map(([currentFilter, op]) => {
-      const pos = Object.keys(currentFilter).filter((k) => currentFilter[k]) as POS[];
-      return { op, pos } as PosFilter;
-    }),
     shareReplay(1),
   );
 
@@ -45,6 +56,7 @@ export class WordFiltersComponent {
 
   filterSelected = (label: POS) => {
     return this.filterChange.pipe(
+      filter((x) => !!x),
       distinctUntilChanged(),
       map((x) => x.pos.includes(label)),
       startWith(false),

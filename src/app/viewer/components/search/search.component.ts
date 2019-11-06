@@ -1,7 +1,9 @@
 import { KeyValue } from '@angular/common';
-import { Component } from '@angular/core';
-import { debounceTime, filter, map, shareReplay, tap } from 'rxjs/operators';
-import { SearchService } from 'src/app/services/search.service';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, filter, map, shareReplay, takeUntil, tap } from 'rxjs/operators';
+import { SearchQuery, SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
 
@@ -10,10 +12,13 @@ import { Word } from 'src/app/utils/models';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent {
+export class SearchComponent implements AfterViewInit, OnDestroy {
 
   loading = this.searchService.loading.pipe(debounceTime(150));
-  currentQuery = this.searchService.queryString.pipe(shareReplay(1));
+  currentQuery = this.searchService.queryString.pipe(
+    filter((x) => !!x),
+    shareReplay(1)
+  );
 
   sourceText = this.currentQuery.pipe(
     map((q) => q.alignment ? q.texts[0] : undefined),
@@ -95,9 +100,77 @@ export class SearchComponent {
     map((x) => Object.keys(x).reduce((a, b) => a + x[b], 0)),
   );
 
+  private defaultQuery = this.searchService.defaultQuery;
+
+  private unsubscribe = new Subject();
+
   constructor(
     public readonly searchService: SearchService,
+    private readonly router: Router,
+    private readonly activeRoute: ActivatedRoute,
   ) {
+
+    this.currentQuery
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((q) => {
+        if (q.pos) {
+          const queryParams = {
+            op: q.posFilter.op,
+            pos: q.posFilter.pos.join(','),
+            texts: q.texts.join(','),
+            alignment: q.alignment !== this.defaultQuery.alignment ? q.alignment : undefined,
+          };
+          this.router.navigate([this.router.url.split('?')[0]], { queryParams });
+        }
+
+        if (q.text && !q.pos) {
+          const queryParams = {
+            text: q.text,
+            diacriticSensitive: q.diacriticSensitive !== this.defaultQuery.diacriticSensitive ? q.diacriticSensitive : undefined,
+            caseSensitive: q.caseSensitive !== this.defaultQuery.caseSensitive ? q.caseSensitive : undefined,
+            exactMatch: q.exactMatch !== this.defaultQuery.exactMatch ? q.exactMatch : undefined,
+            alignment: q.alignment !== this.defaultQuery.alignment ? q.alignment : undefined,
+            index: q.index !== this.defaultQuery.index ? q.index : undefined,
+            texts: q.texts.join(','),
+          };
+          this.router.navigate([this.router.url.split('?')[0]], { queryParams });
+        }
+      });
+  }
+
+  ngAfterViewInit() {
+    this.activeRoute.queryParams
+      .pipe(
+        takeUntil(this.unsubscribe),
+        debounceTime(150),
+      )
+      .subscribe((params) => {
+        if (!!params.op && !!params.pos) {
+          const nq: SearchQuery = {
+            ...this.defaultQuery,
+            alignment: params.alignment || this.defaultQuery.alignment,
+            pos: true,
+            posFilter: {
+              op: params.op,
+              pos: params.pos.split(','),
+            },
+          };
+          this.searchService.queryString.next(nq);
+        }
+        if (!!params.text) {
+          const nq: SearchQuery = {
+            ...this.searchService.defaultQuery,
+            text: params.text,
+            alignment: !params.alignment,
+            texts: (!!params.text && params.texts.split(',')) || this.defaultQuery.texts,
+            index: (!!params.index && params.index) || this.defaultQuery.index,
+            diacriticSensitive: !!params.diacriticSensitive,
+            caseSensitive: !!params.caseSensitive,
+            exactMatch: !!params.exactMatch,
+          };
+          this.searchService.queryString.next(nq);
+        }
+      });
   }
 
   bookResNumber(v: Map<Word[]>): number {
@@ -106,5 +179,10 @@ export class SearchComponent {
 
   keyNumOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
     return +a.key - +b.key;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

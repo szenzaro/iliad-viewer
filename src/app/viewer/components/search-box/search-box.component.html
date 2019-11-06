@@ -4,6 +4,7 @@
             *ngIf="searchQuery.pos"
             [disabled]="searchDisabled"
             [submitBtn]="true"
+            [pos]="searchQuery.posFilter"
             (filterChange)="searchQuery.posFilter = $event"
             (submitFilter)="queryChange.next(searchQuery)">
         </app-word-filters>

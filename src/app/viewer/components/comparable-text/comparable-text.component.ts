@@ -16,10 +16,10 @@ export class ComparableTextComponent {
 
   @Input() disableText = false;
   @Input() @InSubject() text: string;
-  textChange = new BehaviorSubject<string>(undefined);
+  @Output() textChange = new BehaviorSubject<string>(undefined);
 
   @Input() @InSubject() chant: number;
-  chantChange = new BehaviorSubject<number>(1);
+  @Output() chantChange = new BehaviorSubject<number>(1);
 
   @Input() @InSubject() scrollIndex: number;
   @Output() scrollIndexChange = new BehaviorSubject<number>(0);
@@ -37,14 +37,16 @@ export class ComparableTextComponent {
 
   chantsNumber = this.textChange
     .pipe(
-      debounceTime(150),
       filter((x) => !!x),
       switchMap((text) => this.textService.getNumberOfChants(text)),
       map(numberToOptions),
     );
 
   actualChant = merge(
-    this.chantChange.pipe(filter((x) => !!x && x !== NaN)),
+    this.chantChange.pipe(
+      filter((x) => !!x && x !== NaN),
+      debounceTime(150),
+    ),
     this.chantsNumber.pipe(map((x) => +x[0].id)),
   ).pipe(
     filter((x) => x !== NaN && x !== null),

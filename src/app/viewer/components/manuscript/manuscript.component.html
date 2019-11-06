@@ -1,6 +1,6 @@
 <app-annotation-filter
     *ngIf="!!interlinearText"
-    (showAnnotationChange)="showAnnotations = $event"
+    [(showAnnotation)]="showAnnotations"
     (filterChange)="annotationsFilter = $event"
     (showHomerChange)="interlinearText.showHomeric = $event"
     (showParaphraseChange)="interlinearText.showParaphfrase = $event">

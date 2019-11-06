@@ -33,8 +33,17 @@ export class AnnotationFilterComponent {
   @InSubject() showTitle: boolean;
   showTitleChange = new BehaviorSubject<boolean>(true);
 
-  @Output() filterChange = new EventEmitter<RecursivePartial<Annotation>[]>();
+  @Output() filterChange = new BehaviorSubject<RecursivePartial<Annotation>[]>([
+    { 'type': 'verse', 'data': { 'type': 'homeric' } },
+    { 'type': 'verse', 'data': { 'type': 'paraphrase' } },
+    { 'type': 'scholie' },
+    { 'type': 'ref' },
+    { 'type': 'ornament' },
+    { 'type': 'varia' },
+    { 'type': 'title' }
+  ]);
 
+  @Input() @InSubject() showAnnotation: boolean;
   @Output() showAnnotationChange = new BehaviorSubject<boolean>(false);
 
   @Input() verseSelected;

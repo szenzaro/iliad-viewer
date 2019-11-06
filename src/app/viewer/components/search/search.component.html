@@ -1,74 +1,76 @@
 <div class="d-flex flex-column">
     <app-search-box
         class="p-2"
+        [query]="currentQuery | async"
         (queryChange)="searchService.loading.next(true)"
         (queryChange)="searchService.queryString.next($event)"></app-search-box>
     <app-spinner *ngIf="loading | async"></app-spinner>
-
-    <ng-container *ngIf="(currentQuery | async)?.alignment">
-        <div *ngIf="resultAlignment | async as res">
-            <p
-                *ngIf="!(searchService.loading | async)"
-                class="mr-3 text-right">
-                Number of results: {{ totalAlignmentResults | async }}
-            </p>
-            <ngb-tabset>
-                <ngb-tab
-                    *ngFor="let r of res | keyvalue"
-                    [title]="'Βοοκ ' + r.key + ' ('+ (perBookAlignmentResult | async)[r.key] + ')'">
-                    <ng-template ngbTabContent>
-                        <cdk-virtual-scroll-viewport
-                            itemSize="32"
-                            class="min-h">
-                            <ng-container *cdkVirtualFor="let v of r.value | keyvalue: keyNumOrder">
-                                <app-search-alignment-result
-                                    [sourceWords]="v.value[0]"
-                                    [sourceText]="sourceText | async"
-                                    [targetText]="targetText | async"
-                                    [targetWords]="v.value[1]"
-                                    [book]="r.key"
-                                    [verseNumber]="+v.key">
-                                </app-search-alignment-result>
-                            </ng-container>
-                        </cdk-virtual-scroll-viewport>
-                    </ng-template>
-                </ngb-tab>
-            </ngb-tabset>
-        </div>
-    </ng-container>
-
-    <ng-container *ngIf="!(currentQuery | async)?.alignment">
-        <div *ngIf="results | async as res">
-            <p
-                *ngIf="!(searchService.loading | async)"
-                class="mr-3 text-right">
-                Number of results: {{ totalResults | async }}
-            </p>
-            <ngb-tabset>
-                <ng-container *ngIf="!(searchService.loading | async)">
+    <ng-container *ngIf="(currentQuery | async) || true">
+        <ng-container *ngIf="(currentQuery | async)?.alignment">
+            <div *ngIf="resultAlignment | async as res">
+                <p
+                    *ngIf="!(searchService.loading | async)"
+                    class="mr-3 text-right">
+                    Number of results: {{ totalAlignmentResults | async }}
+                </p>
+                <ngb-tabset>
                     <ngb-tab
                         *ngFor="let r of res | keyvalue"
-                        [title]="r.key  + ' (' + (totalResultsPerText | async)[r.key] + ')'">
+                        [title]="'Βοοκ ' + r.key + ' ('+ (perBookAlignmentResult | async)[r.key] + ')'">
                         <ng-template ngbTabContent>
-                            <ngb-tabset>
-                                <ngb-tab
-                                    *ngFor="let v of r.value | keyvalue"
-                                    [title]="'Book ' + v.key + ' ('+bookResNumber(v.value)+')'">
-                                    <ng-template ngbTabContent>
-                                        <cdk-virtual-scroll-viewport
-                                            itemSize="32"
-                                            class="min-h">
-                                            <ng-container *cdkVirtualFor="let res of v.value | keyvalue: keyNumOrder">
-                                                <app-search-result [words]="res.value"></app-search-result>
-                                            </ng-container>
-                                        </cdk-virtual-scroll-viewport>
-                                    </ng-template>
-                                </ngb-tab>
-                            </ngb-tabset>
+                            <cdk-virtual-scroll-viewport
+                                itemSize="32"
+                                class="min-h">
+                                <ng-container *cdkVirtualFor="let v of r.value | keyvalue: keyNumOrder">
+                                    <app-search-alignment-result
+                                        [sourceWords]="v.value[0]"
+                                        [sourceText]="sourceText | async"
+                                        [targetText]="targetText | async"
+                                        [targetWords]="v.value[1]"
+                                        [book]="r.key"
+                                        [verseNumber]="+v.key">
+                                    </app-search-alignment-result>
+                                </ng-container>
+                            </cdk-virtual-scroll-viewport>
                         </ng-template>
                     </ngb-tab>
-                </ng-container>
-            </ngb-tabset>
-        </div>
+                </ngb-tabset>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!(currentQuery | async)?.alignment">
+            <div *ngIf="results | async as res">
+                <p
+                    *ngIf="!(searchService.loading | async)"
+                    class="mr-3 text-right">
+                    Number of results: {{ totalResults | async }}
+                </p>
+                <ngb-tabset>
+                    <ng-container *ngIf="!(searchService.loading | async)">
+                        <ngb-tab
+                            *ngFor="let r of res | keyvalue"
+                            [title]="r.key  + ' (' + (totalResultsPerText | async)[r.key] + ')'">
+                            <ng-template ngbTabContent>
+                                <ngb-tabset>
+                                    <ngb-tab
+                                        *ngFor="let v of r.value | keyvalue"
+                                        [title]="'Book ' + v.key + ' ('+bookResNumber(v.value)+')'">
+                                        <ng-template ngbTabContent>
+                                            <cdk-virtual-scroll-viewport
+                                                itemSize="32"
+                                                class="min-h">
+                                                <ng-container *cdkVirtualFor="let res of v.value | keyvalue: keyNumOrder">
+                                                    <app-search-result [words]="res.value"></app-search-result>
+                                                </ng-container>
+                                            </cdk-virtual-scroll-viewport>
+                                        </ng-template>
+                                    </ngb-tab>
+                                </ngb-tabset>
+                            </ng-template>
+                        </ngb-tab>
+                    </ng-container>
+                </ngb-tabset>
+            </div>
+        </ng-container>
     </ng-container>
 </div>
