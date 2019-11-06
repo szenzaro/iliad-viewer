@@ -2,6 +2,7 @@
     <ui-switch
         checkedLabel="Hide annotations"
         uncheckedLabel="Show annotations"
+        [checked]="showAnnotation"
         (change)="showAnnotationChange.next($event)"
         size="small"
         class="m-1">
