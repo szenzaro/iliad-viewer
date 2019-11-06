@@ -1,7 +1,8 @@
 <div class="d-flex justify-content-between align-items-start">
     <app-word-filters
         class="m-1 flex-grow-1"
-        (filterChange)="filter = $event">
+        [pos]="filterChange | async"
+        (filterChange)="filterChange.next($event)">
     </app-word-filters>
     <ui-switch
         (change)="showText = !showText"
@@ -15,16 +16,22 @@
     class="flex-grow-1 full-height justify-content-around">
     <app-comparable-text
         [(scrollIndex)]="scrollIndex"
-        [posFilter]="filter"
+        [chant]="chant1 | async"
+        (chantChange)="chant1.next($event)"
+        [posFilter]="filterChange | async"
         class="container w-70"
-        [text]="'homeric'">
+        [text]="text1 | async"
+        (textChange)="text1.next($event)">
     </app-comparable-text>
 
     <app-comparable-text
         *ngIf="showText"
         [(scrollIndex)]="scrollIndex"
-        [posFilter]="filter"
+        [chant]="chant2 | async"
+        (chantChange)="chant2.next($event)"
+        [posFilter]="filterChange | async"
         class="container"
-        [text]="'paraphrase'">
+        [text]="text2 | async"
+        (textChange)="text2.next($event)">
     </app-comparable-text>
 </div>
