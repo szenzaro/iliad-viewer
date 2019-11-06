@@ -43,6 +43,7 @@ export class AnnotationFilterComponent {
     { 'type': 'title' }
   ]);
 
+  @Input() @InSubject() showAnnotation: boolean;
   @Output() showAnnotationChange = new BehaviorSubject<boolean>(false);
 
   @Input() verseSelected;
