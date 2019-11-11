@@ -36,11 +36,11 @@ export class AnnotationFilterComponent {
   @Output() filterChange = new BehaviorSubject<RecursivePartial<Annotation>[]>([
     { 'type': 'verse', 'data': { 'type': 'homeric' } },
     { 'type': 'verse', 'data': { 'type': 'paraphrase' } },
-    { 'type': 'scholie' },
-    { 'type': 'ref' },
-    { 'type': 'ornament' },
-    { 'type': 'varia' },
-    { 'type': 'title' }
+    // { 'type': 'scholie' },   // TODO: uncomment me to show annotation commands
+    // { 'type': 'ref' },       // TODO: uncomment me to show annotation commands
+    // { 'type': 'ornament' },  // TODO: uncomment me to show annotation commands
+    // { 'type': 'varia' },     // TODO: uncomment me to show annotation commands
+    // { 'type': 'title' }      // TODO: uncomment me to show annotation commands
   ]);
 
   @Input() @InSubject() showAnnotation: boolean;
@@ -52,21 +52,21 @@ export class AnnotationFilterComponent {
     combineLatest([
       this.showHomerChange,
       this.showParaphraseChange,
-      this.showScholieChange,
-      this.showRefChange,
-      this.showOrnamentChange,
-      this.showVariaChange,
-      this.showTitleChange,
+      // this.showScholieChange,  // TODO: uncomment me to show annotation commands
+      // this.showRefChange,      // TODO: uncomment me to show annotation commands
+      // this.showOrnamentChange, // TODO: uncomment me to show annotation commands
+      // this.showVariaChange,    // TODO: uncomment me to show annotation commands
+      // this.showTitleChange,    // TODO: uncomment me to show annotation commands
     ]).pipe(
-      map(([h, p, s, r, o, v, t]) => {
+      map(([h, p]) => { // , s, r, o, v, t]) => { // TODO: uncomment me to show annotation commands
         const filters: RecursivePartial<Annotation>[] = [
           h ? { type: 'verse', data: { type: 'homeric' } } as RecursivePartial<Annotation> : undefined,
           p ? { type: 'verse', data: { type: 'paraphrase' } } as RecursivePartial<Annotation> : undefined,
-          s ? { type: 'scholie' } as RecursivePartial<Annotation> : undefined,
-          r ? { type: 'ref' } as RecursivePartial<Annotation> : undefined,
-          o ? { type: 'ornament' } as RecursivePartial<Annotation> : undefined,
-          v ? { type: 'varia' } as RecursivePartial<Annotation> : undefined,
-          t ? { type: 'title' } as RecursivePartial<Annotation> : undefined,
+          // s ? { type: 'scholie' } as RecursivePartial<Annotation> : undefined, // TODO: uncomment me to show annotation commands
+          // r ? { type: 'ref' } as RecursivePartial<Annotation> : undefined,     // TODO: uncomment me to show annotation commands
+          // o ? { type: 'ornament' } as RecursivePartial<Annotation> : undefined,// TODO: uncomment me to show annotation commands
+          // v ? { type: 'varia' } as RecursivePartial<Annotation> : undefined,   // TODO: uncomment me to show annotation commands
+          // t ? { type: 'title' } as RecursivePartial<Annotation> : undefined,   // TODO: uncomment me to show annotation commands
         ].filter((x) => !!x);
         return filters;
       })
