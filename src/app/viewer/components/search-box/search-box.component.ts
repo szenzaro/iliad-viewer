@@ -3,6 +3,7 @@ import { faExchangeAlt, faSearch, } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import { SearchQuery, SearchService } from 'src/app/services/search.service';
 import { TextItem, TextService } from 'src/app/services/text.service';
+import { capitalize } from 'src/app/utils';
 
 
 function removePunctuation(s: string) {
@@ -39,7 +40,7 @@ export class SearchBoxComponent {
   faExchange = faExchangeAlt;
 
   get sourceText() {
-    return { id: this.searchQuery.texts[0], label: this.searchQuery.texts[0] };
+    return { id: this.searchQuery.texts[0], label: capitalize(this.searchQuery.texts[0]) };
   }
 
   set sourceText(t: Partial<TextItem>) {
@@ -49,7 +50,7 @@ export class SearchBoxComponent {
   }
 
   get targetText() {
-    return { id: this.searchQuery.texts[1], label: this.searchQuery.texts[1] };
+    return { id: this.searchQuery.texts[1], label: capitalize(this.searchQuery.texts[1]) };
   }
 
   set targetText(t: Partial<TextItem>) {
