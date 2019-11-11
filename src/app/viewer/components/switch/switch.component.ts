@@ -9,6 +9,7 @@ import { uuid } from 'src/app/utils';
 })
 export class SwitchComponent {
 
+  @Input() disabled = false;
   @Input() label: string;
   private _v: boolean;
   @Input() set value(v: boolean) {
