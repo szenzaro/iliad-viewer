@@ -1,7 +1,6 @@
 import { Component, Input, Output } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { uuid } from 'src/app/utils';
-import { InSubject } from '../../utils/InSubject';
 
 @Component({
   selector: 'app-switch',
@@ -11,8 +10,15 @@ import { InSubject } from '../../utils/InSubject';
 export class SwitchComponent {
 
   @Input() label: string;
-  @Input() @InSubject() value: boolean;
-  @Output() valueChange = new BehaviorSubject<boolean>(false);
+  private _v: boolean;
+  @Input() set value(v: boolean) {
+    if (v !== this._v) {
+      this._v = v;
+      this.valueChange.next(v);
+    }
+  }
+  get value() { return this._v; }
+  @Output() valueChange = new Subject<boolean>();
 
   id = `switch-${uuid()}`;
 }
