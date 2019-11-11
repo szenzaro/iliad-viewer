@@ -488,3 +488,7 @@ export function containsPOStoHighlight(tag: string, posFilter: PosFilter): boole
 export function removeAccents(str: string): string {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
+
+export function capitalize(s: string) {
+    return `${s.charAt(0).toUpperCase()}${s.slice(1)}`;
+}

@@ -16,6 +16,7 @@ export class SelectTextComponent {
   @Input() inline = true;
   @Input() label: string;
   @Input() disabled = false;
+  @Input() bindValue: string;
 
   textsList = this.textService.getTextsList()
     .pipe(
