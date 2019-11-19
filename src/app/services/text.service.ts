@@ -144,7 +144,7 @@ export class TextService {
   getVerses(text: string, chant: number, range?: [number, number]) {
     const cacheKey = `${text}-c${chant}`;
     if (!!this.cache[cacheKey]) {
-      return of<Verse[]>(!!range ? this.cache[cacheKey].slice(range[0], range[1]) : this.cache[cacheKey]);
+      of<Verse[]>(getVersesFromCache(this.cache[cacheKey]));
     }
     return forkJoin([
       this.cacheService.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
@@ -152,7 +152,7 @@ export class TextService {
     ]).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
       tap((verses) => this.cache[cacheKey] = verses),
-      map((verses) => !!range ? verses.slice(range[0], range[1]) : verses),
+      map((verses) => getVersesFromCache(verses, range)),
     );
   }
 
