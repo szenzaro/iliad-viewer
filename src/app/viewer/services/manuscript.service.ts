@@ -179,8 +179,8 @@ export class ManuscriptService {
     this.pageVersesRange,
   ]).pipe(
     switchMap(([h, p, { chant }, rng]) => forkJoin([
-      this.textService.getVerses(h, chant, [rng[0][0] - 1, rng[0][1]]),
-      this.textService.getVerses(p, chant, [rng[1][0] - 1, rng[1][1]]),
+      this.textService.getVerses(h, chant, rng[0]),
+      this.textService.getVerses(p, chant, rng[1]),
     ])),
   );
 
