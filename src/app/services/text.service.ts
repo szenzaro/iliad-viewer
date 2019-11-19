@@ -27,6 +27,30 @@ function mapWords(text: string, chant: number, verse: VerseRowType, data: WordDa
   }
 }
 
+function getVersesFromCache(verses: Verse[], range?: [number, number]) {
+  let vs: Verse[] = !!range
+    ? verses.filter((v) => range[0] <= v.n && v.n <= range[1])
+    : verses;
+
+  const lIndex = verses.indexOf(vs[0]);
+  const rIndex = verses.indexOf(vs[vs.length - 1]);
+
+  if (!!verses[lIndex - 1] && verses[lIndex - 1].n === 't') {
+    console.log('!TTT!', verses[lIndex - 1]);
+    vs = [verses[lIndex - 1]].concat(vs);
+  }
+
+  if (vs.some((v) => v.n === 't' || v.n === 'f')) {
+    console.log('HERE', vs);
+  }
+
+  if (!!verses[rIndex + 1] && verses[rIndex + 1].n === 'f') {
+    console.log('!FFFF!', verses[rIndex + 1]);
+    vs = vs.concat([verses[rIndex + 1]]);
+  }
+  return vs;
+}
+
 function getVerse(id: number, text: string, chant: number, verse: VerseRowType, data: WordData[]): Verse {
   const verseN = verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1];
   return {
