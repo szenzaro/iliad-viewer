@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { forkJoin, of, combineLatest } from 'rxjs';
+import { combineLatest, forkJoin, of } from 'rxjs';
 import { filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { arrayToMap, Map, uuid } from '../utils/index';
 import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
