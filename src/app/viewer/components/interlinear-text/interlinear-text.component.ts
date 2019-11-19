@@ -7,6 +7,7 @@ import { debounceTime, map, tap } from 'rxjs/operators';
 import { InSubject } from '../../utils/InSubject';
 
 import { numberToOption } from 'src/app/utils';
+import { Verse } from 'src/app/utils/models';
 import { ManuscriptService } from '../../services/manuscript.service';
 
 function pairwiseMerge<T>(arr: T[], arr2: T[], initial: T[] = []): T[] {
@@ -80,14 +81,19 @@ export class InterlinearTextComponent {
     debounceTime(150),
     tap(() => this.loading.next(true)),
     map(([showHomeric, showParaphfrase, [greek, paraph]]) => {
-      const greekVerses = showHomeric
-        ? greek.length > 0 && greek[0].n === 't' ? greek.slice(1) : greek
-        : [];
+      const greekVerses = showHomeric ? greek : [];
       const paraphVerses = showParaphfrase ? paraph : [];
-      const merged = greekVerses.length > 0 && paraphVerses.length > 0 && greekVerses[0].n <= paraphVerses[0].n
-        ? pairwiseMerge(greekVerses, paraphVerses, greek.length > 0 && greek[0].n === 't' ? [greek[0]] : [])
-        : pairwiseMerge(paraphVerses, greekVerses, greek.length > 0 && greek[0].n === 't' ? [greek[0]] : []);
-      return merged;
+
+      if (greekVerses.length > 0 && paraphVerses.length > 0) {
+        if (greekVerses[0].id < paraphVerses[0].id) {
+          return versesMerge(greekVerses.slice(1), paraphVerses, [greekVerses[0]]);
+        }
+        if (greekVerses[0].id === paraphVerses[0].id) {
+          return versesMerge(greekVerses, paraphVerses, []);
+        }
+        return versesMerge(paraphVerses, greekVerses, []);
+      }
+      return versesMerge(greekVerses, paraphVerses);
     }),
     tap(() => this.loading.next(false)),
   );
