@@ -91,6 +91,9 @@ export class InterlinearTextComponent {
         if (greekVerses[0].id === paraphVerses[0].id) {
           return versesMerge(greekVerses, paraphVerses, []);
         }
+        if (greekVerses[0].n === paraphVerses[0].n) {
+          return versesMerge(greekVerses, paraphVerses, []);
+        }
         return versesMerge(paraphVerses, greekVerses, []);
       }
       return versesMerge(greekVerses, paraphVerses);
