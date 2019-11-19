@@ -22,6 +22,20 @@ function pairwiseMerge<T>(arr: T[], arr2: T[], initial: T[] = []): T[] {
   return pairwiseMerge(arr.slice(1), arr2.slice(1), i);
 }
 
+function versesMerge(greek: Verse[], paraphrase: Verse[], initial: Verse[] = []): Verse[] {
+  if (greek.length === 0) {
+    return initial.concat(paraphrase);
+  }
+  if (paraphrase.length === 0) {
+    return initial.concat(greek);
+  }
+
+  if ((greek[0].n === 'f' || greek[0].n === 't') && greek.length > 1) {
+    return versesMerge(greek.slice(2), paraphrase.slice(1), initial.concat(greek.slice(0, 2).concat([paraphrase[0]])));
+  }
+  return versesMerge(greek.slice(1), paraphrase.slice(1), initial.concat([greek[0], paraphrase[0]]));
+}
+
 @Component({
   selector: 'app-interlinear-text',
   templateUrl: './interlinear-text.component.html',
