@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { forkJoin, of } from 'rxjs';
-import { combineLatest, filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { forkJoin, of, combineLatest } from 'rxjs';
+import { filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { arrayToMap, Map, uuid } from '../utils/index';
 import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
 import { AnnotationModalComponent } from '../viewer/components/annotation-modal/annotation-modal.component';
@@ -25,6 +25,30 @@ function mapWords(text: string, chant: number, verse: VerseRowType, data: WordDa
         source: text,
       } as Word));
   }
+}
+
+function getVersesFromCache(verses: Verse[], range?: [number, number]) {
+  let vs: Verse[] = !!range
+    ? verses.filter((v) => range[0] <= v.n && v.n <= range[1])
+    : verses;
+
+  const lIndex = verses.indexOf(vs[0]);
+  const rIndex = verses.indexOf(vs[vs.length - 1]);
+
+  if (!!verses[lIndex - 1] && verses[lIndex - 1].n === 't') {
+    console.log('!TTT!', verses[lIndex - 1]);
+    vs = [verses[lIndex - 1]].concat(vs);
+  }
+
+  if (vs.some((v) => v.n === 't' || v.n === 'f')) {
+    console.log('HERE', vs);
+  }
+
+  if (!!verses[rIndex + 1] && verses[rIndex + 1].n === 'f') {
+    console.log('!FFFF!', verses[rIndex + 1]);
+    vs = vs.concat([verses[rIndex + 1]]);
+  }
+  return vs;
 }
 
 function getVerse(id: number, text: string, chant: number, verse: VerseRowType, data: WordData[]): Verse {
@@ -88,8 +112,7 @@ export class TextService {
     map(({ alignments }) => alignments),
     map((al) => al.map(({ source, target }) => `./assets/data/alignments/${source}-${target}.json`)),
     map((al) => al.map((a) => this.cacheService.cachedGet<Map<AlignmentEntry>>(a))),
-    switchMap((al) => forkJoin(al).pipe(
-      combineLatest(this.manifest),
+    switchMap((al) => combineLatest([forkJoin(al), this.manifest]).pipe(
       map(([als, { alignments }]) => {
         const ret: Map<Map<AlignmentEntry>> = {};
         alignments.forEach((a, i) => {
@@ -109,19 +132,19 @@ export class TextService {
   }
 
   getPageFromVerse(chant: number, verse: number) {
-    return this.cacheService.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
+    return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
-        map((pages: PageInfo[][]) => (pages.findIndex((x) => {
-          const entry = x.filter((e) => e[0] === chant).map((v) => verse <= v[1][1] && verse >= v[1][0]);
+        map((pages) => +(Object.keys(pages).find((x) => {
+          const entry = pages[x].filter((e) => e[0] === chant).map((v) => verse <= v[1][1] && verse >= v[1][0]);
           return entry.length > 0 && entry[0];
-        }) + 1)),
+        }))),
       );
   }
 
   getVerses(text: string, chant: number, range?: [number, number]) {
     const cacheKey = `${text}-c${chant}`;
     if (!!this.cache[cacheKey]) {
-      return of<Verse[]>(!!range ? this.cache[cacheKey].slice(range[0], range[1]) : this.cache[cacheKey]);
+      of<Verse[]>(getVersesFromCache(this.cache[cacheKey]));
     }
     return forkJoin([
       this.cacheService.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
@@ -129,7 +152,7 @@ export class TextService {
     ]).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
       tap((verses) => this.cache[cacheKey] = verses),
-      map((verses) => !!range ? verses.slice(range[0], range[1]) : verses),
+      map((verses) => getVersesFromCache(verses, range)),
     );
   }
 
@@ -157,12 +180,12 @@ export class TextService {
   }
 
   getVersesNumberFromPage(n: number, chant?: number) {
-    return this.cacheService.cachedGet<PageInfo[][]>(`./assets/manuscript/pagesToVerses.json`)
+    return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>(`./assets/manuscript/pagesToVerses.json`)
       .pipe(
-        map((pages: PageInfo[][]) => {
+        map((pages) => {
           const entry = chant !== undefined
-            ? pages[n - 1].find((x) => x[0] === chant)
-            : pages[n - 1][pages[n - 1].length - 1];
+            ? pages[`${n}`].find((x) => x[0] === chant)
+            : pages[`${n}`][pages[`${n}`].length - 1];
           return !!entry && [entry[1], entry[2]] as [[number, number], [number, number]];
         }),
       );
