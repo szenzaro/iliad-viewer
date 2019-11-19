@@ -83,7 +83,7 @@ export class ManuscriptComponent implements AfterViewInit, OnDestroy {
     this.activeRoute.queryParams
       .pipe(
         takeUntil(this.unsubscribe),
-        debounceTime(50),
+        debounceTime(150),
       )
       .subscribe((params) => {
         if (!!params.book) {
