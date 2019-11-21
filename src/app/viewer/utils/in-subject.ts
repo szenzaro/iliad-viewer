@@ -11,7 +11,7 @@ import * as equal from 'fast-deep-equal';
  *
  */
 export function InSubject(subjectKey?: string): PropertyDecorator {
-    return (target: any, propertyKey: string | symbol) => {
+    return (target, propertyKey: string | symbol) => {
         subjectKey = subjectKey || `${propertyKey.toString()}Change`;
         const prop = Object.getOwnPropertyDescriptor(target, propertyKey);
         if (prop) {
@@ -22,9 +22,8 @@ export function InSubject(subjectKey?: string): PropertyDecorator {
             get() {
                 if ('value' in this[subjectKey]) {
                     return this[subjectKey].value;
-                } else {
-                    throw new Error(`${propertyKey.toString()} can only be set on ${this}`);
                 }
+                throw new Error(`${propertyKey.toString()} can only be set on ${this}`);
             },
             set(v) {
                 if (!('value' in this[subjectKey]) || !equal(this[subjectKey].value, v)) {

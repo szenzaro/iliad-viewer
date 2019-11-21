@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PosFilter, tagToDescription } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
 
-
 @Component({
   selector: 'app-verse',
   templateUrl: './verse.component.html',

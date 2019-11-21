@@ -177,9 +177,8 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
     return Object.keys(v).map((k) => v[k].length).reduce((x, y) => x + y, 0);
   }
 
-  keyNumOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
-    return +a.key - +b.key;
-  }
+  // tslint:disable-next-line: no-any
+  keyNumOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => +a.key - +b.key;
 
   ngOnDestroy(): void {
     this.unsubscribe.next();

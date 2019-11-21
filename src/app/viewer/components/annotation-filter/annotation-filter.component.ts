@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 import { Annotation, RecursivePartial } from 'src/app/utils/models';
 
@@ -33,9 +33,9 @@ export class AnnotationFilterComponent {
   @InSubject() showTitle: boolean;
   showTitleChange = new BehaviorSubject<boolean>(true);
 
-  @Output() filterChange = new BehaviorSubject<RecursivePartial<Annotation>[]>([
-    { 'type': 'verse', 'data': { 'type': 'homeric' } },
-    { 'type': 'verse', 'data': { 'type': 'paraphrase' } },
+  @Output() filterChange = new BehaviorSubject<Array<RecursivePartial<Annotation>>>([
+    { type: 'verse', data: { type: 'homeric' } },
+    { type: 'verse', data: { type: 'paraphrase' } },
     // { 'type': 'scholie' },   // TODO: uncomment me to show annotation commands
     // { 'type': 'ref' },       // TODO: uncomment me to show annotation commands
     // { 'type': 'ornament' },  // TODO: uncomment me to show annotation commands
@@ -59,7 +59,7 @@ export class AnnotationFilterComponent {
       // this.showTitleChange,    // TODO: uncomment me to show annotation commands
     ]).pipe(
       map(([h, p]) => { // , s, r, o, v, t]) => { // TODO: uncomment me to show annotation commands
-        const filters: RecursivePartial<Annotation>[] = [
+        const filters: Array<RecursivePartial<Annotation>> = [
           h ? { type: 'verse', data: { type: 'homeric' } } as RecursivePartial<Annotation> : undefined,
           p ? { type: 'verse', data: { type: 'paraphrase' } } as RecursivePartial<Annotation> : undefined,
           // s ? { type: 'scholie' } as RecursivePartial<Annotation> : undefined, // TODO: uncomment me to show annotation commands

@@ -5,7 +5,7 @@ import { BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { numberToOptions, PosFilter } from 'src/app/utils';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 @Component({
   selector: 'app-comparable-text',
@@ -44,16 +44,16 @@ export class ComparableTextComponent {
 
   actualChant = merge(
     this.chantChange.pipe(
-      filter((x) => !!x && x !== NaN),
+      filter((x) => !!x && !isNaN(x)),
       debounceTime(150),
     ),
     this.chantsNumber.pipe(map((x) => +x[0].id)),
   ).pipe(
-    filter((x) => x !== NaN && x !== null),
+    filter((x) => !isNaN(x) && x !== null),
     debounceTime(150),
   );
 
-  verses = combineLatest([this.textChange, this.actualChant.pipe(filter((x) => x !== NaN))])
+  verses = combineLatest([this.textChange, this.actualChant.pipe(filter((x) => !isNaN(x)))])
     .pipe(
       debounceTime(100),
       tap(() => this.loading.next(true)),

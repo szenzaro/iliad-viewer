@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 import { TextService } from 'src/app/services/text.service';
 
@@ -27,8 +27,8 @@ export class ManuscriptComponent implements AfterViewInit, OnDestroy {
   text = 'homeric';
 
   annotations = this.textService.getAnnotations();
-  @Input() @InSubject() annotationsFilter: RecursivePartial<Annotation>[];
-  annotationsFilterChange = new BehaviorSubject<RecursivePartial<Annotation>[]>([]);
+  @Input() @InSubject() annotationsFilter: Array<RecursivePartial<Annotation>>;
+  annotationsFilterChange = new BehaviorSubject<Array<RecursivePartial<Annotation>>>([]);
 
   @Input() @InSubject() showAnnotations: boolean;
   showAnnotationsChange = new BehaviorSubject<boolean>(false);
@@ -103,7 +103,7 @@ export class ManuscriptComponent implements AfterViewInit, OnDestroy {
           const verseFilters = filters.filter((x) => x.startsWith('verse-'));
           const otherFilters = filters.filter((x) => !x.startsWith('verse-'));
 
-          const annFilter: RecursivePartial<Annotation>[] = otherFilters
+          const annFilter: Array<RecursivePartial<Annotation>> = otherFilters
             .map((f) => ({ type: f } as RecursivePartial<Annotation>))
             .concat(verseFilters.map((f) => ({ type: 'verse', data: { type: f.split('-')[1] } } as RecursivePartial<Annotation>)));
 

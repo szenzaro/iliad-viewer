@@ -1,7 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 @Component({
   selector: 'app-select',
@@ -14,11 +14,10 @@ export class SelectComponent {
   @Input() label: string;
   @Input() @InSubject() selectedId: string;
   selectedIdChange = new BehaviorSubject<string>(undefined);
-  @Input() @InSubject() options: { id: string, label: string }[];
-  optionsChange = new BehaviorSubject<{ id: string, label: string }[]>([]);
+  @Input() @InSubject() options: Array<{ id: string, label: string }>;
+  optionsChange = new BehaviorSubject<Array<{ id: string, label: string }>>([]);
 
   selected = new FormControl();
-
 
   @Output() selectionChange = this.selected.valueChanges;
 

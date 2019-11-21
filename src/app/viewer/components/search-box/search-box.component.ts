@@ -5,7 +5,6 @@ import { SearchQuery, SearchService } from 'src/app/services/search.service';
 import { TextItem, TextService } from 'src/app/services/text.service';
 import { capitalize } from 'src/app/utils';
 
-
 function removePunctuation(s: string) {
   return s.replace(/[.,\/#!$%\\[\]^&\*;:{}=\-_`~()]/g, '').replace(/\s{2,}/g, ' ');
 }

@@ -4,24 +4,11 @@ import { faListAlt, faThList } from '@fortawesome/free-solid-svg-icons';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 import { numberToOption } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
 import { ManuscriptService } from '../../services/manuscript.service';
-
-function pairwiseMerge<T>(arr: T[], arr2: T[], initial: T[] = []): T[] {
-  if (arr.length === 0) {
-    return initial.concat(arr2);
-  }
-  if (arr2.length === 0) {
-    return initial.concat(arr);
-  }
-
-  const i = initial.concat([arr[0], arr2[0]]);
-
-  return pairwiseMerge(arr.slice(1), arr2.slice(1), i);
-}
 
 function versesMerge(greek: Verse[], paraphrase: Verse[], initial: Verse[] = []): Verse[] {
   if (greek.length === 0) {

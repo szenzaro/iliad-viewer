@@ -5,7 +5,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { skip, tap } from 'rxjs/operators';
 import { PosFilter } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 @Component({
   selector: 'app-text',

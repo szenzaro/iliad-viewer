@@ -216,4 +216,3 @@ export class WordComponent {
     return this.tagIsDefined && isPassive(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Passive');
   }
 }
-

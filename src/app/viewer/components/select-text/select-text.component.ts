@@ -1,7 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
 import { TextService } from 'src/app/services/text.service';
 
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';

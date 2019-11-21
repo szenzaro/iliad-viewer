@@ -1,5 +1,5 @@
 import { Component, Input, Output } from '@angular/core';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 import { faMars, faNeuter, faVenus } from '@fortawesome/free-solid-svg-icons';
 
