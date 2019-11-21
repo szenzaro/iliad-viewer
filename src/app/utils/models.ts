@@ -4,7 +4,7 @@ export interface Word {
     verse: number;
     chant: number;
     source: string;
-    data?: any; // FIXME: use correct type
+    data?: WordData; // FIXME: use correct type
 }
 
 export interface Verse {
@@ -63,13 +63,12 @@ export interface Annotation {
 
 export type RecursivePartial<T> = {
     [P in keyof T]?:
-    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends Array<infer U> ? Array<RecursivePartial<U>> :
     T[P] extends object ? RecursivePartial<T[P]> :
     T[P];
 };
 
 export function satisfies(a: Annotation, f: RecursivePartial<Annotation>): boolean {
-
     const firstLevel = Object.keys(f).filter((x) => x !== 'data').every((k) => a[k] === f[k]);
     const dataLevel = Object.keys(f.data || {}).every((k) => !!a.data && a.data[k] === f.data[k]);
     return firstLevel && dataLevel;

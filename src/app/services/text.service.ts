@@ -11,7 +11,7 @@ import { CacheService } from './cache.service';
 function mapWords(text: string, chant: number, verse: VerseRowType, data: WordData[], verseNumber: number): Word[] {
   switch (verse[0]) {
     case 'o':
-      return [{ text: 'OMISIT', data } as Word];
+      return [{ text: 'OMISIT', data } as unknown as Word];
     case 'f':
       return verse[1].map((lemma) => ({ text: lemma } as Word));
     case 't':
@@ -19,7 +19,8 @@ function mapWords(text: string, chant: number, verse: VerseRowType, data: WordDa
     default: // "v"
       return verse[2].map((lemma, j) => ({
         id: `${data[j] && data[j].id}`,
-        text: lemma, data: data[j],
+        text: lemma,
+        data: data[j],
         verse: verseNumber,
         chant,
         source: text,
@@ -36,16 +37,10 @@ function getVersesFromCache(verses: Verse[], range?: [number, number]) {
   const rIndex = verses.indexOf(vs[vs.length - 1]);
 
   if (!!verses[lIndex - 1] && verses[lIndex - 1].n === 't') {
-    console.log('!TTT!', verses[lIndex - 1]);
     vs = [verses[lIndex - 1]].concat(vs);
   }
 
-  if (vs.some((v) => v.n === 't' || v.n === 'f')) {
-    console.log('HERE', vs);
-  }
-
   if (!!verses[rIndex + 1] && verses[rIndex + 1].n === 'f') {
-    console.log('!FFFF!', verses[rIndex + 1]);
     vs = vs.concat([verses[rIndex + 1]]);
   }
   return vs;
@@ -65,7 +60,7 @@ function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], 
     .map((verse, i) => getVerse(verses[0][0] === 't' ? i : i + 1, text, chant, verse, data[i]));
 }
 
-function toWordData(versesData: [string, string, string, string][][]): WordData[][] {
+function toWordData(versesData: Array<Array<[string, string, string, string]>>): WordData[][] {
   return versesData.map((verse) => verse
     .map((x) => x[0] === '' || x[1] === '' || x[2] === ''
       ? undefined
@@ -81,7 +76,7 @@ export interface TextItem {
 interface TextManifest {
   textsList: TextItem[];
   mainText: string;
-  alignments: { source: string, target: string }[];
+  alignments: Array<{ source: string, target: string }>;
 }
 
 type PageInfo = [number, [number, number], [number, number]];
@@ -97,8 +92,6 @@ interface AlignmentEntry {
 })
 export class TextService {
 
-  cache: Map<any> = {};
-
   constructor(
     private readonly cacheService: CacheService,
     private readonly modalService: NgbModal,
@@ -106,7 +99,7 @@ export class TextService {
     this.alignments.subscribe();
   }
 
-  private manifest = this.cacheService.cachedGet<TextManifest>(`./assets/data/manifest.json`).pipe(shareReplay(1));
+  private manifest = this.cacheService.cachedGet<TextManifest>('./assets/data/manifest.json').pipe(shareReplay(1));
 
   private alignments = this.manifest.pipe(
     map(({ alignments }) => alignments),
@@ -116,7 +109,7 @@ export class TextService {
       map(([als, { alignments }]) => {
         const ret: Map<Map<AlignmentEntry>> = {};
         alignments.forEach((a, i) => {
-          ret[`${alignments[i].source}-${alignments[i].target}`] = als[i];
+          ret[`${a.source}-${a.target}`] = als[i];
         });
         return ret;
       })
@@ -132,7 +125,7 @@ export class TextService {
   }
 
   getPageFromVerse(chant: number, verse: number) {
-    return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>(`./assets/manuscript/pagesToVerses.json`)
+    return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>('./assets/manuscript/pagesToVerses.json')
       .pipe(
         map((pages) => +(Object.keys(pages).find((x) => {
           const entry = pages[x].filter((e) => e[0] === chant).map((v) => verse <= v[1][1] && verse >= v[1][0]);
@@ -143,15 +136,15 @@ export class TextService {
 
   getVerses(text: string, chant: number, range?: [number, number]) {
     const cacheKey = `${text}-c${chant}`;
-    if (!!this.cache[cacheKey]) {
-      of<Verse[]>(getVersesFromCache(this.cache[cacheKey]));
+    if (!!this.cacheService.cache[cacheKey]) {
+      of<Verse[]>(getVersesFromCache(this.cacheService.cache[cacheKey]));
     }
     return forkJoin([
       this.cacheService.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
-      this.cacheService.cachedGet<[string, string, string, string][][]>(`./assets/data/texts/${text}/${chant}/data.json`),
+      this.cacheService.cachedGet<Array<Array<[string, string, string, string]>>>(`./assets/data/texts/${text}/${chant}/data.json`),
     ]).pipe(
       map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
-      tap((verses) => this.cache[cacheKey] = verses),
+      tap((verses) => this.cacheService.cache[cacheKey] = verses),
       map((verses) => getVersesFromCache(verses, range)),
     );
   }
@@ -163,7 +156,7 @@ export class TextService {
   }
 
   getWords(text: string) {
-    if (!this.cache[`words-${text}`]) {
+    if (!this.cacheService.cache[`words-${text}`]) {
       return this.getTextsList().pipe(
         map((x) => x.textsList.find((txt) => txt.id === text)),
         filter((x) => !!x),
@@ -176,11 +169,11 @@ export class TextService {
         map((words) => arrayToMap(words, 'id')),
       );
     }
-    return of<Map<Word>>(this.cache[`words-${text}`] as Map<Word>);
+    return of<Map<Word>>(this.cacheService.cache[`words-${text}`] as Map<Word>);
   }
 
   getVersesNumberFromPage(n: number, chant?: number) {
-    return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>(`./assets/manuscript/pagesToVerses.json`)
+    return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>('./assets/manuscript/pagesToVerses.json')
       .pipe(
         map((pages) => {
           const entry = chant !== undefined
@@ -192,11 +185,11 @@ export class TextService {
   }
 
   getTextsList() {
-    return this.cacheService.cachedGet<TextManifest>(`./assets/data/manifest.json`);
+    return this.cacheService.cachedGet<TextManifest>('./assets/data/manifest.json');
   }
 
   getPageNumbers(chant: number) {
-    return this.cacheService.cachedGet<number[][]>(`./assets/manuscript/booksToPages.json`)
+    return this.cacheService.cachedGet<number[][]>('./assets/manuscript/booksToPages.json')
       .pipe(
         map((pages) => pages[chant - 1]),
       );
@@ -226,7 +219,7 @@ export class TextService {
   }
 
   getAnnotations() {
-    return this.cacheService.cachedGet<Annotation[]>(`./assets/manuscript/annotations.json`)
+    return this.cacheService.cachedGet<Annotation[]>('./assets/manuscript/annotations.json')
       .pipe(
         map((arr) => {
           const annotations: Map<OsdAnnotation[]> = {};

@@ -85,10 +85,8 @@ export class AlignedTextsComponent implements OnDestroy, AfterViewInit {
       });
   }
 
-
   ngOnDestroy(): void {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-
 }

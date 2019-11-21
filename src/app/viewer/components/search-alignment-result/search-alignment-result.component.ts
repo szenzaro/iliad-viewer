@@ -3,7 +3,7 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
 import { Word } from 'src/app/utils/models';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 @Component({
   selector: 'app-search-alignment-result',

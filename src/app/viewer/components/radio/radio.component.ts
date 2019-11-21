@@ -2,7 +2,7 @@ import { Component, Input, Output } from '@angular/core';
 import { BehaviorSubject, merge } from 'rxjs';
 import { distinctUntilChanged, filter, tap } from 'rxjs/operators';
 import { uuid } from 'src/app/utils';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 @Component({
   selector: 'app-radio',
@@ -14,7 +14,7 @@ export class RadioComponent {
   id = `radio-${uuid()}`;
 
   @Input() label: string;
-  @Input() items: { id: string, label: string }[] = [];
+  @Input() items: Array<{ id: string, label: string }> = [];
 
   @Input() @InSubject() initialValue: string;
   initialValueChange = new BehaviorSubject<string>(undefined);

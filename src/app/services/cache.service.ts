@@ -8,6 +8,7 @@ import { Map } from '../utils/index';
   providedIn: 'root'
 })
 export class CacheService {
+  // tslint:disable-next-line: no-any
   cache: Map<any> = {};
 
   constructor(

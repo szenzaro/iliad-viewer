@@ -1,7 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, shareReplay } from 'rxjs/operators';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,16 +27,16 @@ export class SelectNumberComponent {
   @Input() @InSubject() selection: { id: string, label: string };
   @Output() selectionChange = new BehaviorSubject<{ id: string, label: string }>(undefined);
 
-  @Input() @InSubject() options: { id: string, label: string }[];
-  optionsChange = new BehaviorSubject<{ id: string, label: string }[]>([]);
+  @Input() @InSubject() options: Array<{ id: string, label: string }>;
+  optionsChange = new BehaviorSubject<Array<{ id: string, label: string }>>([]);
 
   selectedItem = this.selectionChange.pipe(
-    filter((x) => !!x && +x.id !== NaN),
+    filter((x) => !!x && !isNaN(+x.id)),
     debounceTime(150),
   );
 
   @Output() selectedNumber = this.selectedItem.pipe(
-    filter((x) => !!x && +x.id !== NaN),
+    filter((x) => !!x && !isNaN(+x.id)),
     map((x) => +x.id),
     distinctUntilChanged(),
   );

@@ -9,7 +9,7 @@
         <ng-container *ngIf="(currentQuery | async)?.alignment">
             <div *ngIf="resultAlignment | async as res">
                 <p
-                    *ngIf="!(searchService.loading | async)"
+                    *ngIf="(searchService.loading | async) === false"
                     class="mr-3 text-right">
                     Number of results: {{ totalAlignmentResults | async }}
                 </p>
@@ -41,12 +41,12 @@
         <ng-container *ngIf="!(currentQuery | async)?.alignment">
             <div *ngIf="results | async as res">
                 <p
-                    *ngIf="!(searchService.loading | async)"
+                    *ngIf="(searchService.loading | async) === false"
                     class="mr-3 text-right">
                     Number of results: {{ totalResults | async }}
                 </p>
                 <ngb-tabset>
-                    <ng-container *ngIf="!(searchService.loading | async)">
+                    <ng-container *ngIf="(searchService.loading | async) === false">
                         <ngb-tab
                             *ngFor="let r of res | keyvalue"
                             [title]="r.key  + ' (' + (totalResultsPerText | async)[r.key] + ')'">

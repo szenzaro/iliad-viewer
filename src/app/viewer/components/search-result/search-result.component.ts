@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { Word } from 'src/app/utils/models';
 
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 import { TextService } from 'src/app/services/text.service';
 
@@ -20,7 +20,6 @@ export class SearchResultComponent {
   private _openedWordId: string;
   get openedWordId() { return this._openedWordId; }
   set openedWordId(v: string) { this._openedWordId = v === this._openedWordId ? undefined : v; }
-
 
   wids = this.wordsChange.pipe(
     map((ws) => ws.map(({ id }) => id)),

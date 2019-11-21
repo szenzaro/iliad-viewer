@@ -4,13 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Map, uuid } from 'src/app/utils';
-import { InSubject } from '../../utils/InSubject';
+import { InSubject } from '../../utils/in-subject';
 
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { Annotation } from 'src/app/utils/models';
 
-declare var OpenSeadragon: any;
+declare var OpenSeadragon;
 
 export interface OsdAnnotation {
   id: string;
@@ -26,6 +26,7 @@ export interface OsdAnnotation {
 }
 
 interface OsdAnnotationAPI {
+  elements: OsdAnnotation[];
   getElements: () => OsdAnnotation[];
   getElementById: (id: string) => OsdAnnotation;
   addElement: (e: OsdAnnotation) => OsdAnnotation[];
@@ -36,12 +37,12 @@ interface OsdAnnotationAPI {
 }
 
 interface OsdViewerAPI {
-  addHandler: Function;
-  goToPage: Function;
-  HTMLelements: Function;
-  viewport: any;
-  gestureSettingsMouse: any;
-  raiseEvent: Function;
+  addHandler: (eventName: string, handler: (x: { page: number }) => void) => void;
+  goToPage: (page: number) => void;
+  HTMLelements: () => OsdAnnotationAPI;
+  viewport;
+  gestureSettingsMouse;
+  raiseEvent: (evtName: string) => void;
 }
 
 /*
@@ -73,9 +74,9 @@ To:
 */
 function manifestResourcetoTileSource(manifestResource) {
   return {
-    '@context': manifestResource['service']['@context'],
-    '@id': manifestResource['service']['@id'],
-    profile: [manifestResource['service']['@profile']],
+    '@context': manifestResource.service['@context'],
+    '@id': manifestResource.service['@id'],
+    profile: [manifestResource.service['@profile']],
     protocol: 'http://iiif.io/api/image',
     height: manifestResource.height,
     width: manifestResource.width,
@@ -104,12 +105,12 @@ export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
 
   @Input() text: string;
 
-  tileSources: Observable<{}[]> = this.manifestURLChange
+  tileSources: Observable<Array<{}>> = this.manifestURLChange
     .pipe(
       filter((url) => !!url),
       distinctUntilChanged(),
       switchMap((url) => this.http.get(url)),
-      map((manifest: { sequences: any[] }) => manifest // get the resource fields in the manifest json structure
+      map((manifest: { sequences: Partial<Array<{ canvases }>> }) => manifest // get the resource fields in the manifest json structure
         .sequences.map((seq) => seq.canvases.map((canv) => canv.images).reduce((x, y) => x.concat(y), []))
         .reduce((x, y) => x.concat(y), []).map((res) => res.resource)
         .map(manifestResourcetoTileSource)
@@ -119,7 +120,7 @@ export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
   // clip to project related images
   clippedTileSources = this.tileSources
     .pipe(
-      map((tiles: any[]) => tiles.slice(18, 145)), // TODO: check right boundary
+      map((tiles: Array<{}>) => tiles.slice(18, 145)), // TODO: check right boundary
     );
 
   viewer: Partial<OsdViewerAPI>;
@@ -194,10 +195,6 @@ export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
         });
 
         this.annotationsHandle = this.viewer.HTMLelements();
-
-        this.viewer.addHandler('open', (e) => { // TODO: remove after getting all the coordinates for the annotations
-          const viewer = e.eventSource;
-        });
         this.initAnnotationsEventSource();
         this.annotationsHandle.addElements(this.pageAnnotations(0));
       }));

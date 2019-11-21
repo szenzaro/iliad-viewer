@@ -42,7 +42,6 @@ export class SearchService {
     posFilter: undefined,
   };
 
-  cache: Map<any> = {};
   queryString = new Subject<SearchQuery>();
   loading = new BehaviorSubject<boolean>(false);
 
@@ -90,7 +89,6 @@ export class SearchService {
             words.push(w);
           }
         });
-
 
         return forkJoin(words.map((w) => this.textService.getAlignment(sourceText, targetText, w.id))).pipe(
           map((entries) => entries
