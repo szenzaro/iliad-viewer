@@ -10,7 +10,7 @@
         [options]="chantsNumber | async"
         label="Book"
         class="flex-grow-1"
-        [selection]="actualChant | async"
+        [selection]="optionChant | async"
         (selectedNumber)="chant = $event">
     </app-select-number>
 </div>
