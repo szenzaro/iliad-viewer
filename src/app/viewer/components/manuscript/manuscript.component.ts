@@ -69,9 +69,9 @@ export class ManuscriptComponent implements AfterViewInit, OnDestroy {
       debounceTime(250),
     ).subscribe(([chant, page, verse, annotation, annfilter]) => {
       const queryParams = {
-        chant: !!chant ? chant : 1,
-        page: !!page ? page : 1,
-        verse: !!verse ? verse : 1,
+        chant,
+        page,
+        verse,
         sa: annotation ? annotation : undefined,
         af: annfilter.map((x) => x.type === 'verse' ? `verse-${x.data.type}` : x.type).join(','),
       };
@@ -86,8 +86,8 @@ export class ManuscriptComponent implements AfterViewInit, OnDestroy {
         debounceTime(150),
       )
       .subscribe((params) => {
-        if (!!params.book) {
-          this.manuscriptService.chantInput.next(+params.book);
+        if (!!params.chant) {
+          this.manuscriptService.chantInput.next(+params.chant);
         }
         if (!!params.page) {
           this.manuscriptService.pageInput.next(+params.page);
