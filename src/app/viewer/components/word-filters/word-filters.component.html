@@ -108,6 +108,24 @@
                         [selected]="filterSelected('Num') | async"
                         (selectedChange)="filterItem.next({'Num': $event})">
                     </app-pill>
+                    <app-pill
+                        kind="neg"
+                        label="Negation"
+                        [selected]="filterSelected('Neg') | async"
+                        (selectedChange)="filterItem.next({'Neg': $event})">
+                    </app-pill>
+                    <app-pill
+                        kind="conj"
+                        label="Conjunction"
+                        [selected]="filterSelected('Conj') | async"
+                        (selectedChange)="filterItem.next({'Conj': $event})">
+                    </app-pill>
+                    <app-pill
+                        kind="intj"
+                        label="Interjection"
+                        [selected]="filterSelected('Intj') | async"
+                        (selectedChange)="filterItem.next({'Intj': $event})">
+                    </app-pill>
                 </ng-template>
             </ngb-tab>
             <ngb-tab title="Gender">

@@ -45,6 +45,9 @@ import {
   isVerb,
   isVocative,
   PosFilter,
+  isNeg,
+  isConj,
+  isIntj,
 } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
 
@@ -74,6 +77,18 @@ export class WordComponent {
   }
 
   get tagIsDefined() { return !!this.word && !!this.word.data && !!this.word.data.tag; }
+
+  get posNeg() {
+    return this.tagIsDefined && isNeg(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Neg');
+  }
+
+  get posConj() {
+    return this.tagIsDefined && isConj(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Conj');
+  }
+
+  get posIntj() {
+    return this.tagIsDefined && isIntj(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Intj');
+  }
 
   get posAdjective() {
     return this.tagIsDefined && isAdjective(this.word.data.tag) && !!this.posHighlight && this.posHighlight.pos.includes('Adjective');

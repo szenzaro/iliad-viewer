@@ -152,7 +152,7 @@ export function numberToOptions(n: number) {
 }
 
 export type POS_OP = 'or' | 'and';
-export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num'
+export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num' | 'Conj' | 'Neg' | 'Intj'
     | 'Particle'
     | 'Preposition'
     | 'Masculine' | 'Feminine' | 'Neutral'
@@ -201,6 +201,15 @@ export function isPronoun(tag: string): boolean {
 }
 export function isNum(tag: string): boolean {
     return !!tag && tag.startsWith('NUM');
+}
+export function isNeg(tag: string): boolean {
+    return !!tag && tag.startsWith('I+Neg');
+}
+export function isConj(tag: string): boolean {
+    return !!tag && tag.startsWith('I+Conj');
+}
+export function isIntj(tag: string): boolean {
+    return !!tag && tag.startsWith('I+Intj');
 }
 export function isPresent(tag: string): boolean {
     return checkTag(

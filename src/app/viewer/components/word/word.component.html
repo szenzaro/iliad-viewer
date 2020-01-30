@@ -42,6 +42,9 @@
     [class.passive]="posPassive && posHighlighted"
     [class.toponym]="posToponym && posHighlighted"
     [class.patronymic]="posPatronymic && posHighlighted"
+    [class.intj]="posIntj && posHighlighted"
+    [class.neg]="posNeg && posHighlighted"
+    [class.conj]="posConj && posHighlighted"
     (mouseenter)="wordOver.next(word.id)"
     (mouseleave)="wordOver.next(null)"
     (click)="!!word.data ? openWordId.next(word.id) : 0">
