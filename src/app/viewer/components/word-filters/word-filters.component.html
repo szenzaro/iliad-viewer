@@ -38,14 +38,16 @@
                 *ngFor="let d of pillsData | keyvalue : originalOrder"
                 [title]="d.key">
                 <ng-template ngbTabContent>
+                    <ng-container *ngFor="let c of d.value">
                     <app-pill
-                        *ngFor="let c of d.value"
+                        *ngIf="c !== undefined"
                         [kind]="c.kind"
                         [label]="c.label"
                         [gender]="c.gender"
                         [selected]="c.selected() | async"
                         (selectedChange)="c.selectedChange($event)">
                     </app-pill>
+                </ng-container>
                 </ng-template>
             </ngb-tab>
         </ngb-tabset>

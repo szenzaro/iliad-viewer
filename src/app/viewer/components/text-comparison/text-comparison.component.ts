@@ -36,7 +36,7 @@ export class TextComparisonComponent implements AfterViewInit, OnDestroy {
       this.chant2.pipe(filter((x) => x !== null && !isNaN(x)), distinctUntilChanged()),
       this.text1.pipe(filter((x) => !!x), distinctUntilChanged()),
       this.text2.pipe(filter((x) => !!x), distinctUntilChanged()),
-      this.filterChange,
+      this.filterChange.pipe(filter((x) => !!x), distinctUntilChanged()),
     ]).pipe(
       takeUntil(this.unsubscribe),
       debounceTime(250),
