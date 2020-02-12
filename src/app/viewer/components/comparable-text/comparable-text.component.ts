@@ -4,7 +4,7 @@ import { TextService } from 'src/app/services/text.service';
 import { BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 
-import { numberToOptions, PosFilter, numberToOption } from 'src/app/utils';
+import { numberToOption, numberToOptions, PosFilter } from 'src/app/utils';
 import { InSubject } from '../../utils/in-subject';
 
 @Component({

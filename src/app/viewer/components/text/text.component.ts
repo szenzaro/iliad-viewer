@@ -22,7 +22,7 @@ export class TextComponent implements OnDestroy {
   @Output() scrollIndexChange = new BehaviorSubject<number>(0);
   @Output() wordOver = new EventEmitter<string>();
 
-  @ViewChild(CdkVirtualScrollViewport, { static: false }) viewPort: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
   @Input() posHighlight: PosFilter;
 
   @Input() highlightIds: string[] = [];

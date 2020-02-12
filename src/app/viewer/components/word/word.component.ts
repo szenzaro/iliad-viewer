@@ -12,6 +12,7 @@ import {
   isAnthroponymic,
   isAorist,
   isArticle,
+  isConj,
   isDative,
   isDual,
   isFeminine,
@@ -22,9 +23,11 @@ import {
   isImperfect,
   isIndicative,
   isInfinitive,
+  isIntj,
   isMasculine,
   isMiddle,
   isName,
+  isNeg,
   isNeutral,
   isNominative,
   isNum,
@@ -45,9 +48,6 @@ import {
   isVerb,
   isVocative,
   PosFilter,
-  isNeg,
-  isConj,
-  isIntj,
 } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
 
