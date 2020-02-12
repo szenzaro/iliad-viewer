@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Map, POS, POS_OP, PosFilter } from 'src/app/utils';
+import { Map, POS, PosFilter, POS_OP } from 'src/app/utils';
 
 import { debounceTime, distinctUntilChanged, filter, map, scan, shareReplay, startWith } from 'rxjs/operators';
 
