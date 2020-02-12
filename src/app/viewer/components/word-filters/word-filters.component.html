@@ -25,8 +25,8 @@
             </button>
             <ui-switch
                 (change)="switchChange.next($event)"
-                checkedLabel="And"
-                uncheckedLabel="Or"
+                [checkedLabel]="'And' | translate"
+                [uncheckedLabel]="'Or' | translate"
                 size="small"
                 class="m-1">
             </ui-switch>

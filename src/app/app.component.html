@@ -25,7 +25,7 @@
                             class="nav-link"
                             [routerLink]="option.path"
                             routerLinkActive="active">
-                            {{ option.label }}
+                            {{ option.label | translate}}
                             <span
                                 *ngIf="option.active"
                                 class="sr-only">

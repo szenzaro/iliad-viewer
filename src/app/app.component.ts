@@ -1,5 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 interface OptionItem {
@@ -19,16 +21,21 @@ export class AppComponent implements OnDestroy {
   title = 'iliad-viewer';
 
   defaultOptions: OptionItem[] = [
-    { active: false, label: 'Project Description', path: '/home' },
-    { active: true, label: 'Manuscript', path: 'viewer/manuscript' },
-    { active: false, label: 'Text Comparison', path: 'viewer/texts' },
-    { active: false, label: 'Alignment', path: 'viewer/alignment' },
-    { active: false, label: 'Search', path: 'viewer/search' },
+    { active: false, label: _T('Project Description'), path: '/home' },
+    { active: true, label: _T('Manuscript'), path: 'viewer/manuscript' },
+    { active: false, label: _T('Text Comparison'), path: 'viewer/texts' },
+    { active: false, label: _T('Alignment'), path: 'viewer/alignment' },
+    { active: false, label: _T('Search'), path: 'viewer/search' },
   ];
 
   subscription: Subscription;
 
-  constructor(public router: Router) {
+  constructor(
+    public router: Router,
+    readonly translate: TranslateService,
+  ) {
+
+    translate.use('fr');
     this.subscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         gtag(
