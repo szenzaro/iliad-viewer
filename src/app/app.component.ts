@@ -35,7 +35,7 @@ export class AppComponent implements OnDestroy {
     readonly translate: TranslateService,
   ) {
 
-    translate.use('fr');
+    translate.use('en'); // TODO: switch to french when the translation has been done
     this.subscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         gtag(
