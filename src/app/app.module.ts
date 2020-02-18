@@ -1,7 +1,9 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AboutPageComponent } from './about-page/about-page.component';
@@ -27,8 +29,10 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
+    FontAwesomeModule,
     HttpClientModule,
     NgbModule,
+    NgSelectModule,
     ViewerModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
