@@ -1,5 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
+import { faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 interface OptionItem {
@@ -19,16 +22,34 @@ export class AppComponent implements OnDestroy {
   title = 'iliad-viewer';
 
   defaultOptions: OptionItem[] = [
-    { active: false, label: 'Project Description', path: '/home' },
-    { active: true, label: 'Manuscript', path: 'viewer/manuscript' },
-    { active: false, label: 'Text Comparison', path: 'viewer/texts' },
-    { active: false, label: 'Alignment', path: 'viewer/alignment' },
-    { active: false, label: 'Search', path: 'viewer/search' },
+    { active: false, label: _T('Project Description'), path: '/home' },
+    { active: true, label: _T('Manuscript'), path: 'viewer/manuscript' },
+    { active: false, label: _T('Text Comparison'), path: 'viewer/texts' },
+    { active: false, label: _T('Alignment'), path: 'viewer/alignment' },
+    { active: false, label: _T('Search'), path: 'viewer/search' },
+  ];
+
+  faLanguage = faLanguage;
+  languages = [
+    {
+      id: 'en',
+      label: _T('English'),
+    },
+    {
+      id: 'fr',
+      label: _T('French'),
+    },
   ];
 
   subscription: Subscription;
 
-  constructor(public router: Router) {
+  constructor(
+    public router: Router,
+    readonly translate: TranslateService,
+  ) {
+    // const bl = this.translate.getBrowserLang();
+    // TODO: test authomatic language choice translate.use(this.languages.find((v) => v.id === bl)?.id|| 'en');
+    translate.use('en'); // TODO: switch to french when the translation has been done
     this.subscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         gtag(
@@ -47,5 +68,9 @@ export class AppComponent implements OnDestroy {
     if (!!this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  chooseLang(lang: 'en' | 'fr') {
+    this.translate.use(lang);
   }
 }

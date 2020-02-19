@@ -11,12 +11,12 @@
                 <p
                     *ngIf="(searchService.loading | async) === false"
                     class="mr-3 text-right">
-                    Number of results: {{ totalAlignmentResults | async }}
+                    {{ 'Number of results:' | translate }} {{ totalAlignmentResults | async }}
                 </p>
                 <ngb-tabset>
                     <ngb-tab
                         *ngFor="let r of res | keyvalue"
-                        [title]="'Βοοκ ' + r.key + ' ('+ (perBookAlignmentResult | async)[r.key] + ')'">
+                        [title]="('Book' | translate) + ' ' + r.key + ' ('+ (perBookAlignmentResult | async)[r.key] + ')'">
                         <ng-template ngbTabContent>
                             <cdk-virtual-scroll-viewport
                                 itemSize="32"
@@ -43,7 +43,7 @@
                 <p
                     *ngIf="(searchService.loading | async) === false"
                     class="mr-3 text-right">
-                    Number of results: {{ totalResults | async }}
+                    {{ 'Number of results:' | translate }} {{ totalResults | async }}
                 </p>
                 <ngb-tabset>
                     <ng-container *ngIf="(searchService.loading | async) === false">
@@ -54,7 +54,7 @@
                                 <ngb-tabset>
                                     <ngb-tab
                                         *ngFor="let v of r.value | keyvalue"
-                                        [title]="'Book ' + v.key + ' ('+bookResNumber(v.value)+')'">
+                                        [title]="('Book' | translate) + ' ' + v.key + ' ('+bookResNumber(v.value)+')'">
                                         <ng-template ngbTabContent>
                                             <cdk-virtual-scroll-viewport
                                                 itemSize="32"

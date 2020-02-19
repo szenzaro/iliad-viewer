@@ -16,7 +16,7 @@
                 class="form-control"
                 (keyup.enter)="searchDisabled ? 0 : checkChange(searchQuery)"
                 [(ngModel)]="searchQuery.text"
-                placeholder="Search text">
+                [placeholder]="'Search text' | translate">
             <button
                 [disabled]="searchDisabled"
                 (click)="checkChange(searchQuery)"
@@ -30,7 +30,7 @@
             <label
                 class="mr-2 align-self-center"
                 for="texts">
-                Sources:
+                {{ 'Sources' | translate }}:
             </label>
             <ng-select
                 class="flex-grow-1"
@@ -51,12 +51,12 @@
                 <fa-icon [icon]="faExchange"></fa-icon>
             </button>
             <app-select-text
-                label="From:"
+                [label]="('From' | translate) + ':'"
                 [(text)]="sourceText"
                 class="flex-grow-1">
             </app-select-text>
             <app-select-text
-                label="To:"
+                [label]="('To' | translate) + ':'"
                 [(text)]="targetText"
                 class="flex-grow-1">
             </app-select-text>
@@ -64,7 +64,7 @@
     </div>
     <div class="w-50 p-3 d-flex justify-content-between">
         <div class="d-flex flex-column">
-            <label>Subject:</label>
+            <label>{{ 'Subject' | translate}}:</label>
             <div class="form-check">
                 <input
                     type="checkbox"
@@ -74,7 +74,7 @@
                 <label
                     class="form-check-label"
                     for="alignCheckbox">
-                    Alignment
+                    {{ 'Alignment' | translate }}
                 </label>
             </div>
             <div class="form-check">
@@ -87,28 +87,28 @@
                 <label
                     class="form-check-label"
                     for="posCheckbox">
-                    POS
+                    {{ 'POS' | translate }}
                 </label>
             </div>
         </div>
 
         <app-radio
-            label="Mode:"
+            [label]="('Mode' | translate) + ':'"
             [initialValue]="searchQuery.index"
             (value)="searchQuery.index = $event"
             [items]="indexes"></app-radio>
         <div class="d-flex flex-column">
-            <label>Options:</label>
+            <label>{{ 'Options' | translate }}:</label>
             <app-switch
-                label="Case sensitive"
+                [label]="'Case sensitive' | translate"
                 [(value)]="searchQuery.caseSensitive">
             </app-switch>
             <app-switch
-                label="Diacritics sensitive"
+                [label]="'Diacritics sensitive' | translate"
                 [(value)]="searchQuery.diacriticSensitive">
             </app-switch>
             <app-switch
-                label="Exact Match"
+                [label]="'Exact Match' | translate"
                 [(value)]="searchQuery.exactMatch">
             </app-switch>
         </div>

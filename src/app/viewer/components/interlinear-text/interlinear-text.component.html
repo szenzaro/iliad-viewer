@@ -3,21 +3,21 @@
         [options]="manuscriptService.chants | async"
         [selection]="chant | async"
         (selectedNumber)="manuscriptService.chantInput.next($event)"
-        label="Book"
+        [label]="'Book' | translate"
         class="flex-grow-1">
     </app-select-number>
     <app-select-number
         [options]="manuscriptService.pages | async"
         [selection]="page | async"
         (selectedNumber)="manuscriptService.pageInput.next($event)"
-        label="Page"
+        [label]="'Page' | translate"
         class="flex-grow-1">
     </app-select-number>
     <app-select-number
         [options]="manuscriptService.verses | async"
         [selection]="verse | async"
         (selectedNumber)="manuscriptService.verseInput.next($event)"
-        label="Verse"
+        [label]="'Verse' | translate"
         class="flex-grow-1">
     </app-select-number>
 </div>

@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { UiSwitchModule } from 'ngx-ui-switch';
 
 import { AlignedTextsComponent } from './components/aligned-texts/aligned-texts.component';
@@ -35,6 +36,8 @@ import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 
 import { ViewerRoutingModule } from './viewer-routing.module';
 
+import { HttpClient } from '@angular/common/http';
+import { HttpLoaderFactory } from '../app.module';
 import { ManuscriptService } from './services/manuscript.service';
 
 @NgModule({
@@ -48,6 +51,14 @@ import { ManuscriptService } from './services/manuscript.service';
     ScrollingModule,
     UiSwitchModule,
     ViewerRoutingModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
   ],
   declarations: [
     AlignedTextsComponent,

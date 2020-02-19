@@ -25,7 +25,7 @@
                             class="nav-link"
                             [routerLink]="option.path"
                             routerLinkActive="active">
-                            {{ option.label }}
+                            {{ option.label | translate}}
                             <span
                                 *ngIf="option.active"
                                 class="sr-only">
@@ -34,6 +34,28 @@
                         </a>
                     </li>
                 </ul>
+                <!-- <div
+                    ngbDropdown
+                    class="d-inline-block">
+                    <button
+                        ngbDropdownToggle
+                        id="dropdownBasic1"
+                        class="langBtn">
+                        <fa-icon [icon]="faLanguage"></fa-icon>
+                    </button>
+                    <div
+                        ngbDropdownMenu
+                        aria-labelledby="dropdownBasic1"
+                        class="dropdown-menu dropdown-menu-right">
+                        <a
+                            *ngFor="let l of languages"
+                            ngbDropdownItem
+                            href="#"
+                            (click)="$event.preventDefault();chooseLang(l.id)">
+                            {{ l.label| translate }}
+                        </a>
+                    </div>
+                </div> -->
             </div>
         </div>
     </nav>

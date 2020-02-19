@@ -140,5 +140,8 @@
       }
     }
   },
-  "defaultProject": "iliad-viewer"
+  "defaultProject": "iliad-viewer",
+  "cli": {
+    "analytics": false
+  }
 }
