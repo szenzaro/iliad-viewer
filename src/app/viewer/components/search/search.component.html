@@ -45,8 +45,8 @@
                     class="mr-3 text-right">
                     {{ 'Number of results:' | translate }} {{ totalResults | async }}
                 </p>
-                <ngb-tabset>
-                    <ng-container *ngIf="(searchService.loading | async) === false">
+                <ng-container *ngIf="(searchService.loading | async) === false">
+                    <ngb-tabset>
                         <ngb-tab
                             *ngFor="let r of res | keyvalue"
                             [title]="r.key  + ' (' + (totalResultsPerText | async)[r.key] + ')'">
@@ -68,8 +68,8 @@
                                 </ngb-tabset>
                             </ng-template>
                         </ngb-tab>
-                    </ng-container>
-                </ngb-tabset>
+                    </ngb-tabset>
+                </ng-container>
             </div>
         </ng-container>
     </ng-container>
