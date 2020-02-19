@@ -15,7 +15,7 @@ export class RadioComponent {
 
   @Input() label: string;
   @Input() items: Array<{ id: string, label: string }> = [];
-
+  @Input() inline = false;
   @Input() @InSubject() initialValue: string;
   initialValueChange = new BehaviorSubject<string>(undefined);
 

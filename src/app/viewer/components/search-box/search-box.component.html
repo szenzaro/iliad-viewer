@@ -91,12 +91,18 @@
                 </label>
             </div>
         </div>
-
+        <app-radio
+            [label]="('Alignment Type' | translate) + ':'"
+            [initialValue]="searchQuery.alignmentType"
+            (value)="searchQuery.alignmentType = $event"
+            [items]="alignmentTypes | async">
+        </app-radio>
         <app-radio
             [label]="('Mode' | translate) + ':'"
             [initialValue]="searchQuery.index"
             (value)="searchQuery.index = $event"
-            [items]="indexes"></app-radio>
+            [items]="indexes">
+        </app-radio>
         <div class="d-flex flex-column">
             <label>{{ 'Options' | translate }}:</label>
             <app-switch

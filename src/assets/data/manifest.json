@@ -5,7 +5,9 @@
         { "id": "paraphrase", "label": "Paraphrase", "chants": 3 }
     ],
     "alignments": [
-        { "source": "homeric", "target": "paraphrase" },
-        { "source": "paraphrase", "target": "homeric" }
+        { "source": "homeric", "target": "paraphrase", "type": "auto", "chants": [1,2,3]},
+        { "source": "paraphrase", "target": "homeric", "type": "auto", "chants": [1,2,3]},
+        { "source": "homeric", "target": "paraphrase", "type": "manual", "chants": [1,2,3] },
+        { "source": "paraphrase", "target": "homeric", "type": "manual", "chants": [1,2,3] }
     ]
 }
