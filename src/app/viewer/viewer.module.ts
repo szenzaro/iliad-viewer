@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UiSwitchModule } from 'ngx-ui-switch';
 
 import { AlignedTextsComponent } from './components/aligned-texts/aligned-texts.component';
@@ -37,8 +38,11 @@ import { ViewerPageComponent } from './viewer-page/viewer-page.component';
 import { ViewerRoutingModule } from './viewer-routing.module';
 
 import { HttpClient } from '@angular/common/http';
-import { HttpLoaderFactory } from '../app.module';
 import { ManuscriptService } from './services/manuscript.service';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   imports: [
