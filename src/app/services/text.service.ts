@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { combineLatest, forkJoin, of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { arrayToMap, Map, uuid } from '../utils/index';
 import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
@@ -76,16 +76,17 @@ export interface TextItem {
 interface TextManifest {
   textsList: TextItem[];
   mainText: string;
-  alignments: Array<{ source: string, target: string }>;
+  alignments: AlignmentItem[];
+}
+
+interface AlignmentItem {
+  source: string;
+  target: string;
+  type: string;
+  chants: number[];
 }
 
 type PageInfo = [number, [number, number], [number, number]];
-
-interface AlignmentEntry {
-  type: 'sub' | 'ins' | 'del' | 'eq';
-  source: string[];
-  target: string[];
-}
 
 @Injectable({
   providedIn: 'root'
@@ -96,33 +97,9 @@ export class TextService {
     private readonly cacheService: CacheService,
     private readonly modalService: NgbModal,
   ) {
-    this.alignments.subscribe();
   }
 
-  private manifest = this.cacheService.cachedGet<TextManifest>('./assets/data/manifest.json').pipe(shareReplay(1));
-
-  private alignments = this.manifest.pipe(
-    map(({ alignments }) => alignments),
-    map((al) => al.map(({ source, target }) => `./assets/data/alignments/${source}-${target}.json`)),
-    map((al) => al.map((a) => this.cacheService.cachedGet<Map<AlignmentEntry>>(a))),
-    switchMap((al) => combineLatest([forkJoin(al), this.manifest]).pipe(
-      map(([als, { alignments }]) => {
-        const ret: Map<Map<AlignmentEntry>> = {};
-        alignments.forEach((a, i) => {
-          ret[`${a.source}-${a.target}`] = als[i];
-        });
-        return ret;
-      })
-    )),
-    shareReplay(1),
-  );
-
-  getAlignment(source: string, target: string, wordId: string) {
-    return this.alignments
-      .pipe(
-        map((alignment) => alignment[`${source}-${target}`][wordId]), // Can be undefined!
-      );
-  }
+  manifest = this.cacheService.cachedGet<TextManifest>('./assets/data/manifest.json').pipe(shareReplay(1));
 
   getPageFromVerse(chant: number, verse: number) {
     return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>('./assets/manuscript/pagesToVerses.json')
