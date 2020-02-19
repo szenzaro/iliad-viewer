@@ -3,6 +3,7 @@ import { BehaviorSubject, combineLatest, forkJoin, of, Subject } from 'rxjs';
 import { debounceTime, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { containsPOStoHighlight, Map, PosFilter, removeAccents } from '../utils/index';
 import { Word } from '../utils/models';
+import { AlignmentService } from './alignment.service';
 import { CacheService } from './cache.service';
 import { TextService } from './text.service';
 
@@ -11,6 +12,7 @@ export type Index = Map<number[]>;
 export interface SearchQuery {
   text: string;
   index: 'text' | 'lemma';
+  alignmentType: 'auto' | 'manual';
   caseSensitive: boolean;
   diacriticSensitive: boolean;
   exactMatch: boolean;
@@ -40,6 +42,7 @@ export class SearchService {
     index: 'text',
     texts: ['homeric', 'paraphrase'],
     posFilter: undefined,
+    alignmentType: 'manual',
   };
 
   queryString = new Subject<SearchQuery>();
@@ -58,17 +61,22 @@ export class SearchService {
     shareReplay(1),
   );
 
+  alignmentChants = this.queryString.pipe(
+    switchMap((qs) => this.alignmentService.getAlignmentChants(qs.texts[0], qs.texts[1], qs.alignmentType)),
+  );
+
   results = combineLatest([
     this.queryString,
     this.words,
+    this.alignmentChants,
   ]).pipe(
     debounceTime(150),
     filter(([q, ws]) => !!q && !!ws && (q.text !== '' || q.pos)),
-    map(([q, ws]) => {
+    map(([q, ws, als]) => {
       const sourceText = q.texts[0];
       const targetText = q.texts[1];
+      let words: Word[] = [];
       if (q.pos) {
-        const words: Word[] = [];
         if (!q.alignment) {
           Object.keys(ws)
             .filter((t) => q.texts.includes(t))
@@ -83,14 +91,13 @@ export class SearchService {
           return of(words);
         }
 
-        Object.keys(ws[sourceText]).forEach((wID) => {
-          const w = ws[sourceText][wID];
-          if (containsPOStoHighlight(w.data && w.data.tag, q.posFilter)) {
-            words.push(w);
-          }
-        });
+        words = Object.keys(ws[sourceText])
+          .map((wID) => ws[sourceText][wID])
+          .filter((w) => containsPOStoHighlight(w.data && w.data.tag, q.posFilter))
+          .filter((w) => als.includes(w.chant))
+          ;
 
-        return forkJoin(words.map((w) => this.textService.getAlignment(sourceText, targetText, w.id))).pipe(
+        return forkJoin(words.map((w) => this.alignmentService.getAlignment(sourceText, targetText, w.id, q.alignmentType))).pipe(
           map((entries) => entries
             .filter((e) => !!e && e.type !== 'del' && e.type !== 'ins')
             .map((e) => e.target)
@@ -126,16 +133,17 @@ export class SearchService {
             .map((k) => x[k]).reduce((r, v) => r.concat(v), []) as number[];
         }),
         map((ids) => ids.map((id) => ws[sourceText][id])),
-        map((words) => words.length <= 0
+        map((wordsData) => wordsData.filter((w) => als.includes(w.chant))),
+        map((wordsData) => wordsData.length <= 0
           ? of([] as Word[])
-          : forkJoin(words.map((w) => this.textService.getAlignment(sourceText, targetText, w.id))).pipe(
+          : forkJoin(wordsData.map((w) => this.alignmentService.getAlignment(sourceText, targetText, w.id, q.alignmentType))).pipe(
             map((entries) => entries
               .filter((e) => !!e && e.type !== 'del' && e.type !== 'ins')
               .map((e) => e.target)
               .reduce((x, y) => x.concat(y), [])
             ),
             map((targetIds) => targetIds.map((id) => ws[targetText][id])),
-            map((targetWords) => words.concat(targetWords)),
+            map((targetWords) => wordsData.concat(targetWords)),
           )),
         switchMap((x) => x),
       );
@@ -160,6 +168,7 @@ export class SearchService {
   constructor(
     private textService: TextService,
     private cacheService: CacheService,
+    private alignmentService: AlignmentService,
   ) {
   }
 }
