@@ -42,6 +42,8 @@ export class ComparableTextComponent {
       map(numberToOptions),
     );
 
+  @Input() chantOptions: Array<{ id: string, label: string }> = [];
+
   actualChant = merge(
     this.chantChange.pipe(
       filter((x) => !!x && !isNaN(x)),
