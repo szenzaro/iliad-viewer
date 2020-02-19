@@ -6,7 +6,9 @@
     </label>
     <div
         *ngFor="let rb of items; let first=first"
-        class="form-check">
+        class="form-check"
+        [class.ml-3]="inline"
+        [class.custom-control-inline]="inline">
         <input
             class="custom-radio form-check-input"
             type="radio"
