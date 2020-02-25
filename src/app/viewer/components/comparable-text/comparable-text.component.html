@@ -7,7 +7,7 @@
     </app-select-text>
     <app-select-number
         [showButtons]="false"
-        [options]="chantOptions"
+        [options]="chantOptions || (chantsNumber | async)"
         label="Book"
         class="flex-grow-1"
         [selection]="optionChant | async"

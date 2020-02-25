@@ -35,14 +35,14 @@ export class ComparableTextComponent {
 
   loading = new BehaviorSubject<boolean>(true);
 
-  chantsNumber = this.textChange
+  readonly chantsNumber = this.textChange
     .pipe(
       filter((x) => !!x),
       switchMap((text) => this.textService.getNumberOfChants(text)),
       map(numberToOptions),
     );
 
-  @Input() chantOptions: Array<{ id: string, label: string }> = [];
+  @Input() chantOptions: Array<{ id: string, label: string }>;
 
   actualChant = merge(
     this.chantChange.pipe(
