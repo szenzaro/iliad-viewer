@@ -13,6 +13,8 @@
     "target": "es2015",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
     "typeRoots": [
       "node_modules/@types"
     ],
