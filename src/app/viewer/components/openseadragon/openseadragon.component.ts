@@ -120,7 +120,7 @@ export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
   // clip to project related images
   clippedTileSources = this.tileSources
     .pipe(
-      map((tiles: Array<{}>) => tiles.slice(18, 145)), // TODO: check right boundary
+      map((tiles: Array<{}>) => tiles.slice(18)),
     );
 
   viewer: Partial<OsdViewerAPI>;
