@@ -56,7 +56,6 @@
     "no-shadowed-variable": true,
     "no-unsafe-finally": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-consecutive-blank-lines": true,
     "no-console": [

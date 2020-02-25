@@ -54,9 +54,11 @@ export interface AnnotationData {
     shape?: string;
 }
 
+export type AnnotationType = 'title' | 'scholie' | 'ref' | 'verse' | 'varia' | 'ornament' ;
+
 export interface Annotation {
     position: AnnotationPosition;
-    type: 'title' | 'scholie' | 'ref' | 'verse' | 'detail' | 'varia' | 'ornament' | 'philologic';
+    type: AnnotationType;
     page: number;
     data: AnnotationData;
 }

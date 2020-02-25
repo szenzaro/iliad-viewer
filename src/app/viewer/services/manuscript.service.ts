@@ -159,6 +159,7 @@ export class ManuscriptService {
         case 1: return 611;
         case 2: return 877;
         case 3: return 461;
+        default: return NaN;
       }
     }),
     distinctUntilChanged(),

@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, of } from 'rxjs';
 import { filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { arrayToMap, Map, uuid } from '../utils/index';
-import { Annotation, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
+import { Annotation, AnnotationType, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
 import { AnnotationModalComponent } from '../viewer/components/annotation-modal/annotation-modal.component';
 import { OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 import { CacheService } from './cache.service';
@@ -92,6 +92,14 @@ type PageInfo = [number, [number, number], [number, number]];
   providedIn: 'root'
 })
 export class TextService {
+  private generateAnnotation: { [T in AnnotationType]: (a: Annotation) => HTMLDivElement } = {
+    verse: this.verseElement,
+    title: this.titleElement,
+    scholie: this.scholieElement,
+    ref: this.refElement,
+    varia: this.variaElement,
+    ornament: this.ornamentElement,
+  };
 
   constructor(
     private readonly cacheService: CacheService,
@@ -201,10 +209,7 @@ export class TextService {
         map((arr) => {
           const annotations: Map<OsdAnnotation[]> = {};
           arr.forEach((a) => {
-            if (!annotations[a.page]) {
-              annotations[a.page] = [];
-            }
-            annotations[a.page].push(this.newAnnotation(a));
+            annotations[a.page] = !annotations[a.page] ? [] : annotations[a.page].concat(this.newAnnotation(a));
           });
           return annotations;
         }),
@@ -216,102 +221,110 @@ export class TextService {
     (modalRef.componentInstance as AnnotationModalComponent).text = text;
   }
 
-  newAnnotation(annotation: Annotation): OsdAnnotation {
-    const element = document.createElement('div');
-    element.classList.add('annotation', annotation.type);
+  private verseElement({ type, data }: Annotation) {
+    const e = document.createElement('div');
+    e.classList.add('annotation', type, data.type, data.shape);
+    const span = document.createElement('span');
+    span.classList.add('invisible');
+    span.innerHTML = `${data.type === 'homeric' ? 'H.' : 'P.'}${data.book}.${data.verse}`;
+    e.onmouseenter = () => {
+      span.classList.remove('invisible');
+    };
+    e.onmouseleave = () => {
+      span.classList.add('invisible');
+    };
+    e.appendChild(span);
+    return e;
+  }
 
-    switch (annotation.type) { // TODO: refactor this switch
-      case 'verse':
-        element.classList.add(annotation.data.type);
-        element.classList.add(annotation.data.shape);
-        const span = document.createElement('span');
-        span.classList.add('invisible');
-        span.innerHTML = `${annotation.data.type === 'homeric' ? 'H.' : 'P.'}${annotation.data.book}.${annotation.data.verse}`;
-        element.onmouseenter = () => {
-          span.classList.remove('invisible');
-        };
-        element.onmouseleave = () => {
-          span.classList.add('invisible');
-        };
-        element.appendChild(span);
-        break;
-      case 'varia':
-        element.classList.add(annotation.data.type);
-        const spanVaria = document.createElement('span');
-        spanVaria.classList.add('invisible');
-        spanVaria.innerHTML = `${annotation.data.text}`;
-        element.onmouseenter = () => {
-          spanVaria.classList.remove('invisible');
-        };
-        element.onmouseleave = () => {
-          spanVaria.classList.add('invisible');
-        };
-        element.appendChild(spanVaria);
-        element.onclick = () => this.openAnnotation(annotation.data.description);
-        break;
-      case 'ref':
-        element.classList.add(annotation.data.shape);
-        if (!!annotation.data.color) {
-          element.style.backgroundColor = annotation.data.color;
-        }
-        const spanRef = document.createElement('span');
-        spanRef.classList.add('invisible');
-        spanRef.innerHTML = `${annotation.data.text}`;
-        element.onmouseenter = () => {
-          spanRef.classList.remove('invisible');
-        };
-        element.onmouseleave = () => {
-          spanRef.classList.add('invisible');
-        };
-        element.appendChild(spanRef);
-        element.onclick = () => this.openAnnotation(annotation.data.description);
-        break;
-      case 'ornament':
-        const spanOrnament = document.createElement('span');
-        spanOrnament.classList.add('invisible');
-        spanOrnament.innerHTML = `${annotation.data.text}`;
-        element.onmouseenter = () => {
-          spanOrnament.classList.remove('invisible');
-        };
-        element.onmouseleave = () => {
-          spanOrnament.classList.add('invisible');
-        };
-        element.onclick = () => this.openAnnotation(annotation.data.description);
-        element.appendChild(spanOrnament);
-        break;
-      case 'scholie':
-        element.classList.add(annotation.data.type);
-        if (!!annotation.data.color) {
-          element.style.backgroundColor = annotation.data.color;
-        }
-        element.onclick = () => this.openAnnotation(annotation.data.description);
-        break;
-      case 'title':
-        element.classList.add(annotation.data.type);
-        element.classList.add(annotation.data.shape);
-        const spanTitle = document.createElement('span');
-        spanTitle.classList.add('invisible');
-        spanTitle.innerHTML = `${annotation.data.text}`;
-        element.onmouseenter = () => {
-          spanTitle.classList.remove('invisible');
-        };
-        element.onmouseleave = () => {
-          spanTitle.classList.add('invisible');
-        };
-        element.onclick = () => this.openAnnotation(annotation.data.description);
-        element.appendChild(spanTitle);
-        break;
-    }
+  private titleElement({ type, data }: Annotation) {
+    const e = document.createElement('div');
+    e.classList.add('annotation', type, data.type, data.shape);
+    const spanTitle = document.createElement('span');
+    spanTitle.classList.add('invisible');
+    spanTitle.innerHTML = `${data.text}`;
+    e.onmouseenter = () => {
+      spanTitle.classList.remove('invisible');
+    };
+    e.onmouseleave = () => {
+      spanTitle.classList.add('invisible');
+    };
+    e.onclick = () => this.openAnnotation(data.description);
+    e.appendChild(spanTitle);
+    return e;
+  }
 
+  private scholieElement({ type, data }: Annotation) {
+    const e = document.createElement('div');
+    e.classList.add('annotation', type);
+    e.classList.add(data.type);
+    e.style.backgroundColor = data.color ?? e.style.backgroundColor;
+    e.onclick = () => this.openAnnotation(data.description);
+    return e;
+  }
+
+  private refElement({ type, data }: Annotation) {
+    const e = document.createElement('div');
+    e.classList.add('annotation', type, data.shape);
+    e.style.backgroundColor = data.color ?? e.style.backgroundColor;
+    const spanRef = document.createElement('span');
+    spanRef.classList.add('invisible');
+    spanRef.innerHTML = `${data.text}`;
+    e.onmouseenter = () => {
+      spanRef.classList.remove('invisible');
+    };
+    e.onmouseleave = () => {
+      spanRef.classList.add('invisible');
+    };
+    e.appendChild(spanRef);
+    e.onclick = () => this.openAnnotation(data.description);
+    return e;
+  }
+
+  private variaElement({ type, data }: Annotation) {
+    const e = document.createElement('div');
+    e.classList.add('annotation', type, data.type);
+    const spanVaria = document.createElement('span');
+    spanVaria.classList.add('invisible');
+    spanVaria.innerHTML = `${data.text}`;
+    e.onmouseenter = () => {
+      spanVaria.classList.remove('invisible');
+    };
+    e.onmouseleave = () => {
+      spanVaria.classList.add('invisible');
+    };
+    e.appendChild(spanVaria);
+    e.onclick = () => this.openAnnotation(data.description);
+    return e;
+  }
+
+  private ornamentElement({ type, data }: Annotation) {
+    const e = document.createElement('div');
+    e.classList.add('annotation', type);
+    const spanOrnament = document.createElement('span');
+    spanOrnament.classList.add('invisible');
+    spanOrnament.innerHTML = `${data.text}`;
+    e.onmouseenter = () => {
+      spanOrnament.classList.remove('invisible');
+    };
+    e.onmouseleave = () => {
+      spanOrnament.classList.add('invisible');
+    };
+    e.onclick = () => this.openAnnotation(data.description);
+    e.appendChild(spanOrnament);
+    return e;
+  }
+
+  newAnnotation(a: Annotation): OsdAnnotation {
     return {
       id: uuid('annotation'),
-      element,
-      x: annotation.position.x,
-      y: annotation.position.y,
-      width: annotation.position.width,
-      height: annotation.position.height,
-      text: annotation.data.description,
-      annotation,
+      element: this.generateAnnotation[a.type](a),
+      x: a.position.x,
+      y: a.position.y,
+      width: a.position.width,
+      height: a.position.height,
+      text: a.data.description,
+      annotation: a,
     };
   }
 }
