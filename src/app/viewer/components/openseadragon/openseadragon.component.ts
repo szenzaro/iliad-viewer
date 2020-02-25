@@ -14,7 +14,7 @@ declare var OpenSeadragon;
 
 export interface OsdAnnotation {
   id: string;
-  element: HTMLElement;
+  element: HTMLDivElement;
   x: number;
   y: number;
   width: number;
