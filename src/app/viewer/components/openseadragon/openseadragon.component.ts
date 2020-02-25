@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Map, uuid } from 'src/app/utils';
 import { InSubject } from '../../utils/in-subject';
 
+import { Options } from 'openseadragon';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { Annotation } from 'src/app/utils/models';
@@ -91,8 +92,8 @@ function manifestResourcetoTileSource(manifestResource) {
 export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
   @ViewChild('osd', { read: ElementRef, static: true }) div: ElementRef;
 
-  @Input() @InSubject() options; // TODO: add interface to better type this object
-  optionsChange = new BehaviorSubject({});
+  @Input() @InSubject() options: Partial<Options>;
+  optionsChange = new BehaviorSubject<Partial<Options>>({});
 
   @Input() @InSubject() manifestURL: string;
   manifestURLChange = new BehaviorSubject(undefined);
@@ -159,7 +160,7 @@ export class OpenseadragonComponent implements AfterViewInit, OnDestroy {
     this.viewerId = uuid('openseadragon');
     this.div.nativeElement.id = this.viewerId;
 
-    const commonOptions = {
+    const commonOptions: Partial<Options> = {
       visibilityRatio: 0.1,
       minZoomLevel: 0.5,
       defaultZoomLevel: 1,
