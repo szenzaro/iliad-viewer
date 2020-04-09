@@ -101,6 +101,7 @@
             [label]="('Mode' | translate) + ':'"
             [initialValue]="searchQuery.index"
             (value)="searchQuery.index = $event"
+            (value)="switchExactMatch($event)"
             [items]="indexes">
         </app-radio>
         <div class="d-flex flex-column">

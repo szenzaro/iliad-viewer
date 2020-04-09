@@ -85,4 +85,8 @@ export class SearchBoxComponent {
       this.queryChange.next({ ...x, text: cleanText });
     }
   }
+
+  switchExactMatch(x: 'text' | 'lemma') {
+    this.searchQuery.exactMatch = x === 'lemma';
+  }
 }
