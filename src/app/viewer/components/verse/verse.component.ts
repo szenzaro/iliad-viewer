@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { WordsTranslationService } from 'src/app/services/words-translation.service';
 import { PosFilter, tagToDescription } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
-import { WordsTranslationService } from 'src/app/services/words-translation.service';
 
 @Component({
   selector: 'app-verse',
@@ -20,7 +20,6 @@ export class VerseComponent {
   @Output() openWordId = new EventEmitter<string>();
   @Output() verseClicked = new EventEmitter<number | 'f' | 't'>();
   @Output() wordOver = new EventEmitter<string>();
-
 
   constructor(
     private vocabulary: WordsTranslationService,
