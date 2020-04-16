@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { PosFilter, tagToDescription } from 'src/app/utils';
 import { Verse } from 'src/app/utils/models';
+import { WordsTranslationService } from 'src/app/services/words-translation.service';
 
 @Component({
   selector: 'app-verse',
@@ -20,11 +21,21 @@ export class VerseComponent {
   @Output() verseClicked = new EventEmitter<number | 'f' | 't'>();
   @Output() wordOver = new EventEmitter<string>();
 
+
+  constructor(
+    private vocabulary: WordsTranslationService,
+  ){
+  }
+
   isHighlighted(id: string): boolean {
     return (!!this.wordDetailsId && id === this.wordDetailsId) || (!!this.highlightIds && this.highlightIds.includes(id));
   }
 
   openedDataPanel(id: string) {
     return !!id && this.verse.words.find((w) => w.id === id);
+  }
+
+  getTranslationData(lemma: string) {
+    return this.vocabulary.getTranslations(lemma);
   }
 }

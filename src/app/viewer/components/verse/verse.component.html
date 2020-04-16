@@ -21,19 +21,15 @@
     class="word-data-panel">
     <ul *ngIf="!!w.data">
         <li>
-            <span>Lemma:</span>
+            <span>{{ 'Lemma' | translate }}:</span>
             {{ w.data.lemma}}
         </li>
         <li>
-            <span>Cleaned Form:</span>
-            {{ w.data.normalized }}
+            <span>{{ 'Translation' | translate }}:</span>
+            {{ getTranslationData(w.data.lemma) | async }}
         </li>
         <li>
-            <span>Tag:</span>
-            {{ w.data.tag }}
-        </li>
-        <li>
-            <span>Description:</span>
+            <span>{{ 'Description' | translate }}:</span>
             {{ tagToDescription(w.data.tag) }}
         </li>
     </ul>
