@@ -1,3 +1,5 @@
+import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
+
 export interface Map<T> {
     [key: string]: T;
 }
@@ -30,37 +32,37 @@ function inflectionalTagToDescription(tag: string): string {
 
     tag.split('').forEach((c) => {
         switch (c) {
-            case '1': description += ' First Person'; break;
-            case '2': description += ' Second Person'; break;
-            case '3': description += ' Third Person'; break;
-            case 'A': description += ' Accusative'; break;
-            case 'B': description += ' Passive'; break;
-            case 'C': description += ' Gerundive'; break;
-            case 'D': description += ' Dative'; break;
-            case 'd': description += ' Dual'; break;
-            case 'E': description += ' Active'; break;
-            case 'f': description += ' Feminine'; break;
-            case 'F': description += ' Future'; break;
-            case 'G': description += ' Genitive'; break;
-            case 'I': description += ' Imperfect'; break;
-            case 'Î': description += ' Indicative'; break;
-            case 'J': description += ' Aorist'; break;
-            case 'K': description += ' Participle'; break;
-            case 'L': description += ' Future Perfect'; break;
-            case 'm': description += ' Masculine'; break;
-            case 'M': description += ' Middle'; break;
-            case 'n': description += ' Neutral'; break;
-            case 'N': description += ' Nominative'; break;
-            case 'O': description += ' Optative'; break;
-            case 'p': description += ' Plural'; break;
-            case 'P': description += ' Present'; break;
-            case 'Q': description += ' Pluperfect'; break;
-            case 'R': description += ' Perfect'; break;
-            case 's': description += ' Singular'; break;
-            case 'S': description += ' Subjunctive'; break;
-            case 'V': description += ' Vocative'; break;
-            case 'W': description += ' Infinitive'; break;
-            case 'Y': description += ' Imperative'; break;
+            case '1': description += _T(' First Person'); break;
+            case '2': description += _T(' Second Person'); break;
+            case '3': description += _T(' Third Person'); break;
+            case 'A': description += _T(' Accusative'); break;
+            case 'B': description += _T(' Passive'); break;
+            case 'C': description += _T(' Gerundive'); break;
+            case 'D': description += _T(' Dative'); break;
+            case 'd': description += _T(' Dual'); break;
+            case 'E': description += _T(' Active'); break;
+            case 'f': description += _T(' Feminine'); break;
+            case 'F': description += _T(' Future'); break;
+            case 'G': description += _T(' Genitive'); break;
+            case 'I': description += _T(' Imperfect'); break;
+            case 'Î': description += _T(' Indicative'); break;
+            case 'J': description += _T(' Aorist'); break;
+            case 'K': description += _T(' Participle'); break;
+            case 'L': description += _T(' Future Perfect'); break;
+            case 'm': description += _T(' Masculine'); break;
+            case 'M': description += _T(' Middle'); break;
+            case 'n': description += _T(' Neutral'); break;
+            case 'N': description += _T(' Nominative'); break;
+            case 'O': description += _T(' Optative'); break;
+            case 'p': description += _T(' Plural'); break;
+            case 'P': description += _T(' Present'); break;
+            case 'Q': description += _T(' Pluperfect'); break;
+            case 'R': description += _T(' Perfect'); break;
+            case 's': description += _T(' Singular'); break;
+            case 'S': description += _T(' Subjunctive'); break;
+            case 'V': description += _T(' Vocative'); break;
+            case 'W': description += _T(' Infinitive'); break;
+            case 'Y': description += _T(' Imperative'); break;
             default: description += `(ERROR Inflect:: ${tag})`;
         }
     });
@@ -68,58 +70,58 @@ function inflectionalTagToDescription(tag: string): string {
     return description;
 }
 
-function morphologicalTagToDescription(tag: string): string {
+function morphologicalTagToDescription(tag: string, ): string {
     let description = '';
 
     switch (tag) {
         case '': break;
-        case 'A': description += ' Adjective'; break;
-        case 'AMORPH': description += ' Element of Morphological Analysis'; break;
-        case 'DET': description += ' Article'; break;
-        case 'ETYM': description += ' Etymon'; break;
-        case 'I+Adv': description += ' Adverb'; break;
-        case 'I+AdvPr': description += ' Prepositional Adverb'; break;
-        case 'I+Conj': description += ' Conjunction'; break;
-        case 'I+Intj': description += ' Interjection'; break;
-        case 'I+Neg': description += ' Negation'; break;
-        case 'I+Part': description += ' Particle'; break;
-        case 'I+Prep': description += ' Preposition'; break;
+        case 'A': description += _T(' Adjective'); break;
+        case 'AMORPH': description += _T(' Element of Morphological Analysis'); break;
+        case 'DET': description += _T(' Article'); break;
+        case 'ETYM': description += _T(' Etymon'); break;
+        case 'I+Adv': description += _T(' Adverb'); break;
+        case 'I+AdvPr': description += _T(' Prepositional Adverb'); break;
+        case 'I+Conj': description += _T(' Conjunction'); break;
+        case 'I+Intj': description += _T(' Interjection'); break;
+        case 'I+Neg': description += _T(' Negation'); break;
+        case 'I+Part': description += _T(' Particle'); break;
+        case 'I+Prep': description += _T(' Preposition'); break;
         // tslint:disable-next-line:max-line-length
-        case 'LF': description += ' If it is impossible to analyse a form, this form itself is chosen as lemma, called a lemma-form2'; break;
-        case 'N+Ant': description += ' Anthroponymic Name'; break;
-        case 'N+Com': description += ' Common Name'; break;
-        case 'N+Epi': description += ' Epiclesis (Nickname)'; break;
-        case 'N+Lettre': description += ' Name of a letter'; break;
-        case 'N+Pat': description += ' Patronymic Name'; break;
-        case 'N+Prop': description += ' Proper Noun'; break;
-        case 'N+Top': description += ' Toponym (Place Name)'; break;
-        case 'NUM+Car': description += ' Cardinal Number (word)'; break;
-        case 'NUM+Ord': description += ' Ordinal Number (word)'; break;
-        case 'NUMA+Car': description += ' Cardinal Number (alphanumeric system)'; break;
-        case 'NUMA+Ord': description += ' Ordinal Number (alphanumeric system)'; break;
-        case 'PRO+Dem': description += ' Demonstrative Pronoun'; break;
-        case 'PRO+Ind': description += ' Indefinite Pronoun'; break;
-        case 'PRO+Int': description += ' Interrogative Pronoun'; break;
-        case 'PRO+Per': description += ' Personal Pronoun'; break;
-        case 'PRO+Per1p': description += ' Personal Pronoun 1st Person Plural'; break;
-        case 'PRO+Per1s': description += ' Personal Pronoun 1st Person Singular'; break;
-        case 'PRO+Per2p': description += ' Personal Pronoun 2nd Person Plural'; break;
-        case 'PRO+Per2s': description += ' Personal Pronoun 2nd Person Singular'; break;
-        case 'PRO+Per3p': description += ' Personal Pronoun 3rd Person Plural'; break;
-        case 'PRO+Per3s': description += ' Personal Pronoun 3rd Person Singular'; break;
-        case 'PRO+Pos1p': description += ' Possessive Pronoun 1st Person Singular'; break;
-        case 'PRO+Pos1s': description += ' Possessive Pronoun 1st Person Singular'; break;
-        case 'PRO+Pos2p': description += ' Possessive Pronoun 2nd Person Plural'; break;
-        case 'PRO+Pos2s': description += ' Possessive Pronoun 2nd Person Singular'; break;
-        case 'PRO+Pos3p': description += ' Possessive Pronoun 3rd Person Plural'; break;
-        case 'PRO+Pos3s': description += ' Possessive Pronoun 3 rd Person Singular'; break;
-        case 'PRO+Rec': description += ' Reciprocal Pronoun'; break;
-        case 'PRO+Ref1s': description += ' Reflexive Pronoun 1st Person Singular'; break;
-        case 'PRO+Ref2s': description += ' Reflexive pronoun 2nd person singular'; break;
-        case 'PRO+Ref3s': description += ' Reflexive pronoun 3rd person singular'; break;
-        case 'PRO+Rel': description += ' Relative Pronoun'; break;
-        case 'V': description += ' Verb'; break;
-        case 'Z': description += ' (not yet tagged lemma)'; break;
+        case 'LF': description += _T(' If it is impossible to analyse a form, this form itself is chosen as lemma, called a lemma-form2'); break;
+        case 'N+Ant': description += _T(' Anthroponymic Name'); break;
+        case 'N+Com': description += _T(' Common Name'); break;
+        case 'N+Epi': description += _T(' Epiclesis (Nickname)'); break;
+        case 'N+Lettre': description += _T(' Name of a letter'); break;
+        case 'N+Pat': description += _T(' Patronymic Name'); break;
+        case 'N+Prop': description += _T(' Proper Noun'); break;
+        case 'N+Top': description += _T(' Toponym (Place Name)'); break;
+        case 'NUM+Car': description += _T(' Cardinal Number (word)'); break;
+        case 'NUM+Ord': description += _T(' Ordinal Number (word)'); break;
+        case 'NUMA+Car': description += _T(' Cardinal Number (alphanumeric system)'); break;
+        case 'NUMA+Ord': description += _T(' Ordinal Number (alphanumeric system)'); break;
+        case 'PRO+Dem': description += _T(' Demonstrative Pronoun'); break;
+        case 'PRO+Ind': description += _T(' Indefinite Pronoun'); break;
+        case 'PRO+Int': description += _T(' Interrogative Pronoun'); break;
+        case 'PRO+Per': description += _T(' Personal Pronoun'); break;
+        case 'PRO+Per1p': description += _T(' Personal Pronoun 1st Person Plural'); break;
+        case 'PRO+Per1s': description += _T(' Personal Pronoun 1st Person Singular'); break;
+        case 'PRO+Per2p': description += _T(' Personal Pronoun 2nd Person Plural'); break;
+        case 'PRO+Per2s': description += _T(' Personal Pronoun 2nd Person Singular'); break;
+        case 'PRO+Per3p': description += _T(' Personal Pronoun 3rd Person Plural'); break;
+        case 'PRO+Per3s': description += _T(' Personal Pronoun 3rd Person Singular'); break;
+        case 'PRO+Pos1p': description += _T(' Possessive Pronoun 1st Person Singular'); break;
+        case 'PRO+Pos1s': description += _T(' Possessive Pronoun 1st Person Singular'); break;
+        case 'PRO+Pos2p': description += _T(' Possessive Pronoun 2nd Person Plural'); break;
+        case 'PRO+Pos2s': description += _T(' Possessive Pronoun 2nd Person Singular'); break;
+        case 'PRO+Pos3p': description += _T(' Possessive Pronoun 3rd Person Plural'); break;
+        case 'PRO+Pos3s': description += _T(' Possessive Pronoun 3 rd Person Singular'); break;
+        case 'PRO+Rec': description += _T(' Reciprocal Pronoun'); break;
+        case 'PRO+Ref1s': description += _T(' Reflexive Pronoun 1st Person Singular'); break;
+        case 'PRO+Ref2s': description += _T(' Reflexive pronoun 2nd person singular'); break;
+        case 'PRO+Ref3s': description += _T(' Reflexive pronoun 3rd person singular'); break;
+        case 'PRO+Rel': description += _T(' Relative Pronoun'); break;
+        case 'V': description += _T(' Verb'); break;
+        case 'Z': description += _T(' (not yet tagged lemma)'); break;
         default: description += `(ERROR morph:: ${tag})`;
     }
     return description;
