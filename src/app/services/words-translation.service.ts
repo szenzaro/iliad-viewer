@@ -18,7 +18,7 @@ export class WordsTranslationService {
 
   getTranslations(word: string) {
     return this.voc.pipe(
-      map((v) => v[word] ?? [])
+      map((v) => v[word.split(' ')[0]] ?? ['-'])
     );
   }
 }
