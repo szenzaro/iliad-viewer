@@ -1,10 +1,10 @@
 export interface Word {
-    id?: string;
+    id: string;
     text: string;
     verse: number;
     chant: number;
     source: string;
-    data?: WordData; // FIXME: use correct type
+    data?: WordData;
 }
 
 export interface Verse {
