@@ -8,10 +8,10 @@
             (verseClicked)="scrollIndexChange.next($event)"
             [posHighlight]="posHighlight"
             [highlightIds]="highlightIds"
-            (openWordId)="showData ? openedWordId = $event : 0"
+            (openWord)="showData ? openedWord = $event : undefined"
             (wordOver)="wordOver.next($event)"
             [attr.data-index]="index"
-            [wordDetailsId]="openedWordId"
+            [wordDetails]="openedWord"
             [highlight]="shouldHighlight(index, verse)"
             [verse]="verse">
         </app-verse>

@@ -35,8 +35,7 @@ export class SearchBoxComponent {
     map((types) => types.map((id) => ({ id, label: id }))),
   );
 
-  texts = this.textService.getTextsList().pipe(
-    map((manifest) => manifest.textsList),
+  texts = this.textService.textList.pipe(
     map((x) => x.map(({ id }) => id)),
   );
 

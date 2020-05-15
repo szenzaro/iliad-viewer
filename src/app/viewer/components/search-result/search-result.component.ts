@@ -17,9 +17,9 @@ export class SearchResultComponent {
   @Input() @InSubject() words: Word[];
   private wordsChange = new BehaviorSubject<Word[]>([]);
 
-  private _openedWordId: string;
-  get openedWordId() { return this._openedWordId; }
-  set openedWordId(v: string) { this._openedWordId = v === this._openedWordId ? undefined : v; }
+  private _openedWord: Word;
+  get openedWord() { return this._openedWord; }
+  set openedWord(v: Word) { this._openedWord = v === this._openedWord ? undefined : v; }
 
   wids = this.wordsChange.pipe(
     map((ws) => ws.map(({ id }) => id)),

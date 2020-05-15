@@ -25,13 +25,13 @@ export class SearchAlignmentResultComponent {
   @Input() @InSubject() targetWords: Word[];
   targetWordsChange = new BehaviorSubject<Word[]>([]);
 
-  private _sourceOpenedWordId: string;
-  get sourceOpenedWordId() { return this._sourceOpenedWordId; }
-  set sourceOpenedWordId(v: string) { this._sourceOpenedWordId = v === this._sourceOpenedWordId ? undefined : v; }
+  private _sourceOpenedWord: Word;
+  get sourceOpenedWord() { return this._sourceOpenedWord; }
+  set sourceOpenedWord(v: Word) { this._sourceOpenedWord = v === this._sourceOpenedWord ? undefined : v; }
 
-  private _targetOpenedWordId: string;
-  get targetOpenedWordId() { return this._targetOpenedWordId; }
-  set targetOpenedWordId(v: string) { this._targetOpenedWordId = v === this._targetOpenedWordId ? undefined : v; }
+  private _targetOpenedWord: Word;
+  get targetOpenedWord() { return this._targetOpenedWord; }
+  set targetOpenedWord(v: Word) { this._targetOpenedWord = v === this._targetOpenedWord ? undefined : v; }
 
   sourceVerse = combineLatest([
     this.bookChange,
