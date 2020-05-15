@@ -48,8 +48,8 @@ export class SearchService {
   queryString = new Subject<SearchQuery>();
   loading = new BehaviorSubject<boolean>(false);
 
-  private words = this.textService.getTextsList().pipe(
-    map((manifest) => manifest.textsList.map((x) => x.id)),
+  private words = this.textService.textList.pipe(
+    map((textsList) => textsList.map((x) => x.id)),
     switchMap((txts) => forkJoin(txts.map((t) => this.textService.getWords(t))).pipe(
       map((x) => txts.map((text, i) => ({ text, words: x[i] }))),
       map((x) => {

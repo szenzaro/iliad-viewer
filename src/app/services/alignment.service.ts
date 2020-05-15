@@ -24,7 +24,7 @@ export class AlignmentService {
   );
 
   private alignments = this.manifestAlignmentsData.pipe(
-    map((al) => al.map(({ source, target, type }) => `./assets/data/alignments/${source}-${target}_${type}.json`)),
+    map((al) => al.map(({ source, target, type }) => `./assets/data/alignments/${type}/${source}/${target}.json`)),
     map((al) => al.map((a) => this.cacheService.cachedGet<Map<AlignmentEntry>>(a))),
     switchMap((al) => combineLatest([forkJoin(al), this.textService.manifest]).pipe(
       map(([als, { alignments }]) => {
@@ -53,12 +53,13 @@ export class AlignmentService {
     return this.alignments
       .pipe(
         map((alignment) => alignment[`${type}_${source}-${target}`][wordId]), // Can be undefined!
+        map((al)=> ({ source: al?.source ?? [], target: al?.target ?? [] } as AlignmentEntry)),
       );
   }
 
-  getAlignmentChants(source: string, target: string, type: AlignmentType){
+  getAlignmentChants(source: string, target: string, type: AlignmentType) {
     return this.manifestAlignmentsData.pipe(
-      map((als) => als.find((v) => v.source === source && v.target === target &&v.type === type)?.chants),
+      map((als) => als.find((v) => v.source === source && v.target === target && v.type === type)?.chants),
     );
   }
 }
