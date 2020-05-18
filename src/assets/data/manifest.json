@@ -1,8 +1,8 @@
 {
     "mainText": "./texts/homeric/verses.json",
     "textsList": [
-        { "id": "homeric", "label": "Homeric", "chants": 3  },
-        { "id": "paraphrase", "label": "Paraphrase", "chants": 3 }
+        { "id": "homeric", "label": "Homeric", "chants": [1,2,3]  },
+        { "id": "paraphrase", "label": "Paraphrase", "chants": [1,2,3] }
     ],
     "alignments": [
         { "source": "homeric", "target": "paraphrase", "type": "auto", "chants": [1,2,3]},

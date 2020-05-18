@@ -1,34 +1,14 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, of } from 'rxjs';
-import { filter, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
-import { arrayToMap, Map, uuid } from '../utils/index';
-import { Annotation, AnnotationType, Chant, Verse, VerseRowType, Word, WordData } from '../utils/models';
+import { map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { Map, uuid } from '../utils/index';
+import { Annotation, AnnotationType, Verse, VerseRowType, Word } from '../utils/models';
 import { AnnotationModalComponent } from '../viewer/components/annotation-modal/annotation-modal.component';
 import { OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
 import { CacheService } from './cache.service';
 
-function mapWords(text: string, chant: number, verse: VerseRowType, data: WordData[], verseNumber: number): Word[] {
-  switch (verse[0]) {
-    case 'o':
-      return [{ text: 'OMISIT', data } as unknown as Word];
-    case 'f':
-      return verse[1].map((lemma) => ({ text: lemma } as Word));
-    case 't':
-      return verse[1].map((lemma) => ({ text: lemma } as Word));
-    default: // "v"
-      return verse[2].map((lemma, j) => ({
-        id: `${data[j] && data[j].id}`,
-        text: lemma,
-        data: data[j],
-        verse: verseNumber,
-        chant,
-        source: text,
-      } as Word));
-  }
-}
-
-function getVersesFromCache(verses: Verse[], range?: [number, number]) {
+function getVersesFromRange(verses: Verse[], range?: [number, number]) {
   let vs: Verse[] = !!range
     ? verses.filter((v) => range[0] <= v.n && v.n <= range[1])
     : verses;
@@ -46,31 +26,29 @@ function getVersesFromCache(verses: Verse[], range?: [number, number]) {
   return vs;
 }
 
-function getVerse(id: number, text: string, chant: number, verse: VerseRowType, data: WordData[]): Verse {
-  const verseN = verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1];
-  return {
-    id,
-    n: verseN,
-    words: mapWords(text, chant, verse, data, +verseN),
-  };
+function getWordFromRawData(id: string, data: [string, string, string, string, number], source: string, chant: number): Word {
+  const [text, normalized, lemma, tag, verse] = data;
+  return { id, text, chant, source, data: { id, normalized, lemma, tag }, verse };
 }
 
-function jsonToModelVerses(text: string, chant: number, verses: VerseRowType[], data: WordData[][]) {
-  return verses
-    .map((verse, i) => getVerse(verses[0][0] === 't' ? i : i + 1, text, chant, verse, data[i]));
+function getWordIdsFromVerse(verse: VerseRowType) {
+  return verse[0] === 't' || verse[0] === 'f'
+    ? verse[1]
+    : verse[0] === 'v'
+      ? verse[2]
+      : [];
 }
 
-function toWordData(versesData: Array<Array<[string, string, string, string]>>): WordData[][] {
-  return versesData.map((verse) => verse
-    .map((x) => x[0] === '' || x[1] === '' || x[2] === ''
-      ? undefined
-      : { normalized: x[0], lemma: x[1], tag: x[2], id: x[3] }));
+function getVerse(position: number, verse: VerseRowType, source: string, chant: number, words: Word[]) {
+  const n = verse[0] === 't' || verse[0] === 'f' ? verse[0] : verse[1];
+  const id = verse[0] === 't' ? position : position + 1;
+  return { id, n, words, source, chant } as Verse;
 }
 
 export interface TextItem {
   id: string;
   label: string;
-  chants: number;
+  chants: number[];
 }
 
 interface TextManifest {
@@ -108,6 +86,7 @@ export class TextService {
   }
 
   manifest = this.cacheService.cachedGet<TextManifest>('./assets/data/manifest.json').pipe(shareReplay(1));
+  textList = this.manifest.pipe(map(({ textsList }) => textsList));
 
   getPageFromVerse(chant: number, verse: number) {
     return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>('./assets/manuscript/pagesToVerses.json')
@@ -119,18 +98,30 @@ export class TextService {
       );
   }
 
+  getChantWords(source: string, chant: number) {
+    return this.cacheService.cachedGet<Map<[string, string, string, string, number]>>(`./assets/data/texts/${source}/${chant}/words.json`)
+      .pipe(
+        map((s) => {
+          const words: Map<Word> = {};
+          Object.keys(s).forEach((id) => { words[id] = getWordFromRawData(id, s[id], source, chant); });
+          return words;
+        }),
+      );
+  }
+
   getVerses(text: string, chant: number, range?: [number, number]) {
     const cacheKey = `${text}-c${chant}`;
     if (!!this.cacheService.cache[cacheKey]) {
-      of<Verse[]>(getVersesFromCache(this.cacheService.cache[cacheKey]));
+      return of<Verse[]>(getVersesFromRange(this.cacheService.cache[cacheKey]));
     }
+
     return forkJoin([
-      this.cacheService.cachedGet<Chant>(`./assets/data/texts/${text}/${chant}/verses.json`),
-      this.cacheService.cachedGet<Array<Array<[string, string, string, string]>>>(`./assets/data/texts/${text}/${chant}/data.json`),
+      this.cacheService.cachedGet<VerseRowType[]>(`./assets/data/texts/${text}/${chant}/verses.json`),
+      this.getChantWords(text, chant),
     ]).pipe(
-      map(([{ verses }, x]) => jsonToModelVerses(text, chant, verses, toWordData(x))),
+      map(([verses, words]) => verses.map((v, i) => getVerse(i, v, text, chant, getWordIdsFromVerse(v).map((id) => words[id])))),
       tap((verses) => this.cacheService.cache[cacheKey] = verses),
-      map((verses) => getVersesFromCache(verses, range)),
+      map((verses) => getVersesFromRange(verses, range)),
     );
   }
 
@@ -141,18 +132,14 @@ export class TextService {
   }
 
   getWords(text: string) {
-    if (!this.cacheService.cache[`words-${text}`]) {
-      return this.getTextsList().pipe(
-        map((x) => x.textsList.find((txt) => txt.id === text)),
-        filter((x) => !!x),
-        map(({ chants }) => new Array(chants).fill(0).map((_, i) => i + 1)),
-        map((chantNums) => chantNums.map((n) => this.getVerses(text, n))),
-        map((x) => forkJoin(x)),
-        switchMap((x) => x),
-        map((verses) => verses.reduce((x, v) => x.concat(v), [])),
-        map((verses) => verses.reduce((x, v) => x.concat(v.words), []) as Word[]),
-        map((words) => arrayToMap(words, 'id')),
-      );
+    const cacheKey = `words-${text}`;
+    if (!this.cacheService.cache[cacheKey]) {
+      return this.getChants(text)
+        .pipe(
+          switchMap((chants) => forkJoin(chants.map((c) => this.getChantWords(text, c)))),
+          map((chantWords) => chantWords.reduce((d, ws) => ({ ...d, ...ws }), {})),
+          tap((words) => this.cacheService.cache[cacheKey] = words),
+        );
     }
     return of<Map<Word>>(this.cacheService.cache[`words-${text}`] as Map<Word>);
   }
@@ -169,19 +156,22 @@ export class TextService {
       );
   }
 
-  getTextsList() {
-    return this.cacheService.cachedGet<TextManifest>('./assets/data/manifest.json');
-  }
-
   getPageNumbers(chant: number) {
-    return this.cacheService.cachedGet<number[][]>('./assets/manuscript/booksToPages.json')
+    return this.cacheService.cachedGet<Map<number[]>>('./assets/manuscript/booksToPages.json')
       .pipe(
-        map((pages) => pages[chant - 1]),
+        map((pages) => pages[`${chant}`] || []),
       );
   }
 
   getNumberOfChants(text: string) {
-    return this.getTextsList()
+    return this.getChants(text)
+      .pipe(
+        map((chants) => chants.length),
+      );
+  }
+
+  getChants(text: string) {
+    return this.manifest
       .pipe(
         map((textManifest) => {
           const textInfo = textManifest.textsList.find((x) => x.id === text);
@@ -191,14 +181,16 @@ export class TextService {
   }
 
   getChantsPages(text: string) {
-    return this.getNumberOfChants(text).pipe(
-      map((n) => new Array(n).fill(0).map((_, i) => i + 1)),
-      mergeMap((ns) => forkJoin(ns.map((x) => this.getPageNumbers(x))).pipe(
-        map((x) => {
+    return this.getChants(text).pipe(
+      mergeMap((chantsNum) => forkJoin(chantsNum
+        .map((chant) => this.getPageNumbers(chant).pipe(map((pages) => ({ chant, pages })))
+        ),
+      ).pipe(
+        map((pagesInfo) => {
           const m: Map<number[]> = {};
-          x.forEach((n, i) => m[i + 1] = n);
+          pagesInfo.forEach(({ chant, pages }) => m[chant] = pages);
           return m;
-        }),
+        })
       ))
     );
   }

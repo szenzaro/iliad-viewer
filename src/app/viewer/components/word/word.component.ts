@@ -62,6 +62,7 @@ export class WordComponent {
   @Input() highlighted = false;
   @Input() word: Word;
   @Output() openWordId = new EventEmitter<string>();
+  @Output() openWord = new EventEmitter<Word>();
   @Output() wordOver = new EventEmitter<string>();
 
   faNeuter = faNeuter;

@@ -4,7 +4,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { skip, tap } from 'rxjs/operators';
 import { PosFilter } from 'src/app/utils';
-import { Verse } from 'src/app/utils/models';
+import { Verse, Word } from 'src/app/utils/models';
 import { InSubject } from '../../utils/in-subject';
 
 @Component({
@@ -27,9 +27,9 @@ export class TextComponent implements OnDestroy {
 
   @Input() highlightIds: string[] = [];
 
-  private _openedWordId: string;
-  get openedWordId() { return this._openedWordId; }
-  set openedWordId(v: string) { this._openedWordId = v === this._openedWordId ? undefined : v; }
+  private _openedWord: Word;
+  get openedWord() { return this._openedWord; }
+  set openedWord(v: Word) { this._openedWord = v === this._openedWord ? undefined : v; }
 
   private scrollSubscription: Subscription;
 
@@ -45,7 +45,7 @@ export class TextComponent implements OnDestroy {
   ) {
     this.scrollSubscription = this.scrollIndexChange.pipe(
       skip(1),
-      tap(() => this.openedWordId = undefined),
+      tap(() => this.openedWord = undefined),
     ).subscribe((x: number) => { if (this.scrollableIndex) { this.scrollToIndex(x - 1); } });
   }
 

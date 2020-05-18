@@ -28,10 +28,7 @@ export class ComparableTextComponent {
   @Input() highlightIds: string[];
   @Input() highlightIdsChange = new BehaviorSubject<string[]>([]);
 
-  textsList = this.textService.getTextsList()
-    .pipe(
-      map(({ textsList }) => textsList),
-    );
+  textsList = this.textService.textList;
 
   loading = new BehaviorSubject<boolean>(true);
 

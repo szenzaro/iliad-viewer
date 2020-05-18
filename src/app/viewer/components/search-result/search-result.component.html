@@ -2,7 +2,7 @@
     <app-verse
         [verse]="result | async"
         [highlightIds]="wids | async"
-        (openWordId)="openedWordId = $event"
-        [wordDetailsId]="openedWordId">
+        (openWord)="openedWord = $event"
+        [wordDetails]="openedWord">
     </app-verse>
 </div>

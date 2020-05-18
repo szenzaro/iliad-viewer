@@ -4,12 +4,14 @@ export interface Word {
     verse: number;
     chant: number;
     source: string;
-    data?: WordData;
+    data?: WordData; // TODO: check if this can be flat
 }
 
 export interface Verse {
     id: number;
     n: number | 't' | 'f';
+    chant: number;
+    source: string;
     words: Word[];
 }
 

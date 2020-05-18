@@ -1,4 +1,5 @@
 <div
+    *ngIf="!!verse"
     class="verse d-flex flex-nowrap"
     [class.verse-highlight]="highlight">
     <span
@@ -13,24 +14,26 @@
         [posHighlight]="posHighlight"
         [highlighted]="isHighlighted(w.id)"
         (wordOver)="wordOver.next($event)"
-        (openWordId)="openWordId.next($event)">
+        (openWord)="openWord.next($event)">
     </app-word>
 </div>
-<div
-    *ngIf="openedDataPanel(wordDetailsId) as w"
-    class="word-data-panel">
-    <ul *ngIf="!!w.data">
-        <li>
-            <span>{{ 'Lemma' | translate }}:</span>
-            {{ w.data.lemma}}
-        </li>
-        <li>
-            <span>{{ 'Translation' | translate }}:</span>
-            {{ getTranslationData(w.data.lemma) | async }}
-        </li>
-        <li>
-            <span>{{ 'Description' | translate }}:</span>
-            {{ tagToDescription(w.data.tag) }}
-        </li>
-    </ul>
-</div>
+<ng-container *ngIf="(openWord | async) as w">
+    <div
+        *ngIf="wordDetails?.id === w?.id"
+        class="word-data-panel">
+        <ul *ngIf="!!w.data">
+            <li>
+                <span>{{ 'Lemma' | translate }}:</span>
+                {{ w.data.lemma}}
+            </li>
+            <li>
+                <span>{{ 'Translation' | translate }}:</span>
+                {{ getTranslationData(w.data.lemma) | async }}
+            </li>
+            <li>
+                <span>{{ 'Description' | translate }}:</span>
+                {{ tagToDescription(w.data.tag) }}
+            </li>
+        </ul>
+    </div>
+</ng-container>

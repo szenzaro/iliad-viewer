@@ -47,7 +47,7 @@
     [class.conj]="posConj && posHighlighted"
     (mouseenter)="wordOver.next(word.id)"
     (mouseleave)="wordOver.next(null)"
-    (click)="!!word.data ? openWordId.next(word.id) : 0">
+    (click)="!!word.data ? openWord.next(word) : 0">
     {{ word.text }}
     <fa-icon
         *ngIf="posNeutral && posHighlighted"
