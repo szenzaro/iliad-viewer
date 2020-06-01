@@ -1,16 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Map, POS, PosFilter, POS_OP } from 'src/app/utils';
+import { Map, WordsFilter, Word_FILTERS, WORD_FILTER_OP } from 'src/app/utils';
 
 import { debounceTime, distinctUntilChanged, filter, map, scan, shareReplay, startWith } from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
 import { faBroom, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { combineLatest, merge, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
+import { AlignmentType } from 'src/app/services/alignment.service';
+import { InSubject } from '../../utils/in-subject';
 
-export interface PillData { kind: string; label: string; gender?: string; id: string; };
+export interface PillData { kind: string; label: string; gender?: string; id: string; }
 
 @Component({
   selector: 'app-word-filters',
@@ -28,29 +30,39 @@ export class WordFiltersComponent {
 
   switchChange = new EventEmitter<boolean>();
   opChange = this.switchChange.pipe(
-    map<boolean, POS_OP>((v) => (v ? 'and' : 'or')),
-    startWith<POS_OP>('or')
+    map<boolean, WORD_FILTER_OP>((v) => (v ? 'and' : 'or')),
+    startWith<WORD_FILTER_OP>('or')
   );
 
-  private _pos: PosFilter;
-  @Input() set pos(data: PosFilter) {
+  private _pos: WordsFilter;
+  @Input() set pos(data: WordsFilter) {
     this._pos = data;
     this.posChange.next(data);
   }
   get pos() { return this._pos; }
-  posChange = new Subject<PosFilter>();
+  posChange = new Subject<WordsFilter>();
+
+  @InSubject() @Input() source: string;
+  sourceChange = new BehaviorSubject<string>(undefined);
+  @InSubject() @Input() target: string;
+  targetChange = new BehaviorSubject<string>(undefined);
+  @InSubject() @Input() alType: string;
+  alTypeChange = new BehaviorSubject<AlignmentType | undefined>(undefined);
 
   @Input() disabled = false;
   @Output() filterChange = merge(
     this.posChange,
     combineLatest([
       this.currentFilter.pipe(
-        map((currentFilter) => Object.keys(currentFilter).filter((k) => currentFilter[k]) as POS[]),
+        map((currentFilter) => Object.keys(currentFilter).filter((k) => currentFilter[k]) as Word_FILTERS[]),
       ),
       this.opChange,
+      this.sourceChange,
+      this.targetChange,
+      this.alTypeChange,
     ]).pipe(
       debounceTime(100),
-      map(([pos, op]) => ({ op, pos } as PosFilter)),
+      map(([wfilter, op, source, target, alType]) => ({ op, wfilter, source, target, alType } as WordsFilter)),
     ),
   ).pipe(
     shareReplay(1),
@@ -147,8 +159,6 @@ export class WordFiltersComponent {
     },
   ];
 
-
-
   originalOrder = (_a: KeyValue<number, string>, _b: KeyValue<number, string>): number => {
     return 0;
   }
@@ -159,11 +169,11 @@ export class WordFiltersComponent {
     this.filterItem.next(o);
   }
 
-  filterSelected = (label: POS) => {
+  filterSelected = (label: Word_FILTERS) => {
     return this.filterChange.pipe(
       filter((x) => !!x),
       distinctUntilChanged(),
-      map((x) => x.pos.includes(label)),
+      map((x) => x.wfilter.includes(label)),
       startWith(false),
     );
   }

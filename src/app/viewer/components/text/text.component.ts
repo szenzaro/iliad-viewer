@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@a
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { skip, tap } from 'rxjs/operators';
-import { PosFilter } from 'src/app/utils';
+import { WordsFilter } from 'src/app/utils';
 import { Verse, Word } from 'src/app/utils/models';
 import { InSubject } from '../../utils/in-subject';
 
@@ -23,7 +23,7 @@ export class TextComponent implements OnDestroy {
   @Output() wordOver = new EventEmitter<string>();
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
-  @Input() posHighlight: PosFilter;
+  @Input() posHighlight: WordsFilter;
 
   @Input() highlightIds: string[] = [];
 

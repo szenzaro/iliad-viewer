@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { PosFilter } from 'src/app/utils';
+import { WordsFilter } from 'src/app/utils';
 
 @Component({
   selector: 'app-text-comparison',
@@ -17,13 +17,13 @@ export class TextComparisonComponent implements AfterViewInit, OnDestroy {
   text1 = new BehaviorSubject<string>('homeric');
   text2 = new BehaviorSubject<string>('paraphrase');
 
-  private _filter: PosFilter;
-  set filter(f: PosFilter) {
+  private _filter: WordsFilter;
+  set filter(f: WordsFilter) {
     this._filter = f;
     this.filterChange.next(f);
   }
   get filter() { return this._filter; }
-  filterChange = new Subject<PosFilter>();
+  filterChange = new Subject<WordsFilter>();
 
   unsubscribe = new Subject();
 
@@ -47,7 +47,7 @@ export class TextComparisonComponent implements AfterViewInit, OnDestroy {
         books: `${bl},${br}`,
         texts: `${txtl},${txtr}`,
         op: poss.op,
-        pos: poss.pos.join(','),
+        pos: poss.wfilter.join(','),
       };
       this.router.navigate([this.router.url.split('?')[0]], { queryParams });
     });
@@ -76,7 +76,7 @@ export class TextComparisonComponent implements AfterViewInit, OnDestroy {
         }
 
         if (!!params.pos && !!params.op) {
-          this.filterChange.next({ op: params.op, pos: params.pos.split(',') });
+          this.filterChange.next({ op: params.op, wfilter: params.pos.split(',') });
         }
       });
   }

@@ -1,4 +1,5 @@
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
+import { AlignmentType, AlignmentKind } from '../services/alignment.service';
 
 export interface Map<T> {
     [key: string]: T;
@@ -153,8 +154,8 @@ export function numberToOptions(n: number) {
     return new Array(n).fill(undefined).map((_, i) => numberToOption(i + 1));
 }
 
-export type POS_OP = 'or' | 'and';
-export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num' | 'Conj' | 'Neg' | 'Intj'
+export type WORD_FILTER_OP = 'or' | 'and';
+export type Word_FILTERS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb' | 'Pronoun' | 'Num' | 'Conj' | 'Neg' | 'Intj'
     | 'Particle'
     | 'Preposition'
     | 'Masculine' | 'Feminine' | 'Neutral'
@@ -164,11 +165,16 @@ export type POS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name' | 'Verb
     | 'Indicative' | 'Subjunctive' | 'Imperative' | 'Optative' | 'Infinitive' | 'Participle'
     | '1st' | '2nd' | '3rd'
     | 'Active' | 'Middle' | 'Passive'
-    | 'Nominative' | 'Vocative' | 'Accusative' | 'Genitive' | 'Dative';
+    | 'Nominative' | 'Vocative' | 'Accusative' | 'Genitive' | 'Dative'
+    | AlignmentKind
+    ;
 
-export interface PosFilter {
-    op: POS_OP;
-    pos: POS[];
+export interface WordsFilter {
+    op: WORD_FILTER_OP;
+    wfilter: Word_FILTERS[];
+    source?:string;
+    target?:string;
+    alType?:AlignmentType;
 }
 
 export function isAdjective(tag: string): boolean {
@@ -483,13 +489,13 @@ function checkTag<T>(tag: string, f: (crasis: string[]) => T, g: (parts: string[
     return g(parts);
 }
 
-export function containsPOStoHighlight(tag: string, posFilter: PosFilter): boolean {
-    if (!posFilter.pos || posFilter.pos.length === 0 || !tag) {
+export function containsPOStoHighlight(tag: string, posFilter: WordsFilter): boolean {
+    if (!posFilter.wfilter || posFilter.wfilter.length === 0 || !tag) {
         return false;
     }
     const pos: boolean[] = [];
 
-    posFilter.pos.forEach((x) => {
+    posFilter.wfilter.forEach((x) => {
         // tslint:disable-next-line:no-eval
         pos.push(eval(`is${x}(tag)`) as boolean);
     });

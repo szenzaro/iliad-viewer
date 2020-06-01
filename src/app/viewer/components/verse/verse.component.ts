@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { WordsTranslationService } from 'src/app/services/words-translation.service';
-import { PosFilter, tagToDescription } from 'src/app/utils';
+import { WordsFilter, tagToDescription } from 'src/app/utils';
 import { Verse, Word } from 'src/app/utils/models';
 
 @Component({
@@ -15,7 +15,7 @@ export class VerseComponent {
   @Input() verse: Verse;
   @Input() highlight = false;
   @Input() wordDetails: Word;
-  @Input() posHighlight: PosFilter;
+  @Input() posHighlight: WordsFilter;
   @Input() highlightIds: string[] = [];
   @Output() openWord = new EventEmitter<Word>();
   @Output() verseClicked = new EventEmitter<number | 'f' | 't'>();

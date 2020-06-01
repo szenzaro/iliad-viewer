@@ -115,8 +115,8 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
       .subscribe((q) => {
         if (q.pos) {
           const queryParams = {
-            op: q.posFilter.op,
-            pos: q.posFilter.pos.join(','),
+            op: q.wFilter.op,
+            pos: q.wFilter.wfilter.join(','),
             texts: q.texts.join(','),
             alignment: q.alignment !== this.defaultQuery.alignment ? q.alignment : undefined,
           };
@@ -150,9 +150,9 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
             ...this.defaultQuery,
             alignment: params.alignment || this.defaultQuery.alignment,
             pos: true,
-            posFilter: {
+            wFilter: {
               op: params.op,
-              pos: params.pos.split(','),
+              wfilter: params.pos.split(','),
             },
           };
           this.searchService.queryString.next(nq);

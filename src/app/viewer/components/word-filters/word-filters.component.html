@@ -1,7 +1,7 @@
 <div class="d-flex flex-column">
     <div *ngIf="filterChange | async as filterChange">
         <app-pill
-            *ngFor="let f of filterChange.pos"
+            *ngFor="let f of filterChange.wfilter"
             [label]="labelFromId(f)"
             [kind]="f | lowercase"
             [gender]="genderFromId(f)"

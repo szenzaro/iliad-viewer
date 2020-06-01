@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, of, Subject } from 'rxjs';
 import { debounceTime, filter, map, shareReplay, switchMap } from 'rxjs/operators';
-import { containsPOStoHighlight, Map, PosFilter, removeAccents } from '../utils/index';
+import { containsPOStoHighlight, Map, removeAccents, WordsFilter } from '../utils/index';
 import { Word } from '../utils/models';
 import { AlignmentService, AlignmentType } from './alignment.service';
 import { CacheService } from './cache.service';
@@ -19,7 +19,7 @@ export interface SearchQuery {
   alignment: boolean;
   pos: boolean;
   texts: string[];
-  posFilter: PosFilter;
+  wFilter: WordsFilter;
 }
 
 function getRegexp(q: SearchQuery): RegExp {
@@ -41,7 +41,7 @@ export class SearchService {
     pos: false,
     index: 'text',
     texts: ['homeric', 'paraphrase'],
-    posFilter: undefined,
+    wFilter: undefined,
     alignmentType: 'manual',
   };
 
@@ -106,7 +106,7 @@ export class SearchService {
     return Object.keys(ws)
       .filter((t) => q.texts.includes(t))
       .map((textID) => Object.values(ws[textID]))
-      .reduce((x, y) => x.concat(Object.values(y).filter((w) => containsPOStoHighlight(w.data && w.data.tag, q.posFilter))), [])
+      .reduce((x, y) => x.concat(Object.values(y).filter((w) => containsPOStoHighlight(w.data && w.data.tag, q.wFilter))), [])
       ;
   }
 
@@ -114,7 +114,7 @@ export class SearchService {
     const [sourceText, targetText] = q.texts;
     const words = Object.keys(ws[sourceText])
       .map((wID) => ws[sourceText][wID])
-      .filter((w) => containsPOStoHighlight(w.data && w.data.tag, q.posFilter))
+      .filter((w) => containsPOStoHighlight(w.data && w.data.tag, q.wFilter))
       .filter((w) => als.includes(w.chant))
       ;
 
