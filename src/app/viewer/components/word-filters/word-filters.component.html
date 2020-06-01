@@ -1,10 +1,10 @@
 <div class="d-flex flex-column">
     <div *ngIf="filterChange | async as filterChange">
         <app-pill
-            *ngFor="let f of filterChange.pos"
-            [label]="f"
+            *ngFor="let f of filterChange.wfilter"
+            [label]="labelFromId(f)"
             [kind]="f | lowercase"
-            [gender]="genderFromLabel(f)"
+            [gender]="genderFromId(f)"
             [selected]="true"
             (selectedChange)="filterItem.next(filterFromLabel(f, $event))">
         </app-pill>
@@ -35,19 +35,19 @@
             [destroyOnHide]="false"
             type="pills">
             <ngb-tab
-                *ngFor="let d of pillsData | keyvalue : originalOrder"
-                [title]="d.key">
+                *ngFor="let d of pillsData"
+                [title]="d.name">
                 <ng-template ngbTabContent>
-                    <ng-container *ngFor="let c of d.value">
-                    <app-pill
-                        *ngIf="c !== undefined"
-                        [kind]="c.kind"
-                        [label]="c.label"
-                        [gender]="c.gender"
-                        [selected]="c.selected() | async"
-                        (selectedChange)="c.selectedChange($event)">
-                    </app-pill>
-                </ng-container>
+                    <ng-container *ngFor="let c of d.data">
+                        <app-pill
+                            *ngIf="c !== undefined"
+                            [kind]="c.kind"
+                            [label]="c.label"
+                            [gender]="c.gender"
+                            [selected]="filterSelected(c.label) | async"
+                            (selectedChange)="nextFilterItem($event, c.id)">
+                        </app-pill>
+                    </ng-container>
                 </ng-template>
             </ngb-tab>
         </ngb-tabset>

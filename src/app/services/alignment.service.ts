@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { combineLatest, forkJoin } from 'rxjs';
-import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { Map } from '../utils/index';
+import { Word } from '../utils/models';
 import { CacheService } from './cache.service';
 import { TextService } from './text.service';
 
@@ -12,6 +13,7 @@ interface AlignmentEntry {
 }
 
 export type AlignmentType = 'auto' | 'manual';
+export type AlignmentKind = 'sub' | 'ins' | 'del' | 'eq';
 
 @Injectable({
   providedIn: 'root'
@@ -53,13 +55,27 @@ export class AlignmentService {
     return this.alignments
       .pipe(
         map((alignment) => alignment[`${type}_${source}-${target}`][wordId]), // Can be undefined!
-        map((al)=> ({ source: al?.source ?? [], target: al?.target ?? [] } as AlignmentEntry)),
+        map((al) => ({ ...al, source: al?.source ?? [], target: al?.target ?? [] } as AlignmentEntry)),
       );
   }
 
   getAlignmentChants(source: string, target: string, type: AlignmentType) {
     return this.manifestAlignmentsData.pipe(
       map((als) => als.find((v) => v.source === source && v.target === target && v.type === type)?.chants),
+    );
+  }
+
+  getWordAlignmentKind(w: Word, source: string, target: string, alignmentType: AlignmentType) {
+    return (w.source === source
+      ? this.getAlignment(source, target, w.id, alignmentType)
+      : this.getAlignment(target, source, w.id, alignmentType)
+    ).pipe(
+      map((x) => ({
+        ...x,
+        source: w.source === source ? [...(x.source), w.id] : w.source,
+        target: w.source === source ? x.target : [...x.target, w.id],
+      })),
+      map((x) => x.type),
     );
   }
 }

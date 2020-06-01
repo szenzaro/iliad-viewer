@@ -4,7 +4,7 @@ import { TextService } from 'src/app/services/text.service';
 import { BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 
-import { numberToOption, numberToOptions, PosFilter } from 'src/app/utils';
+import { numberToOption, numberToOptions, WordsFilter } from 'src/app/utils';
 import { InSubject } from '../../utils/in-subject';
 
 @Component({
@@ -66,8 +66,8 @@ export class ComparableTextComponent {
       tap(() => this.loading.next(false)),
     );
 
-  @Input() @InSubject() posFilter: PosFilter;
-  @Output() posFilterChange = new BehaviorSubject<PosFilter>({ op: 'or', pos: [] });
+  @Input() @InSubject() posFilter: WordsFilter;
+  @Output() posFilterChange = new BehaviorSubject<WordsFilter>({ op: 'or', wfilter: [] });
 
   constructor(
     private textService: TextService,

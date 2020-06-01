@@ -4,8 +4,8 @@
             *ngIf="searchQuery.pos"
             [disabled]="searchDisabled"
             [submitBtn]="true"
-            [pos]="searchQuery.posFilter"
-            (filterChange)="searchQuery.posFilter = $event"
+            [pos]="searchQuery.wFilter"
+            (filterChange)="searchQuery.wFilter = $event"
             (submitFilter)="queryChange.next(searchQuery)">
         </app-word-filters>
         <div
@@ -81,7 +81,7 @@
                 <input
                     type="checkbox"
                     [(ngModel)]="searchQuery.pos"
-                    (ngModelChange)="$event ? 0 : searchQuery.posFilter = undefined"
+                    (ngModelChange)="$event ? 0 : searchQuery.wFilter = undefined"
                     class="form-check-input"
                     id="posCheckbox">
                 <label
