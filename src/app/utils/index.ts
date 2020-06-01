@@ -1,5 +1,5 @@
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
-import { AlignmentType, AlignmentKind } from '../services/alignment.service';
+import { AlignmentKind, AlignmentType } from '../services/alignment.service';
 
 export interface Map<T> {
     [key: string]: T;

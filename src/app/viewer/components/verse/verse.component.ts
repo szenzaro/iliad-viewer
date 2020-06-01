@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { WordsTranslationService } from 'src/app/services/words-translation.service';
-import { WordsFilter, tagToDescription } from 'src/app/utils';
+import { tagToDescription, WordsFilter } from 'src/app/utils';
 import { Verse, Word } from 'src/app/utils/models';
 
 @Component({

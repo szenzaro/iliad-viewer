@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { combineLatest, forkJoin } from 'rxjs';
-import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { Map } from '../utils/index';
 import { Word } from '../utils/models';
 import { CacheService } from './cache.service';
