@@ -2,10 +2,10 @@ import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
-import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
 import { AlignmentService, AlignmentType } from 'src/app/services/alignment.service';
 import { TextService } from 'src/app/services/text.service';
-import { numberToOption } from 'src/app/utils';
+import { numberToOption, WordsFilter } from 'src/app/utils';
 
 @Component({
   selector: 'app-aligned-texts',
@@ -65,6 +65,30 @@ export class AlignedTextsComponent implements OnDestroy, AfterViewInit {
   chant1 = new Subject<number>();
   chant2 = new Subject<number>();
 
+  filterData = [
+    {
+      name: _T('Type'),
+      data: [
+        { id: 'del', kind: 'del', label: _T('Removed from Homer') },
+        { id: 'ins', kind: 'ins', label: _T('Added In Paraphrase') },
+        { id: 'eq', kind: 'eq', label: _T('Same Word') },
+        { id: 'sub', kind: 'sub', label: _T('Substitution') },
+      ],
+    },
+  ];
+
+  filter = new Subject<WordsFilter>();
+  sourceChange = new Subject<string>();
+  targetChange = new Subject<string>();
+  filterWords = combineLatest([
+    this.filter,
+    this.sourceChange,
+    this.targetChange,
+    this.type,
+  ]).pipe(
+    map(([f, source, target, alType]) => ({ ...f, source, target, alType })),
+    shareReplay(1),
+  );
   unsubscribe = new Subject();
 
   constructor(
