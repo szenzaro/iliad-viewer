@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
+import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { debounceTime, filter, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
-import { AlignmentService, AlignmentType } from 'src/app/services/alignment.service';
+import { AlignmentLabels, AlignmentService, AlignmentType } from 'src/app/services/alignment.service';
 import { TextService } from 'src/app/services/text.service';
 import { numberToOption, WordsFilter } from 'src/app/utils';
 
@@ -18,7 +19,7 @@ export class AlignedTextsComponent implements OnDestroy, AfterViewInit {
   readonly rightWordOver = new Subject<string>();
   readonly type = new BehaviorSubject<AlignmentType>('manual');
   readonly alignmentTypes = this.alignmentService.alignmentTypes.pipe(
-    map((types) => types.map((id) => ({ id, label: id }))),
+    map((types) => types.map((id) => ({ id, label: this.ts.instant(AlignmentLabels[id]) }))),
   );
   @Input() scrollIndex = 0;
 
@@ -96,6 +97,7 @@ export class AlignedTextsComponent implements OnDestroy, AfterViewInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private alignmentService: AlignmentService,
+    private ts: TranslateService,
   ) {
     combineLatest([
       this.chant1.pipe(filter((x) => !isNaN(x))),

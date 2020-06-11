@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { TranslateService } from '@ngx-translate/core';
 import { WordsTranslationService } from 'src/app/services/words-translation.service';
 import { tagToDescription, WordsFilter } from 'src/app/utils';
 import { Verse, Word } from 'src/app/utils/models';
@@ -23,6 +24,7 @@ export class VerseComponent {
 
   constructor(
     private vocabulary: WordsTranslationService,
+    public ts: TranslateService,
   ) {
   }
 

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
 import { combineLatest, forkJoin } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { Map } from '../utils/index';
@@ -14,6 +15,11 @@ interface AlignmentEntry {
 
 export type AlignmentType = 'auto' | 'manual';
 export type AlignmentKind = 'sub' | 'ins' | 'del' | 'eq';
+
+export const AlignmentLabels = {
+  auto: _T('Auto'),
+  manual: _T('Manual'),
+};
 
 @Injectable({
   providedIn: 'root'

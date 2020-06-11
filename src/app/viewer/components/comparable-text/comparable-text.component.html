@@ -8,7 +8,7 @@
     <app-select-number
         [showButtons]="false"
         [options]="chantOptions || (chantsNumber | async)"
-        label="Book"
+        [label]="'Book' | translate"
         class="flex-grow-1"
         [selection]="optionChant | async"
         (selectedNumber)="chant = $event">

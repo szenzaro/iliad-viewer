@@ -2,7 +2,7 @@
     <div *ngIf="filterChange | async as filterChange">
         <app-pill
             *ngFor="let f of filterChange.wfilter"
-            [label]="labelFromId(f)"
+            [label]="labelFromId(f) | translate"
             [kind]="f | lowercase"
             [gender]="genderFromId(f)"
             [selected]="true"
@@ -36,7 +36,7 @@
             type="pills">
             <ngb-tab
                 *ngFor="let d of pillsData"
-                [title]="d.name">
+                [title]="d.name | translate">
                 <ng-template ngbTabContent>
                     <ng-container *ngFor="let c of d.data">
                         <app-pill

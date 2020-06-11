@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
 import { faExchangeAlt, faSearch, } from '@fortawesome/free-solid-svg-icons';
+import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
-import { AlignmentService } from 'src/app/services/alignment.service';
+import { AlignmentLabels, AlignmentService } from 'src/app/services/alignment.service';
 import { SearchQuery, SearchService } from 'src/app/services/search.service';
 import { TextItem, TextService } from 'src/app/services/text.service';
 import { capitalize } from 'src/app/utils';
@@ -30,9 +31,12 @@ export class SearchBoxComponent {
   }
   get query() { return this.searchQuery; }
 
-  indexes = [{ id: 'text', label: _T('Text') }, { id: 'lemma', label: _T('Lemma') }];
+  indexes = [
+    { id: 'text', label: this.ts.instant(_T('Text')) },
+    { id: 'lemma', label: this.ts.instant(_T('Lemma')) },
+  ];
   readonly alignmentTypes = this.alignmentService.alignmentTypes.pipe(
-    map((types) => types.map((id) => ({ id, label: id }))),
+    map((types) => types.map((id) => ({ id, label: this.ts.instant(AlignmentLabels[id]) }))),
   );
 
   texts = this.textService.textList.pipe(
@@ -71,6 +75,7 @@ export class SearchBoxComponent {
     private textService: TextService,
     private searchService: SearchService,
     private alignmentService: AlignmentService,
+    private ts: TranslateService,
   ) {
   }
 

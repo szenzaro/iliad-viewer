@@ -49,7 +49,7 @@ export class AppComponent implements OnDestroy {
   ) {
     // const bl = this.translate.getBrowserLang();
     // TODO: test authomatic language choice translate.use(this.languages.find((v) => v.id === bl)?.id|| 'en');
-    translate.use('en'); // TODO: switch to french when the translation has been done
+    translate.use('fr'); // TODO: switch to french when the translation has been done
     this.subscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         gtag(
