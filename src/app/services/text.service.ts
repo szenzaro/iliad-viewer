@@ -127,7 +127,7 @@ export class TextService {
 
   getVerseFromNumber(text: string, chant: number, n: number) {
     return this.getVerses(text, chant).pipe(
-      map((verses) => verses.find((v) => v.n === n)),
+      map((verses) => verses.find((v) => v.n === +n)),
     );
   }
 
