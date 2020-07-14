@@ -26,6 +26,7 @@ export class AppComponent implements OnDestroy {
     { active: true, label: _T('Manuscript'), path: 'viewer/manuscript' },
     { active: false, label: _T('Text Comparison'), path: 'viewer/texts' },
     { active: false, label: _T('Alignment'), path: 'viewer/alignment' },
+    { active: false, label: _T('Scholie'), path: 'viewer/scholie' },
     { active: false, label: _T('Search'), path: 'viewer/search' },
   ];
 
