@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AlignedTextsComponent } from './components/aligned-texts/aligned-texts.component';
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
+import { ScholieComponent } from './components/scholie/scholie.component';
 import { SearchComponent } from './components/search/search.component';
 import { TextComparisonComponent } from './components/text-comparison/text-comparison.component';
 import { ViewerPageComponent } from './viewer-page/viewer-page.component';
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: 'alignment',
         component: AlignedTextsComponent,
+      },
+      {
+        path: 'scholie',
+        component: ScholieComponent,
       },
       {
         path: 'search',
