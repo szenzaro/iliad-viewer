@@ -19,6 +19,7 @@ import { ManuscriptComponent } from './components/manuscript/manuscript.componen
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
 import { PillComponent } from './components/pill/pill.component';
 import { RadioComponent } from './components/radio/radio.component';
+import { ScholieComponent } from './components/scholie/scholie.component';
 import { SearchAlignmentResultComponent } from './components/search-alignment-result/search-alignment-result.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
@@ -74,6 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     OpenseadragonComponent,
     PillComponent,
     RadioComponent,
+    ScholieComponent,
     SearchAlignmentResultComponent,
     SearchBoxComponent,
     SearchComponent,

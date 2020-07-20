@@ -1,0 +1,44 @@
+<!-- <ng-container *ngFor="let s of (scholie | async) | keyvalue: keyNumOrder">
+    <ng-container *ngFor="let ss of s.value | keyvalue: keyNumOrder">
+        <ul>
+            <li *ngFor="let sss of ss.value | keyvalue">
+                <span>{{ s.key }}.{{ss.key}} - {{sss.key }}</span>
+                =>
+                <span
+                    *ngFor="let dd of sss.value"
+                    [class.s-highlighted]="dd[0]">
+                    {{ dd[1] }}
+                </span>
+            </li>
+        </ul>
+    </ng-container>
+</ng-container> -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'Chant' | translate}}</th>
+            <th>{{ 'Verse' | translate}}</th>
+            <th>{{ 'Iliad' | translate}}</th>
+            <th>{{ 'Scholie' | translate}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let s of (scholie | async) | keyvalue: keyNumOrder">
+            <ng-container *ngFor="let ss of s.value | keyvalue: keyNumOrder">
+
+                <tr *ngFor="let sss of ss.value | keyvalue">
+                    <td>{{ s.key }}</td>
+                    <td>{{ss.key}}</td>
+                    <td>{{sss.key }}</td>
+                    <td>
+                        <span
+                            *ngFor="let dd of sss.value"
+                            [class.s-highlighted]="dd[0]">
+                            {{ dd[1] }}
+                        </span>
+                    </td>
+                </tr>
+            </ng-container>
+        </ng-container>
+    </tbody>
+</table>
