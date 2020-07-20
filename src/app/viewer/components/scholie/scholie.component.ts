@@ -1,6 +1,6 @@
+import { KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
 import { ScholieService } from 'src/app/services/scholie.service';
-import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-scholie',
