@@ -112,7 +112,9 @@ export class TextService {
   getVerses(text: string, chant: number, range?: [number, number]) {
     const cacheKey = `${text}-c${chant}`;
     if (!!this.cacheService.cache[cacheKey]) {
-      return of<Verse[]>(getVersesFromRange(this.cacheService.cache[cacheKey]));
+      return of<Verse[]>(getVersesFromRange(this.cacheService.cache[cacheKey])).pipe(
+        map((verses) => getVersesFromRange(verses, range)),
+      );
     }
 
     return forkJoin([
