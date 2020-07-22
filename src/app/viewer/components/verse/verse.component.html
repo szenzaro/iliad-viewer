@@ -16,6 +16,11 @@
         (wordOver)="wordOver.next($event)"
         (openWord)="openWord.next($event)">
     </app-word>
+    <span
+        class="word p-1"
+        *ngIf="verse.words?.length == 0">
+        {{ 'OMISIT' | translate}}
+    </span>
 </div>
 <ng-container *ngIf="(openWord | async) as w">
     <div
