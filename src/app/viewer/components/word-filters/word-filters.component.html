@@ -24,6 +24,7 @@
                 <fa-icon [icon]="faSearch"></fa-icon>
             </button>
             <ui-switch
+                *ngIf="showAndOr"
                 (change)="switchChange.next($event)"
                 [checkedLabel]="'And' | translate"
                 [uncheckedLabel]="'Or' | translate"

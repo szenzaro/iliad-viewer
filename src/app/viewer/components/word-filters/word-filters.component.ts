@@ -68,6 +68,8 @@ export class WordFiltersComponent {
     shareReplay(1),
   );
 
+  @Input() showAndOr = true;
+
   @Input() submitBtn = false;
   @Output() submitFilter = new EventEmitter();
 
