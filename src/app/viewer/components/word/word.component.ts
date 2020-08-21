@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faMars, faNeuter, faVenus } from '@fortawesome/free-solid-svg-icons';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { AlignmentKind, AlignmentService } from 'src/app/services/alignment.service';
 import {
@@ -51,6 +51,7 @@ import {
   isVerb,
   isVocative,
   WordsFilter,
+  Word_FILTERS,
 } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
 import { InSubject } from '../../utils/in-subject';
@@ -71,6 +72,46 @@ export class WordComponent {
   @Output() openWordId = new EventEmitter<string>();
   @Output() openWord = new EventEmitter<Word>();
   @Output() wordOver = new EventEmitter<string>();
+
+  scholieKind = combineLatest([
+    this.posHighlightChange.pipe(
+      filter((x) => !!x),
+    ),
+    this.wordChange.pipe(
+      filter((x) => !!x),
+    ),
+  ]).pipe(
+    switchMap(([{ source }, w]) => w.id.startsWith('PARA')
+      ? of('paraphrasescholie')
+      : this.alignmentService.getWordScholieAlignmentKind(w, source, 'scholie')),
+    map((x) => x),
+    shareReplay(1),
+  );
+
+  scholieHighlighted = combineLatest([
+    this.posHighlightChange.pipe(
+      filter((x) => !!x),
+    ),
+    this.scholieKind.pipe(
+      filter((x) => !!x),
+    ),
+    this.wordChange.pipe(
+      filter((x) => !!x),
+    ),
+    this.alignmentService.homericScholieAlignmentsIDS,
+    this.alignmentService.homericScholieAlignmentsIDS.pipe(
+      map((als) => Object.keys(als)
+        .filter((x) => als[x].type === 'homerscholie')
+        .map((x) => als[x].target)
+        .reduce((x, y) => x.concat(y), [])
+      ),
+    ),
+  ]).pipe(
+    map(([wfilter, kind, w, hids, schPara]) =>
+      (!!hids[w.id] && wfilter.wfilter.includes(kind as Word_FILTERS)) ||
+      (wfilter.wfilter.includes('paraphrasescholie') && schPara.includes(w.id))
+    ),
+  );
 
   alignmentKind = combineLatest([
     this.posHighlightChange.pipe(
