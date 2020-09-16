@@ -99,13 +99,7 @@ export class WordComponent {
       filter((x) => !!x),
     ),
     this.alignmentService.homericScholieAlignmentsIDS,
-    this.alignmentService.homericScholieAlignmentsIDS.pipe(
-      map((als) => Object.keys(als)
-        .filter((x) => als[x].type === 'homerscholie')
-        .map((x) => als[x].target)
-        .reduce((x, y) => x.concat(y), [])
-      ),
-    ),
+    this.alignmentService.paraScholieIDS,
   ]).pipe(
     map(([wfilter, kind, w, hids, schPara]) =>
       (!!hids[w.id] && wfilter.wfilter.includes(kind as Word_FILTERS)) ||

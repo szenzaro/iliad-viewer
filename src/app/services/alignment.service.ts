@@ -87,6 +87,15 @@ export class AlignmentService {
     shareReplay(1),
   );
 
+  paraScholieIDS = this.homericScholieAlignmentsIDS.pipe(
+    map((als) => Object.keys(als)
+      .filter((x) => als[x].type === 'homerscholie')
+      .map((x) => als[x].target)
+      .reduce((x, y) => x.concat(y), [])
+    ),
+    shareReplay(1),
+  );
+
   alignmentTypes = this.textService.manifest.pipe(
     map(({ alignments }) => [...new Set(alignments.map((x) => x.type))]),
     shareReplay(1),
