@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 })
 export class ScholieService {
 
-  scholie = this.cacheService.cachedGet<Map<Map<Map<Array<[boolean, string]>>>>>('./assets/data/scholie-page.json').pipe(
-    map((x) => x),
+  scholie = this.cacheService.cachedGet<Map<Map<Array<[string, Array<[boolean, string]>]>>>>('./assets/data/scholie-page.json').pipe(
+    map((x) => x), // TODO: remove me
   );
 
   constructor(

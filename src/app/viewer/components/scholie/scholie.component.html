@@ -75,13 +75,13 @@
         <ng-container *ngFor="let s of (scholie | async) | keyvalue: keyNumOrder">
             <ng-container *ngFor="let ss of s.value | keyvalue: keyNumOrder">
 
-                <tr *ngFor="let sss of ss.value | keyvalue">
+                <tr *ngFor="let sss of ss.value">
                     <td>{{ s.key }}</td>
                     <td>{{ss.key}}</td>
-                    <td>{{sss.key }}</td>
+                    <td>{{sss[0] }}</td>
                     <td>
                         <span
-                            *ngFor="let dd of sss.value"
+                            *ngFor="let dd of sss[1]"
                             [class.s-highlighted]="dd[0]">
                             {{ dd[1] }}
                         </span>
