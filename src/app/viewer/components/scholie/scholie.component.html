@@ -22,7 +22,7 @@
     </app-radio>
 </div>
 
-<div [hidden]="(type | async) !== 'text'">
+<div *ngIf="(type | async) === 'text'">
     <app-word-filters
         [showAndOr]="false"
         [disabled]="true"
@@ -60,34 +60,36 @@
     </div>
 </div>
 
-<table
-    [hidden]="(type | async) !== 'table'"
-    class="table">
-    <thead>
-        <tr>
-            <th>{{ 'Chant' | translate}}</th>
-            <th>{{ 'Verse' | translate}}</th>
-            <th>{{ 'Iliad' | translate}}</th>
-            <th>{{ 'Scholie' | translate}}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <ng-container *ngFor="let s of (scholie | async) | keyvalue: keyNumOrder">
-            <ng-container *ngFor="let ss of s.value | keyvalue: keyNumOrder">
-
-                <tr *ngFor="let sss of ss.value">
-                    <td>{{ s.key }}</td>
-                    <td>{{ss.key}}</td>
-                    <td>{{sss[0] }}</td>
-                    <td>
-                        <span
-                            *ngFor="let dd of sss[1]"
-                            [class.s-highlighted]="dd[0]">
-                            {{ dd[1] }}
-                        </span>
-                    </td>
+<div *ngIf="(type | async) === 'table'">
+    <cdk-virtual-scroll-viewport
+        class="full-height"
+        itemSize="32">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 100px">{{ 'Chant' | translate}}</th>
+                    <th style="width: 100px">{{ 'Verse' | translate}}</th>
+                    <th>{{ 'Iliad' | translate}}</th>
+                    <th>{{ 'Scholie' | translate}}</th>
                 </tr>
-            </ng-container>
-        </ng-container>
-    </tbody>
-</table>
+            </thead>
+
+            <tbody>
+                <ng-container *cdkVirtualFor="let s of (scholie | async)">
+                    <tr>
+                        <td>{{ s[0] }}</td>
+                        <td>{{ s[1] }}</td>
+                        <td>{{ s[2] }}</td>
+                        <td>
+                            <span
+                                *ngFor="let dd of s[3]"
+                                [class.s-highlighted]="dd[0]">
+                                {{ dd[1] }}
+                            </span>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </cdk-virtual-scroll-viewport>
+</div>
