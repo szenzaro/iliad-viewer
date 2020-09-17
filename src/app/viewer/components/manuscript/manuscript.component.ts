@@ -6,9 +6,9 @@ import { TextService } from 'src/app/services/text.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
+import { numberToOption } from 'src/app/utils';
 import { Annotation, RecursivePartial, satisfies } from 'src/app/utils/models';
 import { ManuscriptService } from '../../services/manuscript.service';
-import { numberToOption } from 'src/app/utils';
 
 @Component({
   selector: 'app-manuscript',
