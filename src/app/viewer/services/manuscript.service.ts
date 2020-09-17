@@ -50,7 +50,7 @@ export class ManuscriptService {
       this.textService.getPageNumbers(c).pipe(map((ps) => ps[0])),
       this.textService.getPageNumbers(c).pipe(
         switchMap((ps) => this.textService.getVersesNumberFromPage(ps[0])),
-        map((x) => x[0][0]),
+        map((x) => !x || !x[0] ? 0 : x[0][0]),
       ),
     ])),
     map(([chant, page, verse]) => ({ chant, page, verse } as InputTriple)),
@@ -69,7 +69,7 @@ export class ManuscriptService {
     switchMap(([p, { chant, verse }]) => {
       const newChantAndPage = this.pagesByChant.pipe(
         map((m) => {
-          if (m[`${chant}`].includes(p)) {
+          if (!isNaN(chant) && m[`${chant}`].includes(p)) {
             return [chant, p];
           }
           const ch = Object.keys(m).find((n) => m[n].includes(p));
@@ -145,11 +145,16 @@ export class ManuscriptService {
     switchMap((h) => this.textService.getChantsPages(h)),
   );
 
+  totalPages = this.textService.manifest.pipe(
+    map(({ manuscriptPages }) => manuscriptPages),
+    map(numberToOptions),
+  );
+
   pages = combineLatest([
     this.chant,
     this.pagesByChant,
   ]).pipe(
-    map(([c, m]) => m[c]),
+    map(([c, m]) => !!c ? m[c] : []),
     map((pages) => pages.map(numberToOption)),
   );
 
@@ -159,7 +164,7 @@ export class ManuscriptService {
         case 1: return 611;
         case 2: return 877;
         case 3: return 461;
-        default: return NaN;
+        default: return 0;
       }
     }),
     distinctUntilChanged(),

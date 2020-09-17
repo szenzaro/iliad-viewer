@@ -4,6 +4,7 @@
         { "id": "homeric", "label": "Homeric", "chants": [1,2,3]  },
         { "id": "paraphrase", "label": "Paraphrase", "chants": [1,2,3] }
     ],
+    "manuscriptPages": 802,
     "alignments": [
         { "source": "homeric", "target": "paraphrase", "type": "auto", "chants": [1,2,3]},
         { "source": "paraphrase", "target": "homeric", "type": "auto", "chants": [1,2,3]},
