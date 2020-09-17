@@ -1,6 +1,6 @@
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
 import { TranslateService } from '@ngx-translate/core';
-import { AlignmentKind, AlignmentType } from '../services/alignment.service';
+import { AlignmentKind, AlignmentType, ScholieKind } from '../services/alignment.service';
 
 export interface Map<T> {
     [key: string]: T;
@@ -168,6 +168,7 @@ export type Word_FILTERS = 'Adjective' | 'Article' | 'Etymon' | 'Adverb' | 'Name
     | 'Active' | 'Middle' | 'Passive'
     | 'Nominative' | 'Vocative' | 'Accusative' | 'Genitive' | 'Dative'
     | AlignmentKind
+    | ScholieKind
     ;
 
 export interface WordsFilter {

@@ -6,6 +6,7 @@ import { Map, uuid } from '../utils/index';
 import { Annotation, AnnotationType, Verse, VerseRowType, Word } from '../utils/models';
 import { AnnotationModalComponent } from '../viewer/components/annotation-modal/annotation-modal.component';
 import { OsdAnnotation } from '../viewer/components/openseadragon/openseadragon.component';
+import { AlignmentType } from './alignment.service';
 import { CacheService } from './cache.service';
 
 function getVersesFromRange(verses: Verse[], range?: [number, number]) {
@@ -51,16 +52,17 @@ export interface TextItem {
   chants: number[];
 }
 
-interface TextManifest {
+export interface TextManifest {
   textsList: TextItem[];
   mainText: string;
   alignments: AlignmentItem[];
+  scholieAlignments: AlignmentItem[];
 }
 
-interface AlignmentItem {
+export interface AlignmentItem {
   source: string;
   target: string;
-  type: string;
+  type: AlignmentType;
   chants: number[];
 }
 
