@@ -12,6 +12,7 @@ import { InSubject } from '../../utils/in-subject';
 })
 export class SearchAlignmentResultComponent {
 
+  @Input() showChant = false;
   @Input() @InSubject() book: number;
   private bookChange = new BehaviorSubject<number>(undefined);
   @Input() @InSubject() verseNumber: number;
