@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { faMars, faNeuter, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
@@ -73,6 +74,11 @@ export class WordComponent {
   @Output() openWord = new EventEmitter<Word>();
   @Output() wordOver = new EventEmitter<string>();
 
+  currentPath = this.route.url.pipe(
+    map((r) => r.length > 0 ? r[0].path : undefined),
+    shareReplay(1),
+  );
+
   scholieKind = combineLatest([
     this.posHighlightChange.pipe(
       filter((x) => !!x),
@@ -80,10 +86,13 @@ export class WordComponent {
     this.wordChange.pipe(
       filter((x) => !!x),
     ),
+    this.currentPath,
   ]).pipe(
-    switchMap(([{ source }, w]) => w.id.startsWith('PARA')
-      ? of('paraphrasescholie')
-      : this.alignmentService.getWordScholieAlignmentKind(w, source, 'scholie')),
+    switchMap(([{ source }, w, cp]) => !!cp && cp === 'scholie'
+      ? w.id.startsWith('PARA')
+        ? of('paraphrasescholie')
+        : this.alignmentService.getWordScholieAlignmentKind(w, source, 'scholie')
+      : of('')),
     map((x) => x),
     shareReplay(1),
   );
@@ -135,8 +144,19 @@ export class WordComponent {
   faMars = faMars;
   faVenus = faVenus;
 
+  isHighlighted = this.currentPath.pipe(
+    switchMap((path) => {
+      switch (path) {
+        case 'alignment': return this.alignmentHighlighted;
+        case 'scholie': return this.scholieHighlighted;
+        default: return of<boolean>(false);
+      }
+    }),
+  );
+
   constructor(
     public alignmentService: AlignmentService,
+    private route: ActivatedRoute,
   ) {
   }
 

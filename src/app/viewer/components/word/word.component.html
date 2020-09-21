@@ -2,7 +2,7 @@
     [attr.data-word-id]="word.id"
     class="word"
     [class.highlighted]="highlighted"
-    [class.badge]="posHighlighted || (alignmentHighlighted | async) || (scholieHighlighted | async)"
+    [class.badge]="posHighlighted || (isHighlighted | async)"
     [class.adjective]="posAdjective && posHighlighted"
     [class.particle]="posParticle && posHighlighted"
     [class.preposition]="posPreposition && posHighlighted"
