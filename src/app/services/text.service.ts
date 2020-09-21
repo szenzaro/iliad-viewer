@@ -57,6 +57,7 @@ export interface TextManifest {
   mainText: string;
   alignments: AlignmentItem[];
   scholieAlignments: AlignmentItem[];
+  manuscriptPages: number;
 }
 
 export interface AlignmentItem {
@@ -112,6 +113,9 @@ export class TextService {
   }
 
   getVerses(text: string, chant: number, range?: [number, number]) {
+    if (!chant || !text) {
+      return of<Verse[]>([]);
+    }
     const cacheKey = `${text}-c${chant}`;
     if (!!this.cacheService.cache[cacheKey]) {
       return of<Verse[]>(getVersesFromRange(this.cacheService.cache[cacheKey])).pipe(
@@ -153,9 +157,11 @@ export class TextService {
       .pipe(
         map((pages) => {
           const entry = chant !== undefined
-            ? pages[`${n}`].find((x) => x[0] === chant)
-            : pages[`${n}`][pages[`${n}`].length - 1];
-          return !!entry && [entry[1], entry[2]] as [[number, number], [number, number]];
+            ? pages[`${n}`]?.find((x) => x[0] === chant)
+            : pages[`${n}`] ?? pages[`${n}`][pages[`${n}`].length - 1];
+          return (!!entry
+            ? [entry[1], entry[2]]
+            : [[0, 0], [0, 0]]) as [[number, number], [number, number]];
         }),
       );
   }

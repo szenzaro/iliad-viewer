@@ -6,6 +6,7 @@ import { TextService } from 'src/app/services/text.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
+import { numberToOption } from 'src/app/utils';
 import { Annotation, RecursivePartial, satisfies } from 'src/app/utils/models';
 import { ManuscriptService } from '../../services/manuscript.service';
 
@@ -25,6 +26,10 @@ export class ManuscriptComponent implements AfterViewInit, OnDestroy {
   manuscriptPageChange = new BehaviorSubject<number>(109);
 
   text = 'homeric';
+
+  manuscriptPageOption = this.manuscriptService.page.pipe(
+    map(numberToOption),
+  );
 
   annotations = this.textService.getAnnotations();
   @Input() @InSubject() annotationsFilter: Array<RecursivePartial<Annotation>>;
