@@ -36,17 +36,21 @@
                     </ngb-tab>
                     <ngb-tab [title]="('All' | translate) + ' ('+ (totalAlignmentResults | async) + ')'">
                         <ng-template ngbTabContent>
-                            <ng-container *ngFor="let v of flatResultAlignment | async">
-                                <app-search-alignment-result
-                                    [showChant]="true"
-                                    [sourceWords]="v.data[0]"
-                                    [sourceText]="sourceText | async"
-                                    [targetText]="targetText | async"
-                                    [targetWords]="v.data[1]"
-                                    [book]="v.chant"
-                                    [verseNumber]="+v.verse">
-                                </app-search-alignment-result>
-                            </ng-container>
+                            <cdk-virtual-scroll-viewport
+                                itemSize="32"
+                                class="min-h">
+                                <ng-container *cdkVirtualFor="let v of flatResultAlignment | async">
+                                    <app-search-alignment-result
+                                        [showChant]="true"
+                                        [sourceWords]="v.data[0]"
+                                        [sourceText]="sourceText | async"
+                                        [targetText]="targetText | async"
+                                        [targetWords]="v.data[1]"
+                                        [book]="v.chant"
+                                        [verseNumber]="+v.verse">
+                                    </app-search-alignment-result>
+                                </ng-container>
+                            </cdk-virtual-scroll-viewport>
                         </ng-template>
                     </ngb-tab>
                 </ngb-tabset>
