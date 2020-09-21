@@ -5,7 +5,7 @@
     <span
         class="p-1 pr-3 text-secondary"
         (click)="verseClicked.next(verse.n)">
-        [{{ verse.n }}]
+        [{{ showChant ? verse.chant + '.' : '' }}{{ verse.n }}]
     </span>
     <app-word
         class="p-1"

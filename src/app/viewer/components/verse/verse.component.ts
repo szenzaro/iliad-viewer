@@ -13,6 +13,7 @@ import { Verse, Word } from 'src/app/utils/models';
 export class VerseComponent {
 
   tagToDescription = tagToDescription;
+  @Input() showChant = false;
   @Input() verse: Verse;
   @Input() highlight = false;
   @Input() wordDetails: Word;
