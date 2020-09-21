@@ -51,6 +51,13 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
     tap(() => this.searchService.loading.next(false)),
   );
 
+  flatResultAlignment = this.resultAlignment.pipe(
+    map((x) => Object.keys(x).map((chant) => Object.keys(x[chant])
+      .map((verse) => ({ chant, verse, data: x[chant][verse] }))).reduce(
+        (a, b) => a.concat(b), [])
+    ),
+  );
+
   resultsByText = this.searchService.results.pipe(
     map((x) => groupBy(x, 'source')),
     shareReplay(1),
