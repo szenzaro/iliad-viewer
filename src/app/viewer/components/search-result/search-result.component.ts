@@ -14,6 +14,7 @@ import { TextService } from 'src/app/services/text.service';
   styleUrls: ['./search-result.component.scss'],
 })
 export class SearchResultComponent {
+  @Input() showChant = false;
   @Input() @InSubject() words: Word[];
   private wordsChange = new BehaviorSubject<Word[]>([]);
 
