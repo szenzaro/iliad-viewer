@@ -84,6 +84,19 @@
                                             </cdk-virtual-scroll-viewport>
                                         </ng-template>
                                     </ngb-tab>
+                                    <ngb-tab [title]="('All' | translate) + ' (' + (totalResultsPerText | async)[r.key] + ')'">
+                                        <ng-template ngbTabContent>
+                                            <cdk-virtual-scroll-viewport
+                                                itemSize="32"
+                                                class="min-h">
+                                                <ng-container *cdkVirtualFor="let v of (flatResultsPerText | async)[r.key]">
+                                                    <app-search-result
+                                                        [showChant]="true"
+                                                        [words]="v.data"></app-search-result>
+                                                </ng-container>
+                                            </cdk-virtual-scroll-viewport>
+                                        </ng-template>
+                                    </ngb-tab>
                                 </ngb-tabset>
                             </ng-template>
                         </ngb-tab>

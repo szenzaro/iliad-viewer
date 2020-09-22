@@ -7,6 +7,12 @@ import { SearchQuery, SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
 
+function flatSearchResults<T>(x: Map<Map<T>>) {
+  return Object.keys(x).map((chant) => Object.keys(x[chant])
+    .map((verse) => ({ chant, verse, data: x[chant][verse] }))).reduce(
+      (a, b) => a.concat(b), []);
+}
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -52,10 +58,7 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
   );
 
   flatResultAlignment = this.resultAlignment.pipe(
-    map((x) => Object.keys(x).map((chant) => Object.keys(x[chant])
-      .map((verse) => ({ chant, verse, data: x[chant][verse] }))).reduce(
-        (a, b) => a.concat(b), [])
-    ),
+    map((x) => flatSearchResults(x)),
   );
 
   resultsByText = this.searchService.results.pipe(
@@ -91,6 +94,15 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
       return byVerse;
     }),
     tap(() => this.searchService.loading.next(false)),
+  );
+
+  flatResultsPerText = this.results.pipe(
+    map((x) => Object.keys(x)
+      .map((text) => flatSearchResults<Word[]>(x[text]).map((d) => ({ ...d, text })))
+      .reduce((a, b) => a.concat(b), [])
+    ),
+    map((x) => groupBy(x, 'text')),
+    shareReplay(1),
   );
 
   totalResultsPerText = this.resultsByText.pipe(
