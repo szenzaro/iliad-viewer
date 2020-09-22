@@ -1,16 +1,20 @@
 <div class="d-flex flex-column">
-    <div *ngIf="filterChange | async as filterChange">
-        <app-pill
-            *ngFor="let f of filterChange.wfilter"
-            [label]="labelFromId(f) | translate"
-            [kind]="f | lowercase"
-            [gender]="genderFromId(f)"
-            [selected]="true"
-            (selectedChange)="filterItem.next(filterFromLabel(f, $event))">
-        </app-pill>
-    </div>
+    <ng-container *ngIf="pillsData.length > 1">
+        <div *ngIf="filterChange | async as filterChange">
+            <app-pill
+                *ngFor="let f of filterChange.wfilter"
+                [label]="labelFromId(f) | translate"
+                [kind]="f | lowercase"
+                [gender]="genderFromId(f)"
+                [selected]="true"
+                (selectedChange)="filterItem.next(filterFromLabel(f, $event))">
+            </app-pill>
+        </div>
+    </ng-container>
     <div class="d-flex">
-        <div class="d-flex flex-column">
+        <div
+            class="d-flex"
+            [class.flex-column]="pillsData.length > 1">
             <button
                 (click)="filterItem.next({})"
                 class="m-1 btn btn-sm btn-secondary">
@@ -32,25 +36,41 @@
                 class="m-1">
             </ui-switch>
         </div>
-        <ngb-tabset
-            [destroyOnHide]="false"
-            type="pills">
-            <ngb-tab
-                *ngFor="let d of pillsData"
-                [title]="d.name | translate">
-                <ng-template ngbTabContent>
-                    <ng-container *ngFor="let c of d.data">
-                        <app-pill
-                            *ngIf="c !== undefined"
-                            [kind]="c.kind"
-                            [label]="c.label"
-                            [gender]="c.gender"
-                            [selected]="filterSelected(c.label) | async"
-                            (selectedChange)="nextFilterItem($event, c.id)">
-                        </app-pill>
-                    </ng-container>
-                </ng-template>
-            </ngb-tab>
-        </ngb-tabset>
+
+        <ng-container *ngIf="pillsData.length === 1">
+            <ng-container *ngFor="let c of pillsData[0].data">
+                <app-pill
+                    *ngIf="c !== undefined"
+                    [kind]="c.kind"
+                    [label]="c.label"
+                    [gender]="c.gender"
+                    [selected]="filterSelected(c.label) | async"
+                    (selectedChange)="nextFilterItem($event, c.id)">
+                </app-pill>
+            </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="pillsData.length > 1">
+            <ngb-tabset
+                [destroyOnHide]="false"
+                type="pills">
+                <ngb-tab
+                    *ngFor="let d of pillsData"
+                    [title]="d.name | translate">
+                    <ng-template ngbTabContent>
+                        <ng-container *ngFor="let c of d.data">
+                            <app-pill
+                                *ngIf="c !== undefined"
+                                [kind]="c.kind"
+                                [label]="c.label"
+                                [gender]="c.gender"
+                                [selected]="filterSelected(c.label) | async"
+                                (selectedChange)="nextFilterItem($event, c.id)">
+                            </app-pill>
+                        </ng-container>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </ng-container>
     </div>
 </div>
