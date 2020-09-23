@@ -169,7 +169,7 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
         if (!!params.op && !!params.pos) {
           const nq: SearchQuery = {
             ...this.defaultQuery,
-            alignment: params.alignment || this.defaultQuery.alignment,
+            alignment: !!params.alignment ? params.alignment === 'true' : this.defaultQuery.alignment,
             pos: true,
             wFilter: {
               op: params.op,
