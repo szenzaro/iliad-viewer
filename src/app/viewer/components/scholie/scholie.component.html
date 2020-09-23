@@ -1,25 +1,16 @@
-<!-- <ng-container *ngFor="let s of (scholie | async) | keyvalue: keyNumOrder">
-    <ng-container *ngFor="let ss of s.value | keyvalue: keyNumOrder">
-        <ul>
-            <li *ngFor="let sss of ss.value | keyvalue">
-                <span>{{ s.key }}.{{ss.key}} - {{sss.key }}</span>
-                =>
-                <span
-                    *ngFor="let dd of sss.value"
-                    [class.s-highlighted]="dd[0]">
-                    {{ dd[1] }}
-                </span>
-            </li>
-        </ul>
-    </ng-container>
-</ng-container> -->
-<div class="d-flex justify-content-center mt-3">
-    <app-radio
-        initialValue="text"
-        (value)="type.next($event)"
-        [inline]="true"
-        [items]="scholieViews">
-    </app-radio>
+<div class="d-flex">
+    <div class="d-flex flex-grow-1 justify-content-center mt-3">
+        <app-radio
+            initialValue="text"
+            (value)="type.next($event)"
+            [inline]="true"
+            [items]="scholieViews">
+        </app-radio>
+    </div>
+    <app-info-button
+        class="m-2"
+        [helpContent]="ScholieHelpComponent">
+    </app-info-button>
 </div>
 
 <div *ngIf="(type | async) === 'text'">

@@ -7,6 +7,7 @@ import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { AlignmentService } from 'src/app/services/alignment.service';
 import { numberToOption, WordsFilter } from 'src/app/utils';
+import { ScholieHelpComponent } from '../help/scholie-help/scholie-help.component';
 
 @Component({
   selector: 'app-scholie',
@@ -15,7 +16,7 @@ import { numberToOption, WordsFilter } from 'src/app/utils';
 })
 export class ScholieComponent {
   scholie = this.scholieService.scholie;
-
+  ScholieHelpComponent = ScholieHelpComponent;
   filter = new Subject<WordsFilter>();
   filterData = [
     {

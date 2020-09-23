@@ -9,6 +9,7 @@ import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
 import { numberToOption } from 'src/app/utils';
 import { Annotation, RecursivePartial, satisfies } from 'src/app/utils/models';
 import { ManuscriptService } from '../../services/manuscript.service';
+import { ManuscriptHelpComponent } from '../help/manuscript-help/manuscript-help.component';
 
 @Component({
   selector: 'app-manuscript',
@@ -25,6 +26,7 @@ export class ManuscriptComponent implements AfterViewInit, OnDestroy {
   @InSubject() manuscriptPage: number;
   manuscriptPageChange = new BehaviorSubject<number>(109);
 
+  ManuscriptHelpComponent = ManuscriptHelpComponent;
   text = 'homeric';
 
   manuscriptPageOption = this.manuscriptService.page.pipe(

@@ -1,9 +1,16 @@
 <div class="d-flex flex-column">
-    <app-search-box
-        class="p-2"
-        [query]="currentQuery | async"
-        (queryChange)="searchService.loading.next(true)"
-        (queryChange)="searchService.queryString.next($event)"></app-search-box>
+    <div class="d-flex">
+        <app-search-box
+            class="p-2 flex-grow-1"
+            [query]="currentQuery | async"
+            (queryChange)="searchService.loading.next(true)"
+            (queryChange)="searchService.queryString.next($event)">
+        </app-search-box>
+        <app-info-button
+            class="m-2"
+            [helpContent]="SearchHelpComponent">
+        </app-info-button>
+    </div>
     <app-spinner *ngIf="loading | async"></app-spinner>
     <ng-container *ngIf="(currentQuery | async) || true">
         <ng-container *ngIf="(currentQuery | async)?.alignment">

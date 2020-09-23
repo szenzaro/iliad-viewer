@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { WordsFilter } from 'src/app/utils';
+import { ComparisonHelpComponent } from '../help/comparison-help/comparison-help.component';
 
 @Component({
   selector: 'app-text-comparison',
@@ -16,6 +17,7 @@ export class TextComparisonComponent implements AfterViewInit, OnDestroy {
   chant2 = new Subject<number>();
   text1 = new BehaviorSubject<string>('homeric');
   text2 = new BehaviorSubject<string>('paraphrase');
+  ComparisonHelpComponent = ComparisonHelpComponent;
 
   private _filter: WordsFilter;
   set filter(f: WordsFilter) {

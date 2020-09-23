@@ -1,15 +1,21 @@
-<div class="d-flex justify-content-center mt-3">
-    <app-radio
-        [label]="('Alignment type' | translate) + ':'"
-        [initialValue]="type | async"
-        (value)="type.next($event)"
-        [inline]="true"
-        [items]="alignmentTypes | async">
-    </app-radio>
+<div class="d-flex">
+    <div class="d-flex flex-grow-1 justify-content-center m-2">
+        <app-radio
+            [label]="('Alignment type' | translate) + ':'"
+            [initialValue]="type | async"
+            (value)="type.next($event)"
+            [inline]="true"
+            [items]="alignmentTypes | async">
+        </app-radio>
+    </div>
+    <app-info-button
+        class="m-2"
+        [helpContent]="AlignmentHelpComponent">
+    </app-info-button>
 </div>
 <app-word-filters
     [disabled]="true"
-    (filterChange) = "filter.next($event)"
+    (filterChange)="filter.next($event)"
     [pillsData]="filterData">
 </app-word-filters>
 <div class="d-flex flex-grow-1 full-height justify-content-around mt-1">

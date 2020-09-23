@@ -6,6 +6,7 @@ import { debounceTime, filter, map, shareReplay, takeUntil, tap } from 'rxjs/ope
 import { SearchQuery, SearchService } from 'src/app/services/search.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
+import { SearchHelpComponent } from '../help/search-help/search-help.component';
 
 function flatSearchResults<T>(x: Map<Map<T>>) {
   return Object.keys(x).map((chant) => Object.keys(x[chant])
@@ -20,6 +21,7 @@ function flatSearchResults<T>(x: Map<Map<T>>) {
 })
 export class SearchComponent implements AfterViewInit, OnDestroy {
 
+  SearchHelpComponent = SearchHelpComponent;
   loading = this.searchService.loading.pipe(debounceTime(150));
   currentQuery = this.searchService.queryString.pipe(
     filter((x) => !!x),

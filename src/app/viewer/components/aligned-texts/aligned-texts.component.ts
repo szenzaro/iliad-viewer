@@ -7,6 +7,7 @@ import { debounceTime, filter, map, shareReplay, switchMap, takeUntil } from 'rx
 import { AlignmentLabels, AlignmentService, AlignmentType } from 'src/app/services/alignment.service';
 import { TextService } from 'src/app/services/text.service';
 import { numberToOption, WordsFilter } from 'src/app/utils';
+import { AlignmentHelpComponent } from '../help/alignment-help/alignment-help.component';
 
 @Component({
   selector: 'app-aligned-texts',
@@ -22,6 +23,8 @@ export class AlignedTextsComponent implements OnDestroy, AfterViewInit {
     map((types) => types.map((id) => ({ id, label: this.ts.instant(AlignmentLabels[id]) }))),
   );
   @Input() scrollIndex = 0;
+
+  AlignmentHelpComponent = AlignmentHelpComponent;
 
   al1 = combineLatest([
     this.leftWordOver,
