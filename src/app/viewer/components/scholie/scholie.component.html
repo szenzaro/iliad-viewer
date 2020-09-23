@@ -13,7 +13,7 @@
     </app-info-button>
 </div>
 
-<div *ngIf="(type | async) === 'text'">
+<div [hidden]="(type | async) !== 'text'">
     <app-word-filters
         [showAndOr]="false"
         [disabled]="true"
