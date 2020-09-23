@@ -41,6 +41,11 @@ import { ViewerRoutingModule } from './viewer-routing.module';
 import { HttpClient } from '@angular/common/http';
 import { ManuscriptService } from './services/manuscript.service';
 
+import { AlignmentHelpComponent } from './components/help/alignment-help/alignment-help.component';
+import { ComparisonHelpComponent } from './components/help/comparison-help/comparison-help.component';
+import { ManuscriptHelpComponent } from './components/help/manuscript-help/manuscript-help.component';
+import { ScholieHelpComponent } from './components/help/scholie-help/scholie-help.component';
+import { SearchHelpComponent } from './components/help/search-help/search-help.component';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/');
 }
@@ -67,18 +72,23 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   declarations: [
     AlignedTextsComponent,
+    AlignmentHelpComponent,
     AnnotationFilterComponent,
     AnnotationModalComponent,
     ComparableTextComponent,
+    ComparisonHelpComponent,
     InterlinearTextComponent,
     ManuscriptComponent,
+    ManuscriptHelpComponent,
     OpenseadragonComponent,
     PillComponent,
     RadioComponent,
     ScholieComponent,
+    ScholieHelpComponent,
     SearchAlignmentResultComponent,
     SearchBoxComponent,
     SearchComponent,
+    SearchHelpComponent,
     SearchResultComponent,
     SelectComponent,
     SelectNumberComponent,
