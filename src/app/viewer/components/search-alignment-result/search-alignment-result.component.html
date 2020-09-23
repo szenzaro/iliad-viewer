@@ -1,18 +1,7 @@
-<div class="d-flex">
-    <app-verse
-        class="w-50"
-        [showChant]="showChant"
-        (openWord)="sourceOpenedWord = $event"
-        [wordDetails]="sourceOpenedWord"
-        [verse]="sourceVerse | async"
-        [highlightIds]="sourceIds | async">
-    </app-verse>
-    <app-verse
-        class="w-50"
-        [showChant]="showChant"
-        (openWord)="targetOpenedWord = $event"
-        [wordDetails]="targetOpenedWord"
-        [verse]="targetVerse | async"
-        [highlightIds]="targetIds | async">
-    </app-verse>
-</div>
+<app-verse
+    [showChant]="showChant"
+    (openWord)="sourceOpenedWord = $event"
+    [wordDetails]="sourceOpenedWord"
+    [verse]="sourceVerse | async"
+    [highlightIds]="sourceIds | async">
+</app-verse>

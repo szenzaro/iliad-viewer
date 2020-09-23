@@ -19,20 +19,12 @@ export class SearchAlignmentResultComponent {
   private verseNumberChange = new BehaviorSubject<number>(undefined);
   @Input() @InSubject() sourceText: string;
   private sourceTextChange = new BehaviorSubject<string>(undefined);
-  @Input() @InSubject() targetText: string;
-  private targetTextChange = new BehaviorSubject<string>(undefined);
   @Input() @InSubject() sourceWords: Word[];
   sourceWordsChange = new BehaviorSubject<Word[]>([]);
-  @Input() @InSubject() targetWords: Word[];
-  targetWordsChange = new BehaviorSubject<Word[]>([]);
 
   private _sourceOpenedWord: Word;
   get sourceOpenedWord() { return this._sourceOpenedWord; }
   set sourceOpenedWord(v: Word) { this._sourceOpenedWord = v === this._sourceOpenedWord ? undefined : v; }
-
-  private _targetOpenedWord: Word;
-  get targetOpenedWord() { return this._targetOpenedWord; }
-  set targetOpenedWord(v: Word) { this._targetOpenedWord = v === this._targetOpenedWord ? undefined : v; }
 
   sourceVerse = combineLatest([
     this.bookChange,
@@ -44,19 +36,6 @@ export class SearchAlignmentResultComponent {
   );
 
   sourceIds = this.sourceWordsChange.pipe(
-    map((ws) => ws.map(({ id }) => id)),
-  );
-
-  targetVerse = combineLatest([
-    this.bookChange,
-    this.verseNumberChange,
-    this.targetTextChange,
-  ]).pipe(
-    filter(([c, v, t]) => c !== undefined && v !== undefined && !!t),
-    switchMap(([c, v, t]) => this.textService.getVerseFromNumber(t, c, v)),
-  );
-
-  targetIds = this.targetWordsChange.pipe(
     map((ws) => ws.map(({ id }) => id)),
   );
 

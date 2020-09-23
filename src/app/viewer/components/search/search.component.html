@@ -28,16 +28,30 @@
                             <cdk-virtual-scroll-viewport
                                 itemSize="32"
                                 class="min-h">
-                                <ng-container *cdkVirtualFor="let v of r.value | keyvalue: keyNumOrder">
-                                    <app-search-alignment-result
-                                        [sourceWords]="v.value[0]"
-                                        [sourceText]="sourceText | async"
-                                        [targetText]="targetText | async"
-                                        [targetWords]="v.value[1]"
-                                        [book]="r.key"
-                                        [verseNumber]="+v.key">
-                                    </app-search-alignment-result>
-                                </ng-container>
+                                <table class="table">
+                                    <tbody>
+                                        <ng-container *cdkVirtualFor="let v of r.value | keyvalue: keyNumOrder">
+                                            <tr>
+                                                <td>
+                                                    <app-search-alignment-result
+                                                        [sourceWords]="v.value[0]"
+                                                        [sourceText]="sourceText | async"
+                                                        [book]="r.key"
+                                                        [verseNumber]="+v.key">
+                                                    </app-search-alignment-result>
+                                                </td>
+                                                <td>
+                                                    <app-search-alignment-result
+                                                        [sourceWords]="v.value[1]"
+                                                        [sourceText]="targetText | async"
+                                                        [book]="r.key"
+                                                        [verseNumber]="+v.key">
+                                                    </app-search-alignment-result>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
                             </cdk-virtual-scroll-viewport>
                         </ng-template>
                     </ngb-tab>
@@ -46,17 +60,32 @@
                             <cdk-virtual-scroll-viewport
                                 itemSize="32"
                                 class="min-h">
-                                <ng-container *cdkVirtualFor="let v of flatResultAlignment | async">
-                                    <app-search-alignment-result
-                                        [showChant]="true"
-                                        [sourceWords]="v.data[0]"
-                                        [sourceText]="sourceText | async"
-                                        [targetText]="targetText | async"
-                                        [targetWords]="v.data[1]"
-                                        [book]="v.chant"
-                                        [verseNumber]="+v.verse">
-                                    </app-search-alignment-result>
-                                </ng-container>
+                                <table class="table">
+                                    <tbody>
+                                        <ng-container *cdkVirtualFor="let v of flatResultAlignment | async">
+                                            <tr>
+                                                <td>
+                                                    <app-search-alignment-result
+                                                        [showChant]="true"
+                                                        [sourceWords]="v.data[0]"
+                                                        [sourceText]="sourceText | async"
+                                                        [book]="v.chant"
+                                                        [verseNumber]="+v.verse">
+                                                    </app-search-alignment-result>
+                                                </td>
+                                                <td>
+                                                    <app-search-alignment-result
+                                                        [showChant]="true"
+                                                        [sourceWords]="v.data[1]"
+                                                        [sourceText]="targetText | async"
+                                                        [book]="v.chant"
+                                                        [verseNumber]="+v.verse">
+                                                    </app-search-alignment-result>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
                             </cdk-virtual-scroll-viewport>
                         </ng-template>
                     </ngb-tab>
@@ -85,9 +114,17 @@
                                             <cdk-virtual-scroll-viewport
                                                 itemSize="32"
                                                 class="min-h">
-                                                <ng-container *cdkVirtualFor="let res of v.value | keyvalue: keyNumOrder">
-                                                    <app-search-result [words]="res.value"></app-search-result>
-                                                </ng-container>
+                                                <table class="table">
+                                                    <tbody>
+                                                        <ng-container *cdkVirtualFor="let res of v.value | keyvalue: keyNumOrder">
+                                                            <tr>
+                                                                <td>
+                                                                    <app-search-result [words]="res.value"></app-search-result>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
                                             </cdk-virtual-scroll-viewport>
                                         </ng-template>
                                     </ngb-tab>
@@ -96,11 +133,19 @@
                                             <cdk-virtual-scroll-viewport
                                                 itemSize="32"
                                                 class="min-h">
-                                                <ng-container *cdkVirtualFor="let v of (flatResultsPerText | async)[r.key]">
-                                                    <app-search-result
-                                                        [showChant]="true"
-                                                        [words]="v.data"></app-search-result>
-                                                </ng-container>
+                                                <table class="table">
+                                                    <tbody>
+                                                        <ng-container *cdkVirtualFor="let v of (flatResultsPerText | async)[r.key]">
+                                                            <tr>
+                                                                <td>
+                                                                    <app-search-result
+                                                                        [showChant]="true"
+                                                                        [words]="v.data"></app-search-result>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
                                             </cdk-virtual-scroll-viewport>
                                         </ng-template>
                                     </ngb-tab>
