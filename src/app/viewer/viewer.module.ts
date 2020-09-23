@@ -14,6 +14,7 @@ import { AlignedTextsComponent } from './components/aligned-texts/aligned-texts.
 import { AnnotationFilterComponent } from './components/annotation-filter/annotation-filter.component';
 import { AnnotationModalComponent } from './components/annotation-modal/annotation-modal.component';
 import { ComparableTextComponent } from './components/comparable-text/comparable-text.component';
+import { InfoButtonComponent } from './components/info-button/info-button.component';
 import { InterlinearTextComponent } from './components/interlinear-text/interlinear-text.component';
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { OpenseadragonComponent } from './components/openseadragon/openseadragon.component';
@@ -46,6 +47,7 @@ import { ComparisonHelpComponent } from './components/help/comparison-help/compa
 import { ManuscriptHelpComponent } from './components/help/manuscript-help/manuscript-help.component';
 import { ScholieHelpComponent } from './components/help/scholie-help/scholie-help.component';
 import { SearchHelpComponent } from './components/help/search-help/search-help.component';
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/');
 }
@@ -77,6 +79,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AnnotationModalComponent,
     ComparableTextComponent,
     ComparisonHelpComponent,
+    InfoButtonComponent,
     InterlinearTextComponent,
     ManuscriptComponent,
     ManuscriptHelpComponent,
