@@ -30,6 +30,14 @@ export class SearchBoxComponent {
     }
   }
   get query() { return this.searchQuery; }
+  set alignment(v: boolean) {
+    console.log('set alignments', v, 'from', this.searchQuery.alignment);
+    this.searchQuery.alignment = v;
+    if (this.searchQuery.alignment && this.searchQuery.texts.length < 2) {
+      this.searchQuery.texts = this.searchService.defaultQuery.texts;
+    }
+  }
+  get alignment() { return this.searchQuery.alignment; }
 
   indexes = [
     { id: 'text', label: this.ts.instant(_T('Text')) },
@@ -67,8 +75,8 @@ export class SearchBoxComponent {
   }
 
   get searchDisabled() {
-    return Array.from(new Set(this.searchQuery.texts)).length < 2 ||
-      (this.searchQuery.text.length === 0 && !this.searchQuery.pos);
+    return (this.searchQuery.text.length < 2 && this.searchQuery.alignment) ||
+      (Array.from(new Set(this.searchQuery.texts)).length < 1);
   }
 
   constructor(
