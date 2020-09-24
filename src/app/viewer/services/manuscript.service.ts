@@ -14,7 +14,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
-import { Map, numberToOption, numberToOptions } from 'src/app/utils';
+import { numberToOption, numberToOptions } from 'src/app/utils';
 
 interface InputTriple {
   chant: number;
