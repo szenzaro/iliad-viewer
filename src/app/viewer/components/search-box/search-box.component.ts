@@ -31,7 +31,6 @@ export class SearchBoxComponent {
   }
   get query() { return this.searchQuery; }
   set alignment(v: boolean) {
-    console.log('set alignments', v, 'from', this.searchQuery.alignment);
     this.searchQuery.alignment = v;
     if (this.searchQuery.alignment && this.searchQuery.texts.length < 2) {
       this.searchQuery.texts = this.searchService.defaultQuery.texts;

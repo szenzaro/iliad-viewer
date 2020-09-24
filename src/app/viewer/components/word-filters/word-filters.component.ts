@@ -203,10 +203,6 @@ export class WordFiltersComponent {
     const foundLabels = this.pillsData
       .map((x) => x.data.find((d) => d.id === id)?.label)
       .filter((x) => !!x);
-
-    if (id === 'FuturePerfect') {
-      console.log(foundLabels);
-    }
     return foundLabels.length === 1 ? foundLabels[0] : id;
   }
 }
