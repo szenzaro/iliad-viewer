@@ -14,7 +14,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
-import { numberToOption, numberToOptions } from 'src/app/utils';
+import { Map, numberToOption, numberToOptions } from 'src/app/utils';
 
 interface InputTriple {
   chant: number;
@@ -141,7 +141,14 @@ export class ManuscriptService {
     map(numberToOptions),
   );
 
-  private pagesByChant = this.homericID.pipe(
+  allChants = this.textService.booksToPages.pipe(
+    map((x) => Object.keys(x).map((n) => numberToOption(+n))),
+    map((x) => x),
+  );
+
+  private pagesByChant = this.textService.booksToPages;
+
+  a = this.homericID.pipe(
     switchMap((h) => this.textService.getChantsPages(h)),
   );
 
@@ -158,15 +165,11 @@ export class ManuscriptService {
     map((pages) => pages.map(numberToOption)),
   );
 
-  verses = this.chant.pipe(
-    map((c) => {
-      switch (c) {
-        case 1: return 611;
-        case 2: return 877;
-        case 3: return 461;
-        default: return 0;
-      }
-    }),
+  verses = combineLatest([
+    this.chant,
+    this.textService.versesByChant,
+  ]).pipe(
+    map(([c, vbc]) => vbc[c] || 0),
     distinctUntilChanged(),
     map(numberToOptions),
   );

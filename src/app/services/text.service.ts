@@ -82,6 +82,49 @@ export class TextService {
     ornament: this.ornamentElement,
   };
 
+  pagesToVerse = this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>('./assets/manuscript/pagesToVerses.json').pipe(
+    shareReplay(1),
+  );
+
+  chantsInfo = this.pagesToVerse.pipe(
+    map((x) => {
+      const chants: Map<Array<{ page: number, verse: number }>> = {};
+      Object.keys(x).forEach((page) => {
+        x[page].forEach((pi) => {
+          const chant = pi[0];
+          const verse = pi[1][1];
+          if (!chants[chant]) { chants[chant] = []; }
+          chants[chant].push({ page: +page, verse });
+        });
+      });
+      Object.keys(chants).forEach((c) => chants[c] = chants[c].sort((a, b) => a.verse - b.verse));
+      return chants;
+    }),
+    shareReplay(1),
+  );
+
+  booksToPages = this.chantsInfo.pipe(
+    map((chants) => {
+      const btp: Map<number[]> = {};
+      Object.keys(chants).forEach((chant) => {
+        btp[chant] = chants[chant].map(({ page }) => page);
+      });
+      return btp;
+    }),
+    shareReplay(1),
+  );
+
+  versesByChant = this.chantsInfo.pipe(
+    map((chants) => {
+      const vbc: Map<number> = {};
+      Object.keys(chants).forEach((chant) => {
+        vbc[chant] = chants[chant][chants[chant].length - 1].verse;
+      });
+      return vbc;
+    }),
+    shareReplay(1),
+  );
+
   constructor(
     private readonly cacheService: CacheService,
     private readonly modalService: NgbModal,
@@ -123,13 +166,18 @@ export class TextService {
       );
     }
 
-    return forkJoin([
-      this.cacheService.cachedGet<VerseRowType[]>(`./assets/data/texts/${text}/${chant}/verses.json`),
-      this.getChantWords(text, chant),
-    ]).pipe(
-      map(([verses, words]) => verses.map((v, i) => getVerse(i, v, text, chant, getWordIdsFromVerse(v).map((id) => words[id])))),
-      tap((verses) => this.cacheService.cache[cacheKey] = verses),
-      map((verses) => getVersesFromRange(verses, range)),
+    return this.getChants(text).pipe(
+      switchMap((chants) => chants.includes(chant)
+        ? forkJoin([
+          this.cacheService.cachedGet<VerseRowType[]>(`./assets/data/texts/${text}/${chant}/verses.json`),
+          this.getChantWords(text, chant),
+        ]).pipe(
+          map(([verses, words]) => verses.map((v, i) => getVerse(i, v, text, chant, getWordIdsFromVerse(v).map((id) => words[id])))),
+          tap((verses) => this.cacheService.cache[cacheKey] = verses),
+          map((verses) => getVersesFromRange(verses, range)),
+        )
+        : of<Verse[]>([])
+      ),
     );
   }
 
@@ -158,7 +206,7 @@ export class TextService {
         map((pages) => {
           const entry = chant !== undefined
             ? pages[`${n}`]?.find((x) => x[0] === chant)
-            : pages[`${n}`] ?? pages[`${n}`][pages[`${n}`].length - 1];
+            : pages[`${n}`][pages[`${n}`].length - 1];
           return (!!entry
             ? [entry[1], entry[2]]
             : [[0, 0], [0, 0]]) as [[number, number], [number, number]];
@@ -167,7 +215,7 @@ export class TextService {
   }
 
   getPageNumbers(chant: number) {
-    return this.cacheService.cachedGet<Map<number[]>>('./assets/manuscript/booksToPages.json')
+    return this.booksToPages
       .pipe(
         map((pages) => pages[`${chant}`] || []),
       );
