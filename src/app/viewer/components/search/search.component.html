@@ -12,7 +12,7 @@
         </app-info-button>
     </div>
     <app-spinner *ngIf="loading | async"></app-spinner>
-    <ng-container *ngIf="(currentQuery | async) || true">
+    <ng-container *ngIf="(loading | async) === false">
         <ng-container *ngIf="(currentQuery | async)?.alignment">
             <div *ngIf="resultAlignment | async as res">
                 <p

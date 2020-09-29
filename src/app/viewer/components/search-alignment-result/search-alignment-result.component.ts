@@ -32,7 +32,7 @@ export class SearchAlignmentResultComponent {
     this.sourceTextChange,
   ]).pipe(
     filter(([c, v, t]) => c !== undefined && v !== undefined && !!t),
-    switchMap(([c, v, t]) => this.textService.getVerseFromNumber(t, c, v)),
+    switchMap(([c, v, t]) => this.textService.getVerseFromNumber(t, +c, v)),
   );
 
   sourceIds = this.sourceWordsChange.pipe(
