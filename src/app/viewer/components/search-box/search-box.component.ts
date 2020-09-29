@@ -75,6 +75,7 @@ export class SearchBoxComponent {
 
   get searchDisabled() {
     return (this.searchQuery.text.length < 2 && this.searchQuery.alignment && !this.searchQuery.pos) ||
+      (this.searchQuery.pos && this.searchQuery.wFilter?.wfilter.length === 0) ||
       (Array.from(new Set(this.searchQuery.texts)).length < 1);
   }
 
