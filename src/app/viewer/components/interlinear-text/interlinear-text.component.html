@@ -34,7 +34,7 @@
             <li>
                 {{rng[0][0] + '-' + rng[0][1]}} {{ 'for the Homeric text' | translate }}
             </li>
-            <li>
+            <li *ngIf="(manuscriptService.chant | async) < 13">
                 {{rng[1][0] + '-' + rng[1][1]}} {{ 'for the paraphrase text' | translate }}
             </li>
         </ul>
