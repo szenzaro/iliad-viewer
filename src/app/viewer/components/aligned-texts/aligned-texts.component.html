@@ -15,6 +15,7 @@
 </div>
 <app-word-filters
     [disabled]="true"
+    [showAndOr]="false"
     (filterChange)="filter.next($event)"
     [pillsData]="filterData">
 </app-word-filters>
