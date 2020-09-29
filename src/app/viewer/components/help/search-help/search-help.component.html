@@ -8,9 +8,102 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="modal-body">
+<div class="modal-body help-modal">
 
-    <p>Search help!</p>
+    <ng-container *ngIf="translate.currentLang === 'en'">Help not available in english yet!</ng-container>
+
+    <ng-container *ngIf="translate.currentLang === 'fr'">
+        <h1>But</h1>
+        <ul>
+            <li>
+                Rechercher dans l’ensemble des textes une forme (exacte ou chaîne de caractère) ou un lemme et vérifier ses occurrences.
+            </li>
+            <li>
+                Rechercher, en choisissant la présentation alignée, une forme ou un lemme dans le texte source et vérifier ses équivalents dans le texte cible.
+            </li>
+            <li>
+                La visualisation des résultats est donnée par vers et divisée par chant. L’utilisateur peut choisir l’option « tout » pour visualiser l’ensemble des résultats.
+            </li>
+        </ul>
+        <h1>Options d’interaction</h1>
+        <ul>
+            <li>
+                <strong>Texte à rechercher</strong>
+                : l’utilisateur insère dans la fenêtre, en caractères grecs (polytoniques ou non), la forme ou le lemme à rechercher. La sélection des options « sensibles aux majuscules et minuscule », « sensible au signes diacritiques » et « correspondance exacte » précise la recherche. La recherche n’est possible que pour un seul item.
+            </li>
+            <li>
+                <strong>Corpus de recherche</strong>
+                : l’utilisateur choisit le corpus de recherche (Iliade et/ou paraphrase).
+            </li>
+            <li>
+                <strong>Alignement</strong>
+                : l’utilisateur choisit un texte source et un texte cible (« de : / à : ») et pour vérifier, entre les deux textes, les équivalences d’un terme ou d’un lemme.
+            </li>
+            <li>
+                <strong>Analyse morphosyntaxique</strong>
+                : l’utilisateur effectue une recherche sur les catégories morphosyntaxiques qui sont affichées. La recherche peut être faite avec ou sans la fonction de l’alignement.
+            </li>
+            <li>
+                <strong>Type d’alignement</strong>
+                :
+            </li>
+            <ul>
+                <li>
+                    <strong>Automatique</strong>
+                    : la recherche se base sur l’alignement automatique généré par un algorithme numérique.
+                </li>
+                <li>
+                    <strong>Manuel</strong>
+                    : la recherche se base sur l’alignement manuel établi par les éditeurs.
+                </li>
+            </ul>
+            <li>
+                <strong>Modalité</strong>
+                :
+            </li>
+            <ul>
+                <li>
+                    <strong>Forme</strong>
+                    : la recherche donne un résultat pour une forme. Si l’option « correspondance exacte » est activée, la recherche considère la forme telle qu’elle est transcrite. Si l’option « correspondance exacte » est désactivée, la recherche considère la chaîne de caractère.
+                </li>
+                <li>
+                    <strong>Lemme</strong>
+                    : la recherche donne un résultat pour un lemme. La recherche par lemme active automatiquement l’option « correspondance exacte ».
+                </li>
+            </ul>
+            <li>
+                <strong>Options</strong>
+                :
+            </li>
+            <ul>
+                <li>
+                    <strong>Sensible aux majuscules et minuscules</strong>
+                    : si l’option est activée, la recherche considère les majuscules et les minuscules.
+                </li>
+                <li>
+                    <strong>Sensible aux signes diacritiques</strong>
+                    : si l’option est activée, la recherche considère les accents et les esprits.
+                </li>
+                <li>
+                    <strong>Correspondance exacte</strong>
+                    : si l’option est activée, la recherche considère la forme telle qu’elle transcrite.
+                </li>
+            </ul>
+            <li>
+                <button class="m-1 btn btn-sm btn-secondary">
+                    <fa-icon [icon]="faBackspace"></fa-icon>
+                </button>
+                : efface les options sélectionnées.
+            </li>
+
+            <li>
+                <button class="m-1 btn btn-sm btn-secondary">
+                    <fa-icon [icon]="faSearch"></fa-icon>
+                </button>
+                : lance la recherche.
+            </li>
+        </ul>
+    </ng-container>
 
 </div>
 <div class="modal-footer">

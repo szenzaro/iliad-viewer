@@ -8,10 +8,84 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="modal-body">
+<div class="modal-body help-modal">
+    <ng-container *ngIf="translate.currentLang === 'en'">Help not available in english yet!</ng-container>
 
-    <p>Alignment help!</p>
+    <ng-container *ngIf="translate.currentLang === 'fr'">
+        <h1>But</h1>
+        <ul>
+            <li>
+                Aligner deux textes (actuellement limité à l’
+                <em>Iliade</em>
+                et sa paraphrase) pour visualiser et faciliter le repérages des correspondances lexicales entre un texte-source (<em>Iliade</em>) et un texte-cible.
+            </li>
+            <li>
+                Repérer, grâce aux outils,
+                <ol>
+                    <li>
+                        les formes qui sont communes dans le texte source et dans le texte cible ;
+                    </li>
+                    <li>
+                        les formes du textes source qui ont été changées dans le texte cible ;
+                    </li>
+                    <li>
+                        les formes du texte source sans correspondance dans le texte cible ;
+                    </li>
+                    <li>
+                        les formes ajoutées par le texte cible (sans correspondance dans le texte source).
+                    </li>
+                </ol>
+            </li>
+            <li>
+                Outil d’apprentissage et d’étude du vocabulaire grec.
+            </li>
+        </ul>
 
+        <h1>Description</h1>
+        <ul>
+            <li>
+                Deux méthodes d’alignement sont proposées, la première, automatique, générée par un algorithme numérique (conçu par S. Zenzaro), la seconde, manuelle, établie par les éditeurs du projet (sous la supervision de B. Kindt).
+            </li>
+            <li>
+                La visualisation de l’alignement se fait par le balayage des mots.
+            </li>
+        </ul>
+
+        <h1>Options d’interaction</h1>
+        <ul>
+            <li>
+                <strong>Méthode d’alignement</strong>
+                : permet de choisir entre l’alignement automatique ou manuel.
+            </li>
+            <li>
+                <button class="m-1 btn btn-sm btn-secondary">
+                    <fa-icon [icon]="faBackspace"></fa-icon>
+                </button>
+                : efface les options sélectionnées.
+            </li>
+            <li>
+                <strong>Formes non communes</strong>
+                : encadre les formes homériques et les formes de la paraphrase qui se correspondent syntaxiquement mais ne sont pas identiques, même dans les cas où elles appartiennent au même lemme.
+            </li>
+            <li>
+                <strong>Formes communes</strong>
+                : encadre les formes homériques et les formes de la paraphrase qui sont strictement identiques.
+            </li>
+            <li>
+                <strong>Ajoutés dans la paraphrase</strong>
+                : encadre les mots de la paraphrase qui n’ont pas de correspondant dans l’
+                <em>Iliade</em>
+                .
+            </li>
+            <li>
+                <strong>Termes homériques non repris</strong>
+                : encadre les mots du texte de l’
+                <em>Iliade</em>
+                qui n’ont pas de correspondant dans la paraphrase.
+            </li>
+        </ul>
+
+    </ng-container>
 </div>
 <div class="modal-footer">
     <button
