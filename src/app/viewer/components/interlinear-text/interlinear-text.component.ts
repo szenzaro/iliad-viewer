@@ -60,6 +60,13 @@ export class InterlinearTextComponent {
 
   loading = new BehaviorSubject<boolean>(true);
 
+  isShowingVerses = combineLatest([
+    this.showHomericChange,
+    this.showParaphfraseChange,
+  ]).pipe(
+    map(([x, y]) => x || y),
+  );
+
   verses = combineLatest([
     this.showHomericChange,
     this.showParaphfraseChange,
