@@ -4,6 +4,7 @@
     [class.verse-highlight]="highlight">
     <span
         class="p-1 pr-3 text-secondary"
+        [class.pointer]="clickable"
         (click)="verseClicked.next(verse.n)">
         [{{ showChant ? verse.chant + '.' : '' }}{{ verse.n }}]
     </span>

@@ -13,6 +13,7 @@ import { InSubject } from '../../utils/in-subject';
   styleUrls: ['./text.component.scss'],
 })
 export class TextComponent implements OnDestroy {
+  @Input() verseClickable = true;
   @Input() verses: Verse[] = [];
   @Input() highlight = false; // Highlight alternate verses
   @Input() showData = true;

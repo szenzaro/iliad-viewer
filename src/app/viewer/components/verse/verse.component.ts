@@ -14,6 +14,7 @@ export class VerseComponent {
 
   tagToDescription = tagToDescription;
   @Input() showChant = false;
+  @Input() clickable = true;
   @Input() verse: Verse;
   @Input() highlight = false;
   @Input() wordDetails: Word;

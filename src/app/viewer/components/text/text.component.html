@@ -5,6 +5,7 @@
     itemSize="32">
     <ng-container *cdkVirtualFor="let verse of verses; let index = index">
         <app-verse
+            [clickable]="verseClickable"
             (verseClicked)="scrollIndexChange.next($event)"
             [posHighlight]="posHighlight"
             [highlightIds]="highlightIds"
