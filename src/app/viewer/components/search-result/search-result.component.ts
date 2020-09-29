@@ -28,7 +28,7 @@ export class SearchResultComponent {
 
   result = this.wordsChange.pipe(
     filter((x) => x !== undefined && x !== null && x.length > 0),
-    switchMap((ws) => this.textService.getVerseFromNumber(ws[0].source, ws[0].chant, ws[0].verse)),
+    switchMap((ws) => this.textService.getVerseFromNumber(ws[0].source, +ws[0].chant, +ws[0].verse)),
   );
 
   constructor(
