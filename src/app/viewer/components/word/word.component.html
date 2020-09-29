@@ -49,9 +49,8 @@
     [class.eq]="(alignmentKind | async) === 'eq'"
     [class.ins]="(alignmentKind | async) === 'ins'"
     [class.del]="(alignmentKind | async) === 'del'"
-    [class.homerscholie]="(scholieKind | async) === 'homerscholie'"
-    [class.homernotscholie]="(scholieKind | async) === 'homernotscholie'"
-    [class.paraphrasescholie]="(scholieKind | async) === 'paraphrasescholie'"
+    [class.commentedinscholie]="(isCommented | async) && (scholieHighlighted | async)"
+    [class.correspondingscholie]="(isReprise | async) && (scholieHighlighted | async)"
     (mouseenter)="wordOver.next(word.id)"
     (mouseleave)="wordOver.next(null)"
     (click)="!!word.data ? openWord.next(word) : 0">

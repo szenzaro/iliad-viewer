@@ -21,7 +21,7 @@ interface ScholieEntry {
 
 export type AlignmentType = 'auto' | 'manual';
 export type AlignmentKind = 'sub' | 'ins' | 'del' | 'eq';
-export type ScholieKind = 'homerscholie' | 'homernotscholie' | 'paraphrasescholie';
+export type ScholieKind = 'homerscholie' | 'homernotscholie' | 'paraphrasescholie' | 'commentedinscholie' | 'correspondingscholie';
 
 export const AlignmentLabels = {
   auto: _T('Auto'),

@@ -52,7 +52,6 @@ import {
   isVerb,
   isVocative,
   WordsFilter,
-  Word_FILTERS,
 } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
 import { InSubject } from '../../utils/in-subject';
@@ -93,7 +92,31 @@ export class WordComponent {
         ? of('paraphrasescholie')
         : this.alignmentService.getWordScholieAlignmentKind(w, source, 'scholie')
       : of('')),
-    map((x) => x),
+    map((x) => {
+      const commented = ['homerscholie', 'homernotscholie'].includes(x) ? ['commentedinscholie'] : [];
+      const corresp = ['homerscholie', 'paraphrasescholie'].includes(x) ? ['correspondingscholie'] : [];
+      return commented.concat(corresp);
+    }),
+    shareReplay(1),
+  );
+
+  isCommented = combineLatest([
+    this.scholieKind,
+    this.posHighlightChange.pipe(
+      filter((x) => !!x),
+    ),
+  ]).pipe(
+    map(([kind, f]) => kind.includes('commentedinscholie') && f.wfilter.includes('commentedinscholie')),
+    shareReplay(1),
+  );
+
+  isReprise = combineLatest([
+    this.scholieKind,
+    this.posHighlightChange.pipe(
+      filter((x) => !!x),
+    ),
+  ]).pipe(
+    map(([kind, f]) => kind.includes('correspondingscholie') && f.wfilter.includes('correspondingscholie')),
     shareReplay(1),
   );
 
@@ -111,8 +134,8 @@ export class WordComponent {
     this.alignmentService.paraScholieIDS,
   ]).pipe(
     map(([wfilter, kind, w, hids, schPara]) =>
-      (!!hids[w.id] && wfilter.wfilter.includes(kind as Word_FILTERS)) ||
-      (wfilter.wfilter.includes('paraphrasescholie') && schPara.includes(w.id))
+      (!!hids[w.id] && wfilter.wfilter.some((x) => kind.includes(x))) ||
+      (wfilter.wfilter.includes('correspondingscholie') && schPara.includes(w.id))
     ),
   );
 

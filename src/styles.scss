@@ -319,14 +319,12 @@
     border-color: $del-color;
 }
 
-.homerscholie {
-    border-color: $homerscholie-color;
+.commentedinscholie {
+    border-color: $commentedinscholie-color;
 }
-.homernotscholie {
-    border-color: $homernotscholie-color;
-}
-.paraphrasescholie {
-    border-color: $paraphrasescholie-color;
+
+.correspondingscholie {
+    color: $correspondingscholie-color;
 }
 
 .help-modal h1 {

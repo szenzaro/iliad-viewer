@@ -22,9 +22,8 @@ export class ScholieComponent {
     {
       name: _T('Type'),
       data: [
-        { id: 'homerscholie', kind: 'homerscholie', label: _T('Scholie in Genavensis') },
-        { id: 'homernotscholie', kind: 'homernotscholie', label: _T('Scholie not in Genavensis') },
-        { id: 'paraphrasescholie', kind: 'paraphrasescholie', label: _T('Paraphrase correspondent to Scholie') },
+        { id: 'commentedinscholie', kind: 'commentedinscholie', label: _T('Commented in Scholie')},
+        { id: 'correspondingscholie', kind: 'correspondingscholie', label: _T('Corresponding via Scholie D')},
       ],
     },
   ];
