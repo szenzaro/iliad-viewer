@@ -5,7 +5,7 @@ import { Map, WordsFilter, Word_FILTERS, WORD_FILTER_OP } from 'src/app/utils';
 import { debounceTime, distinctUntilChanged, filter, map, scan, shareReplay, startWith } from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
-import { faBroom, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faBackspace, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
@@ -22,7 +22,7 @@ export interface PillData { kind: string; label: string; gender?: string; id: st
 export class WordFiltersComponent {
 
   faSearch = faSearch;
-  faBroom = faBroom;
+  faBackspace = faBackspace;
   filterItem = new EventEmitter<Map<boolean>>();
   currentFilter = this.filterItem.pipe(
     scan((x, y) => (Object.keys(y).length === 0 ? {} : { ...x, ...y })),

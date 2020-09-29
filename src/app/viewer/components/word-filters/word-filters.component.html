@@ -18,15 +18,9 @@
             <button
                 (click)="filterItem.next({})"
                 class="m-1 btn btn-sm btn-secondary">
-                <fa-icon [icon]="faBroom"></fa-icon>
+                <fa-icon [icon]="faBackspace"></fa-icon>
             </button>
-            <button
-                [disabled]="disabled"
-                *ngIf="submitBtn"
-                (click)="submitFilter.next()"
-                class="m-1 btn btn-sm btn-secondary">
-                <fa-icon [icon]="faSearch"></fa-icon>
-            </button>
+
             <ui-switch
                 *ngIf="showAndOr"
                 (change)="switchChange.next($event)"
@@ -72,5 +66,14 @@
                 </ngb-tab>
             </ngb-tabset>
         </ng-container>
+        <div>
+            <button
+                [disabled]="disabled"
+                *ngIf="submitBtn"
+                (click)="submitFilter.next()"
+                class="m-1 btn btn-secondary">
+                <fa-icon [icon]="faSearch"></fa-icon>
+            </button>
+        </div>
     </div>
 </div>
