@@ -38,7 +38,7 @@
                     [kind]="c.kind"
                     [label]="c.label"
                     [gender]="c.gender"
-                    [selected]="filterSelected(c.label) | async"
+                    [selected]="filterSelected(c.id) | async"
                     (selectedChange)="nextFilterItem($event, c.id)">
                 </app-pill>
             </ng-container>
@@ -58,7 +58,7 @@
                                 [kind]="c.kind"
                                 [label]="c.label"
                                 [gender]="c.gender"
-                                [selected]="filterSelected(c.label) | async"
+                                [selected]="filterSelected(c.id) | async"
                                 (selectedChange)="nextFilterItem($event, c.id)">
                             </app-pill>
                         </ng-container>
