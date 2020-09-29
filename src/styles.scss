@@ -328,3 +328,23 @@
 .paraphrasescholie {
     border-color: $paraphrasescholie-color;
 }
+
+.help-modal h1 {
+    margin: 1em 0 0.5em 0;
+    border-left: 4px solid #18a2b8;
+    font-weight: 300;
+    font-size: 28px;
+    padding-left: 10px;
+}
+
+.help-modal ul {
+    list-style-type: square;
+}
+
+.help-modal ul>ul {
+    list-style-type: circle;
+}
+
+.help-modal ol.upper-alpha {
+    list-style-type: upper-alpha;
+}
