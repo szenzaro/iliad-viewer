@@ -55,7 +55,7 @@
     (mouseenter)="wordOver.next(word.id)"
     (mouseleave)="wordOver.next(null)"
     (click)="!!word.data ? openWord.next(word) : 0">
-    {{ word.text }}
+    {{ word.text }}&nbsp;
     <fa-icon
         *ngIf="posNeutral && posHighlighted"
         class="neutral"
