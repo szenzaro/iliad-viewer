@@ -48,7 +48,7 @@ export class ScholieComponent {
     this.chant,
     this.verse,
   ]).pipe(
-    map(([c, v]) => this.scholieService.filteredScholie(c, v)),
+    switchMap(([c, v]) => this.scholieService.filteredScholie(c, v)),
   );
 
   ScholieHelpComponent = ScholieHelpComponent;
