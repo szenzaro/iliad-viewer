@@ -181,6 +181,28 @@ export class TextService {
     );
   }
 
+  getAllVerses(text: string) {
+    const cacheKey = `${text}-call`;
+    if (!!this.cacheService.cache[cacheKey]) {
+      return of<Verse[]>(this.cacheService.cache[cacheKey]);
+    }
+
+    return this.getChants(text).pipe(
+      map((chants) => chants.map((chant) => ({
+        verses: this.cacheService.cachedGet<VerseRowType[]>(`./assets/data/texts/${text}/${chant}/verses.json`),
+        words: this.getChantWords(text, chant),
+        chant,
+      }))),
+      map((vss) => vss.map(({ verses, words, chant }) => forkJoin([verses, words]).pipe(
+        map(([vs, ws]) => vs.map((v, i) => getVerse(i, v, text, chant, getWordIdsFromVerse(v).map((id) => ws[id])))),
+      ))),
+      switchMap((vs) => forkJoin(vs)),
+      map((vs) => vs.reduce((x, y) => x.concat(y), [])),
+      tap((verses) => this.cacheService.cache[cacheKey] = verses),
+    );
+
+  }
+
   getVerseFromNumber(text: string, chant: number, n: number) {
     return this.getVerses(text, chant).pipe(
       map((verses) => verses.find((v) => v.n === +n)),
