@@ -68,11 +68,11 @@
             <div class="form-check">
                 <input
                     type="checkbox"
-                    class="form-check-input"
+                    class="form-check-input pointer"
                     [(ngModel)]="alignment"
                     id="alignCheckbox">
                 <label
-                    class="form-check-label"
+                    class="form-check-label pointer"
                     for="alignCheckbox">
                     {{ 'Alignment' | translate }}
                 </label>
@@ -82,10 +82,10 @@
                     type="checkbox"
                     [(ngModel)]="searchQuery.pos"
                     (ngModelChange)="$event ? 0 : searchQuery.wFilter = undefined"
-                    class="form-check-input"
+                    class="form-check-input pointer"
                     id="posCheckbox">
                 <label
-                    class="form-check-label"
+                    class="form-check-label pointer"
                     for="posCheckbox">
                     {{ 'POS' | translate }}
                 </label>
