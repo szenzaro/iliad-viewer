@@ -31,13 +31,13 @@ export class SelectNumberComponent {
   optionsChange = new BehaviorSubject<Array<{ id: string, label: string }>>([]);
 
   selectedItem = this.selectionChange.pipe(
-    filter((x) => !!x && !isNaN(+x.id)),
+    filter((x) => !!x),
     debounceTime(150),
   );
 
   @Output() selectedNumber = this.selectedItem.pipe(
-    filter((x) => !!x && !isNaN(+x.id)),
-    map((x) => +x.id),
+    filter((x) => !!x),
+    map(({id}) => id === 'all' ? 'all' : +id),
     distinctUntilChanged(),
   );
 
