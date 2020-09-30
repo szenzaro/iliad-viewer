@@ -52,6 +52,22 @@
 </div>
 
 <div *ngIf="(type | async) === 'table'">
+    <div class="d-flex">
+        <app-select-number
+            [options]="chants | async"
+            [selection]="chantOption | async"
+            (selectedNumber)="chant.next($event)"
+            [label]="'Book' | translate"
+            class="flex-grow-1">
+        </app-select-number>
+        <app-select-number
+            [options]="verses | async"
+            [selection]="verseOption | async"
+            (selectedNumber)="verse.next($event)"
+            [label]="'Verse' | translate"
+            class="flex-grow-1">
+        </app-select-number>
+    </div>
     <cdk-virtual-scroll-viewport
         class="full-height"
         itemSize="32">
