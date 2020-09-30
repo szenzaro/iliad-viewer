@@ -57,8 +57,8 @@ export class ScholieComponent {
     {
       name: _T('Type'),
       data: [
-        { id: 'commentedinscholie', kind: 'commentedinscholie', label: _T('Commented in Scholie')},
-        { id: 'correspondingscholie', kind: 'correspondingscholie', label: _T('Corresponding via Scholie D')},
+        { id: 'commentedinscholie', kind: 'commentedinscholie', label: _T('Commented in Scholie') },
+        { id: 'correspondingscholie', kind: 'correspondingscholie', label: _T('Corresponding via Scholie D') },
       ],
     },
   ];

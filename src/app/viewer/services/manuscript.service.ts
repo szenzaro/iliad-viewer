@@ -143,7 +143,6 @@ export class ManuscriptService {
 
   allChants = this.textService.booksToPages.pipe(
     map((x) => Object.keys(x).map((n) => numberToOption(+n))),
-    map((x) => x),
   );
 
   private pagesByChant = this.textService.booksToPages;
