@@ -68,35 +68,38 @@
             class="flex-grow-1">
         </app-select-number>
     </div>
-    <cdk-virtual-scroll-viewport
-        class="full-height"
-        itemSize="32">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th style="width: 100px">{{ 'Chant' | translate}}</th>
-                    <th style="width: 100px">{{ 'Verse' | translate}}</th>
-                    <th>{{ 'Iliad' | translate}}</th>
-                    <th>{{ 'Scholie' | translate}}</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <ng-container *cdkVirtualFor="let s of (scholie | async)">
+    <ng-container *ngIf="(scholie | async) as sch">
+        <p *ngIf="sch.length === 0"> {{ 'No scholies found!' | translate}}</p>
+        <cdk-virtual-scroll-viewport
+            class="full-height"
+            itemSize="32">
+            <table *ngIf="sch.length > 0" class="table">
+                <thead>
                     <tr>
-                        <td>{{ s[0] }}</td>
-                        <td>{{ s[1] }}</td>
-                        <td>{{ s[2] }}</td>
-                        <td>
-                            <span
-                                *ngFor="let dd of s[3]"
-                                [class.s-highlighted]="dd[0]">
-                                {{ dd[1] }}
-                            </span>
-                        </td>
+                        <th style="width: 100px">{{ 'Chant' | translate}}</th>
+                        <th style="width: 100px">{{ 'Verse' | translate}}</th>
+                        <th>{{ 'Iliad' | translate}}</th>
+                        <th>{{ 'Scholie' | translate}}</th>
                     </tr>
-                </ng-container>
-            </tbody>
-        </table>
-    </cdk-virtual-scroll-viewport>
+                </thead>
+
+                <tbody>
+                    <ng-container *cdkVirtualFor="let s of sch">
+                        <tr>
+                            <td>{{ s[0] }}</td>
+                            <td>{{ s[1] }}</td>
+                            <td>{{ s[2] }}</td>
+                            <td>
+                                <span
+                                    *ngFor="let dd of s[3]"
+                                    [class.s-highlighted]="dd[0]">
+                                    {{ dd[1] }}
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </cdk-virtual-scroll-viewport>
+    </ng-container>
 </div>
