@@ -73,10 +73,10 @@ export class AlignedTextsComponent implements OnDestroy, AfterViewInit {
     {
       name: _T('Type'),
       data: [
-        { id: 'del', kind: 'del', label: _T('Removed from Homer') },
-        { id: 'ins', kind: 'ins', label: _T('Added In Paraphrase') },
-        { id: 'eq', kind: 'eq', label: _T('Same Word') },
         { id: 'sub', kind: 'sub', label: _T('Substitution') },
+        { id: 'eq', kind: 'eq', label: _T('Same Word') },
+        { id: 'ins', kind: 'ins', label: _T('Added In Paraphrase') },
+        { id: 'del', kind: 'del', label: _T('Removed from Homer') },
       ],
     },
   ];

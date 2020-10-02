@@ -39,7 +39,7 @@ export class SearchBoxComponent {
   get alignment() { return this.searchQuery.alignment; }
 
   indexes = [
-    { id: 'text', label: this.ts.instant(_T('Text')) },
+    { id: 'text', label: this.ts.instant(_T('Form')) },
     { id: 'lemma', label: this.ts.instant(_T('Lemma')) },
   ];
   readonly alignmentTypes = this.alignmentService.alignmentTypes.pipe(

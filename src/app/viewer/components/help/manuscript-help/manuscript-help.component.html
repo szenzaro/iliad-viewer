@@ -15,32 +15,26 @@
         <h1>But</h1>
         <ul>
             <li>
-                Visualiser en vis-à-vis (miroir) les pages du manuscrit avec la transcription du texte qu’elles contiennent (
-                <em>Iliade</em>
-                et paraphrase).
+                Visualiser en vis-à-vis (en miroir) les pages du manuscrit avec la transcription du texte qu’elles contiennent (<em>Iliade</em> et paraphrase).
             </li>
             <li>
-                À partir du chant 6, les textes (
-                <em>Iliade</em>
-                et paraphrase) ne sont plus transcrits mais il demeure possible de rechercher une page en fonction d’un chant et / ou d’un vers spécifique.
+                À partir du chant 6, les textes (<em>Iliade</em> et paraphrase) ne sont plus transcrits mais il demeure possible de rechercher une page en fonction d’un chant et / ou d’un vers spécifique.
             </li>
         </ul>
 
         <h1>Description</h1>
         <ul>
             <li>
-                En exploitant l’
-                <a href="https://www.e-codices.unifr.ch/en/list/one/bge/gr0044">IIIF manifest URL du site E-codices</a>
-                , cette fenêtre permet de visualiser dans la partie gauche de l’écran les pages du Genavensis 44 gr (de la page 1 à la page 802 : totalité des pages qui contiennent le poème).
+                En exploitant l’<a href="https://www.e-codices.unifr.ch/en/list/one/bge/gr0044">IIIF manifest URL du site e-codices</a>, cette fenêtre permet de visualiser dans la partie gauche de l’écran les pages du <em>Genavensis græcus 44</em> (de la page 1 à la page 802 : totalité des pages qui contiennent le poème).
             </li>
             <li>
                 L’utilisateur peut choisir la page du manuscrit sur laquelle il veut travailler. En baladant son curseur sur la page choisie, il peut tirer parti des options proposées par les boutons en haut  à gauche afin d’agrandir et de se promener sur les détails de l’image.
             </li>
             <li>
-                Dans la partie droite de l’écran, la deuxième fenêtre permet de visualiser la transcription des vers homériques et de la paraphrase. La présentation respecte la disposition interlinéaire du manuscrit. En option, à partir des boutons (format toggle), l’utilisateur peut choisir de ne visualiser que le texte homérique ou que la paraphrase
+                Dans la partie droite de l’écran, la deuxième fenêtre permet de visualiser la transcription des vers homériques et de la paraphrase. La présentation respecte la disposition interlinéaire du manuscrit. En option, à partir des boutons <app-switch [inline]="true" [value]="true" [label]="'Homer' | translate"></app-switch> et <app-switch [inline]="true" [value]="true" [label]="'Paraphrase' | translate"></app-switch> l’utilisateur peut choisir de ne visualiser que le texte homérique ou que la paraphrase.
             </li>
             <li>
-                L’utilisateur peut rechercher soit un chant, soit un vers précis, l’affiche de la page du manuscrit correspondante sera automatique.
+                L’utilisateur peut rechercher soit un chant, soit un vers précis. L’affiche de la page du manuscrit correspondante sera automatique.
             </li>
         </ul>
 
