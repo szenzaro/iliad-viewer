@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, Output } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { Component, Input, Output } from '@angular/core';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, shareReplay } from 'rxjs/operators';
 import { InSubject } from '../../utils/in-subject';
 
@@ -19,7 +19,7 @@ interface ItemInfo {
   templateUrl: './select-number.component.html',
   styleUrls: ['./select-number.component.scss']
 })
-export class SelectNumberComponent implements OnDestroy {
+export class SelectNumberComponent {
 
   @Input() inline = true;
   @Input() label: string;
@@ -63,20 +63,8 @@ export class SelectNumberComponent implements OnDestroy {
   faArrowLeft = faArrowLeft;
   faArrowRight = faArrowRight;
 
-  subscription: Subscription;
-
   constructor(
     private ts: TranslateService,
   ) {
-    this.subscription = this.ts.onLangChange.subscribe((x) => {
-      if (!!this.selectionChange.value) {
-        const idx = this.options.findIndex(({ id }) => id === this.selectionChange.value.id);
-        this.options = [...this.options];
-        this.selectionChange.next(this.options[idx]);
-      }
-    });
-  }
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }
