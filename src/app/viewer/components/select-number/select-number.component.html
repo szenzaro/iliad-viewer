@@ -15,6 +15,12 @@
             [ngModel]="selectedItem | async"
             (ngModelChange)="selection = $event"
             bindLabel="label">
+            <ng-template
+                ng-option-tmp
+                let-item="item"
+                let-index="index">
+                {{item.label | translate}}
+            </ng-template>
         </ng-select>
     </div>
     <ng-container *ngIf="showButtons">

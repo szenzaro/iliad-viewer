@@ -1,9 +1,10 @@
-import { Component, Input, Output } from '@angular/core';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { Component, Input, OnDestroy, Output } from '@angular/core';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, shareReplay } from 'rxjs/operators';
 import { InSubject } from '../../utils/in-subject';
 
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { TranslateService } from '@ngx-translate/core';
 
 interface ItemInfo {
   index?: number;
@@ -18,7 +19,7 @@ interface ItemInfo {
   templateUrl: './select-number.component.html',
   styleUrls: ['./select-number.component.scss']
 })
-export class SelectNumberComponent {
+export class SelectNumberComponent implements OnDestroy {
 
   @Input() inline = true;
   @Input() label: string;
@@ -32,12 +33,13 @@ export class SelectNumberComponent {
 
   selectedItem = this.selectionChange.pipe(
     filter((x) => !!x),
+    map(({ id, label }) => ({ id, label: this.ts.instant(label) })),
     debounceTime(150),
   );
 
   @Output() selectedNumber = this.selectedItem.pipe(
     filter((x) => !!x),
-    map(({id}) => id === 'all' ? 'all' : +id),
+    map(({ id }) => id === 'all' ? 'all' : +id),
     distinctUntilChanged(),
   );
 
@@ -60,4 +62,21 @@ export class SelectNumberComponent {
 
   faArrowLeft = faArrowLeft;
   faArrowRight = faArrowRight;
+
+  subscription: Subscription;
+
+  constructor(
+    private ts: TranslateService,
+  ) {
+    this.subscription = this.ts.onLangChange.subscribe((x) => {
+      if (!!this.selectionChange.value) {
+        const idx = this.options.findIndex(({ id }) => id === this.selectionChange.value.id);
+        this.options = [...this.options];
+        this.selectionChange.next(this.options[idx]);
+      }
+    });
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
