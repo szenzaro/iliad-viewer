@@ -2,7 +2,7 @@
     <label
         *ngIf="label"
         [for]="id">
-        {{ label }}
+        {{ label | translate}}
     </label>
     <div
         *ngFor="let rb of items; let first=first"
