@@ -1,8 +1,9 @@
 {
     "mainText": "./texts/homeric/verses.json",
     "textsList": [
-        { "id": "homeric", "label": "Homeric", "chants": [1,2,3] },
-        { "id": "paraphrase", "label": "Paraphrase", "chants": [1,2,3] }
+        { "id": "homeric", "label": "Homeric", "type": "verse", "chants": [1,2,3] },
+        { "id": "paraphrase", "label": "Paraphrase", "type": "verse", "chants": [1,2,3] },
+        { "id": "french-paraphrase", "label": "French Paraphrase", "type": "prose", "chants": [1,2,3,4,5] }
     ],
     "manuscriptPages": 802,
     "alignments": [
