@@ -66,6 +66,10 @@ export class ComparableTextComponent {
       tap(() => this.loading.next(false)),
     );
 
+  isProseText = this.textChange.pipe(
+    switchMap((x) => this.textService.isProseText(x)),
+  );
+
   @Input() @InSubject() posFilter: WordsFilter;
   @Output() posFilterChange = new BehaviorSubject<WordsFilter>({ op: 'or', wfilter: [] });
 

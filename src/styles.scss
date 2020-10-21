@@ -44,7 +44,6 @@
 
 .word:hover,
 .highlighted {
-    cursor: pointer;
     color: $word-over-color;
     background-color: $word-over-bg-color;
 }
@@ -350,3 +349,14 @@
 .pointer {
     cursor: pointer;
 }
+
+.license {
+    font-size: 9px;
+    max-width: 400px;
+    color: white;
+    a {
+        color: white;
+        font-weight: bold;
+    }
+}
+
