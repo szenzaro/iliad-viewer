@@ -133,7 +133,16 @@ export class TextService {
   }
 
   manifest = this.cacheService.cachedGet<TextManifest>('./assets/data/manifest.json').pipe(shareReplay(1));
-  textList = this.manifest.pipe(map(({ textsList }) => textsList));
+  textList = this.manifest.pipe(map(({ textsList }) => textsList), shareReplay(1));
+
+  isProseText(textID: string) {
+    return this.textList.pipe(
+      map((txts) => {
+        const txt = txts.find((t) => t.id === textID);
+        return txt !== undefined && txt.type === 'prose';
+      }),
+    );
+  }
 
   getPageFromVerse(chant: number, verse: number) {
     return this.cacheService.cachedGet<{ [key: string]: PageInfo[] }>('./assets/manuscript/pagesToVerses.json')
