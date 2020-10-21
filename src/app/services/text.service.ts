@@ -49,6 +49,7 @@ function getVerse(position: number, verse: VerseRowType, source: string, chant: 
 export interface TextItem {
   id: string;
   label: string;
+  type: 'verse' | 'prose';
   chants: number[];
 }
 
