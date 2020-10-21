@@ -11,6 +11,7 @@
     <app-word
         class="p-1"
         *ngFor="let w of verse.words"
+        [class.cursor]="showData"
         [word]="w"
         [posHighlight]="posHighlight"
         [highlighted]="isHighlighted(w.id)"
