@@ -6,7 +6,7 @@
                 routerLink="/home">
                 Iliad Viewer
             </a>
-            <div class="license d-flex">
+            <div class="license d-flex align-items-center">
                 <a
                     rel="license"
                     href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
@@ -15,15 +15,22 @@
                         style="border-width:0"
                         src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png">
                 </a>
+                
+                <ng-container *ngIf="translate.currentLang === 'fr'">
                 <span class="p-1">
-                    This work is licensed under a
-                    <a
-                        rel="license"
-                        href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
-                        Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
-                    </a>
-                    .
+                    Ce(tte) œuvre est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Licence Creative Commons Attribution - Pas d&#39;Utilisation Commerciale - Pas de Modification 4.0 International</a>.
                 </span>
+                </ng-container>
+                <ng-container *ngIf="translate.currentLang === 'en'">
+                    <span class="p-1">
+                        This work is licensed under a<a
+                            target="_blank"
+                            rel="license"
+                            href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                            Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
+                        </a>.
+                    </span>
+                    </ng-container>
             </div>
             <button
                 class="navbar-toggler"
