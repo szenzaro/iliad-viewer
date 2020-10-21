@@ -47,6 +47,7 @@ import { ComparisonHelpComponent } from './components/help/comparison-help/compa
 import { ManuscriptHelpComponent } from './components/help/manuscript-help/manuscript-help.component';
 import { ScholieHelpComponent } from './components/help/scholie-help/scholie-help.component';
 import { SearchHelpComponent } from './components/help/search-help/search-help.component';
+import { AnnexesPageComponent } from './components/annexes-page/annexes-page.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/');
@@ -104,6 +105,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ViewerPageComponent,
     WordComponent,
     WordFiltersComponent,
+    AnnexesPageComponent,
   ],
   providers: [
     ManuscriptService,

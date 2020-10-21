@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AlignedTextsComponent } from './components/aligned-texts/aligned-texts.component';
+import { AnnexesPageComponent } from './components/annexes-page/annexes-page.component';
 import { ManuscriptComponent } from './components/manuscript/manuscript.component';
 import { ScholieComponent } from './components/scholie/scholie.component';
 import { SearchComponent } from './components/search/search.component';
@@ -31,6 +32,10 @@ const routes: Routes = [
       {
         path: 'search',
         component: SearchComponent,
+      },
+      {
+        path: 'annexes',
+        component: AnnexesPageComponent,
       },
       {
         path: '',
