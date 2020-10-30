@@ -55,7 +55,6 @@ export interface TextItem {
 
 export interface TextManifest {
   textsList: TextItem[];
-  mainText: string;
   alignments: AlignmentItem[];
   scholieAlignments: AlignmentItem[];
   manuscriptPages: number;
