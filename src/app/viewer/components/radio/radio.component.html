@@ -12,6 +12,7 @@
         <input
             class="custom-radio form-check-input pointer"
             type="radio"
+            [disabled]="disabled"
             [(ngModel)]="choice"
             [id]="rb.id"
             [value]="rb.id"

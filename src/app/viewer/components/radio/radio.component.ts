@@ -13,10 +13,12 @@ export class RadioComponent {
 
   id = `radio-${uuid()}`;
 
+  @Input() labelPosition: 'left' | 'right';
   @Input() label: string;
   @Input() items: Array<{ id: string, label: string }> = [];
   @Input() inline = false;
   @Input() @InSubject() initialValue: string;
+  @Input() disabled = false;
   initialValueChange = new BehaviorSubject<string>(undefined);
 
   @InSubject() choice: string;
