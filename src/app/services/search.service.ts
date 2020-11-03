@@ -11,7 +11,7 @@ export type Index = Map<number[]>;
 
 export interface SearchQuery {
   text: string;
-  index: 'text' | 'lemma';
+  index: 'text' | 'lemma' | 'pos';
   alignmentType: 'auto' | 'manual';
   caseSensitive: boolean;
   diacriticSensitive: boolean;

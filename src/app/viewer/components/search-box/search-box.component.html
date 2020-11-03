@@ -63,8 +63,15 @@
         </div>
     </div>
     <div class="w-50 p-3 d-flex justify-content-between">
-        <div class="d-flex flex-column">
-            <label>{{ 'Subject' | translate}}:</label>
+        <app-radio
+            [label]="('Mode' | translate) + ':'"
+            [initialValue]="searchQuery.pos ? 'pos' : searchQuery.index"
+            (value)="searchQuery.index = $event"
+            (value)="switchExactMatch($event)"
+            (value)="searchQuery.pos = $event === 'pos'"
+            [items]="indexes">
+        </app-radio>
+        <div class="mr-5">
             <div class="form-check">
                 <input
                     type="checkbox"
@@ -77,33 +84,13 @@
                     {{ 'Alignment' | translate }}
                 </label>
             </div>
-            <div class="form-check">
-                <input
-                    type="checkbox"
-                    [(ngModel)]="searchQuery.pos"
-                    (ngModelChange)="$event ? 0 : searchQuery.wFilter = undefined"
-                    class="form-check-input pointer"
-                    id="posCheckbox">
-                <label
-                    class="form-check-label pointer"
-                    for="posCheckbox">
-                    {{ 'POS' | translate }}
-                </label>
-            </div>
+            <app-radio
+                [disabled]="!alignment"
+                [initialValue]="searchQuery.alignmentType"
+                (value)="searchQuery.alignmentType = $event"
+                [items]="alignmentTypes | async">
+            </app-radio>
         </div>
-        <app-radio
-            [label]="('Alignment Type' | translate) + ':'"
-            [initialValue]="searchQuery.alignmentType"
-            (value)="searchQuery.alignmentType = $event"
-            [items]="alignmentTypes | async">
-        </app-radio>
-        <app-radio
-            [label]="('Mode' | translate) + ':'"
-            [initialValue]="searchQuery.index"
-            (value)="searchQuery.index = $event"
-            (value)="switchExactMatch($event)"
-            [items]="indexes">
-        </app-radio>
         <div class="d-flex flex-column">
             <label>{{ 'Options' | translate }}:</label>
             <app-switch

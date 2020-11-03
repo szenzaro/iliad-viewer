@@ -41,6 +41,7 @@ export class SearchBoxComponent {
   indexes = [
     { id: 'text', label: this.ts.instant(_T('Form')) },
     { id: 'lemma', label: this.ts.instant(_T('Lemma')) },
+    { id: 'pos', label: this.ts.instant(_T('POS')) },
   ];
   readonly alignmentTypes = this.alignmentService.alignmentTypes.pipe(
     map((types) => types.map((id) => ({ id, label: this.ts.instant(AlignmentLabels[id]) }))),
@@ -98,7 +99,7 @@ export class SearchBoxComponent {
     }
   }
 
-  switchExactMatch(x: 'text' | 'lemma') {
+  switchExactMatch(x: 'text' | 'lemma' | 'pos') {
     this.searchQuery.exactMatch = x === 'lemma';
   }
 }
