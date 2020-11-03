@@ -5,6 +5,10 @@
 @import "../node_modules/bootstrap/scss/variables";
 @import "scss/_colors.scss";
 
+body {
+    background-color: $white-egg;
+}
+
 .full-height {
     height: 100vh;
 }
