@@ -28,6 +28,7 @@ export class AppComponent implements OnDestroy {
     { active: false, label: _T('Alignment'), path: 'viewer/alignment' },
     { active: false, label: _T('Scholie'), path: 'viewer/scholie' },
     { active: false, label: _T('Search'), path: 'viewer/search' },
+    { active: false, label: _T('Annexes'), path: 'viewer/annexes' },
   ];
 
   faLanguage = faLanguage;
