@@ -49,9 +49,9 @@ export class AppComponent implements OnDestroy {
     public router: Router,
     readonly translate: TranslateService,
   ) {
-    const bl = this.translate.getBrowserLang();
-    translate.use(this.languages.find((v) => v.id === bl)?.id || 'fr');
-    // translate.use('fr');
+    // const bl = this.translate.getBrowserLang();
+    // translate.use(this.languages.find((v) => v.id === bl)?.id || 'fr'); // TODO: activate when the english translation will be available
+    translate.use('fr');
     this.subscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         gtag(
