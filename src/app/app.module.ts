@@ -10,6 +10,7 @@ import { AboutPageComponent } from './about-page/about-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ViewerModule } from './viewer/viewer.module';
 
@@ -26,6 +27,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomePageComponent,
     PageNotFoundComponent,
+    LandingPageComponent,
   ],
   imports: [
     BrowserModule,
