@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
 import { faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,6 +35,7 @@ export class AppComponent implements OnDestroy {
   constructor(
     public router: Router,
     readonly translate: TranslateService,
+    readonly route: Router,
   ) {
     // const bl = this.translate.getBrowserLang();
     // translate.use(this.languages.find((v) => v.id === bl)?.id || 'fr'); // TODO: activate when the english translation will be available
