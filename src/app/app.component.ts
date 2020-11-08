@@ -4,12 +4,7 @@ import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
 import { faLanguage } from '@fortawesome/free-solid-svg-icons';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-
-interface OptionItem {
-  label: string;
-  path: string;
-  active: boolean;
-}
+import { defaultOptions } from './utils';
 
 declare let gtag: (evtName: string, id: string, data) => void;
 
@@ -21,15 +16,7 @@ declare let gtag: (evtName: string, id: string, data) => void;
 export class AppComponent implements OnDestroy {
   title = 'iliad-viewer';
 
-  defaultOptions: OptionItem[] = [
-    { active: false, label: _T('Project Description'), path: '/home' },
-    { active: true, label: _T('Manuscript'), path: 'viewer/manuscript' },
-    { active: false, label: _T('Text Comparison'), path: 'viewer/texts' },
-    { active: false, label: _T('Alignment'), path: 'viewer/alignment' },
-    { active: false, label: _T('Scholie'), path: 'viewer/scholie' },
-    { active: false, label: _T('Search'), path: 'viewer/search' },
-    { active: false, label: _T('Annexes'), path: 'viewer/annexes' },
-  ];
+  defaultOptions = defaultOptions;
 
   faLanguage = faLanguage;
   languages = [

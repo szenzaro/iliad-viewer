@@ -2,6 +2,23 @@ import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
 import { TranslateService } from '@ngx-translate/core';
 import { AlignmentKind, AlignmentType, ScholieKind } from '../services/alignment.service';
 
+export interface OptionItem {
+    label: string;
+    path: string;
+    active: boolean;
+    color: string;
+}
+
+export const defaultOptions: OptionItem[] = [
+    { active: false, label: _T('Project Description'), path: '/proj', color: '#639a88' },
+    { active: true, label: _T('Manuscript'), path: '/viewer/manuscript', color: '#ffb300' },
+    { active: false, label: _T('Text Comparison'), path: '/viewer/texts', color: '#6184d8' },
+    { active: false, label: _T('Alignment'), path: '/viewer/alignment', color: '#ff0000' },
+    { active: false, label: _T('Scholie'), path: '/viewer/scholie', color: '#8e24aa' },
+    { active: false, label: _T('Search'), path: '/viewer/search', color: '#1e88e5' },
+    { active: false, label: _T('Annexes'), path: '/viewer/annexes', color: '#d81b60' },
+];
+
 export interface Map<T> {
     [key: string]: T;
 }
