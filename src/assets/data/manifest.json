@@ -1,9 +1,9 @@
 {
     "mainText": "./texts/homeric/verses.json",
     "textsList": [
-        { "id": "homeric", "label": "Iliad (Gen. gr. 44)", "type": "verse", "chants": [1,2,3] },
-        { "id": "paraphrase", "label": "Paraphrase (Gen. gr. 44)", "type": "verse", "chants": [1,2,3] },
-        { "id": "french-paraphrase", "label": "Paraphrase French Translation", "type": "prose", "chants": [1,2,3,4,5] }
+        { "id": "homeric", "label": "Iliad (Gen. gr. 44)", "type": "verse", "chants": [1,2,3], "searchable": true },
+        { "id": "paraphrase", "label": "Paraphrase (Gen. gr. 44)", "type": "verse", "chants": [1,2,3], "searchable": true },
+        { "id": "french-paraphrase", "label": "Paraphrase French Translation", "type": "prose", "chants": [1,2,3,4,5], "searchable": false  }
     ],
     "manuscriptPages": 802,
     "alignments": [
