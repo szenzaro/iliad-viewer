@@ -103,7 +103,7 @@
                 <ngb-tabset>
                     <ngb-tab
                         *ngFor="let r of res | keyvalue"
-                        [title]="r.key  + ' (' + (totalResultsPerText | async)[r.key] + ')'">
+                        [title]="(textIdToLabel(r.key) | async)  + ' (' + (totalResultsPerText | async)[r.key] + ')'">
                         <ng-template ngbTabContent>
                             <ngb-tabset>
                                 <ngb-tab
