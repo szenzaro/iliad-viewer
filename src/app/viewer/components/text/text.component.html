@@ -1,0 +1,21 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<cdk-virtual-scroll-viewport
+    *ngIf="!loading"
+    class="full-height"
+    itemSize="32">
+    <ng-container *cdkVirtualFor="let verse of verses; let index = index">
+        <app-verse
+            [clickable]="verseClickable"
+            (verseClicked)="scrollIndexChange.next($event)"
+            [posHighlight]="posHighlight"
+            [highlightIds]="highlightIds"
+            (openWord)="showData ? openedWord = $event : undefined"
+            (wordOver)="wordOver.next($event)"
+            [attr.data-index]="index"
+            [wordDetails]="openedWord"
+            [showData]="showData"
+            [highlight]="shouldHighlight(index, verse)"
+            [verse]="verse">
+        </app-verse>
+    </ng-container>
+</cdk-virtual-scroll-viewport>

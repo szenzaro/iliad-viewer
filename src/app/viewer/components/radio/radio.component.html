@@ -1,0 +1,26 @@
+<div class>
+    <label
+        *ngIf="label"
+        [for]="id">
+        {{ label | translate}}
+    </label>
+    <div
+        *ngFor="let rb of items; let first=first"
+        class="form-check"
+        [class.ml-3]="inline"
+        [class.custom-control-inline]="inline">
+        <input
+            class="custom-radio form-check-input pointer"
+            type="radio"
+            [disabled]="disabled"
+            [(ngModel)]="choice"
+            [id]="rb.id"
+            [value]="rb.id"
+            [name]="id">
+        <label
+            class="form-check-label pointer"
+            [for]="rb.id">
+            {{ rb.label | translate}}
+        </label>
+    </div>
+</div>

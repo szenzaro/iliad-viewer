@@ -1,0 +1,61 @@
+<div class="d-flex flex-column">
+    <img
+        class="landing-logo align-self-center p-5"
+        src="./assets/logos/logo_picto_gauche_noir.svg">
+
+    <ng-container *ngIf="translate.currentLang === 'en'">
+        <!-- TODO: translate to english -->
+        No english translation yet!
+    </ng-container>
+
+    <ng-container *ngIf="translate.currentLang === 'fr'">
+
+        <section class="container">
+            Direction scientifique : David Bouvier et Ariane Jambé
+            <br>
+            Conception technique : Simone Zenzaro
+        </section>
+
+        <section class="container d-flex flex-column">
+            <div class="align-self-center p-3">
+
+                <div
+                    class="landing-pill"
+                    *ngFor="let option of defaultOptions">
+                    <a
+                        class="nav-link"
+                        [ngStyle]="{'color': option.color}"
+                        [routerLink]="option.path"
+                        routerLinkActive="active">
+                        <span
+                            class="circle"
+                            [ngStyle]="{'background-color': option.color}"></span>
+                        {{ option.label | translate}}
+                        <span
+                            *ngIf="option.active"
+                            class="sr-only">
+                            (current)
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </ng-container>
+
+    <footer class="container">
+        <p>
+            Iliadoscope
+            <br>
+            Université de Lausanne
+            <br>
+            Section d'Archéologie et des Sciences de l'Antiquité
+            <br>
+            Anthropole - UNIL-Dorigny
+            <br>
+            CH-1015 Lausanne
+            <br>
+            e-mail : iliadoscope@unil.ch
+        </p>
+    </footer>
+</div>

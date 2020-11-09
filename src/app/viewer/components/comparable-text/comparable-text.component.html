@@ -1,0 +1,27 @@
+<div class="d-flex">
+    <app-select-text
+        [disabled]="disableText"
+        [(text)]="text"
+        bindValue="id"
+        class="flex-grow-1">
+    </app-select-text>
+    <app-select-number
+        [showButtons]="false"
+        [options]="chantOptions || (chantsNumber | async)"
+        [label]="'Book' | translate"
+        class="flex-grow-1"
+        [selection]="optionChant | async"
+        (selectedNumber)="chant = $event">
+    </app-select-number>
+</div>
+<div class="overflow-scroll mt-1">
+    <app-text
+        [showData]="(isProseText | async) === false"
+        (wordOver)="wordOver.next($event)"
+        [(scrollIndex)]="scrollIndex"
+        [posHighlight]="posFilterChange | async"
+        [highlightIds]="highlightIds"
+        [verses]="verses | async"
+        [loading]="loading | async">
+    </app-text>
+</div>

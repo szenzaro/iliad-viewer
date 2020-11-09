@@ -1,0 +1,50 @@
+<div class="d-flex">
+    <app-select-number
+        [options]="manuscriptService.allChants | async"
+        [selection]="chant | async"
+        (selectedNumber)="manuscriptService.chantInput.next($event)"
+        [label]="'Book' | translate"
+        class="flex-grow-1">
+    </app-select-number>
+    <!-- <app-select-number
+        [options]="manuscriptService.pages | async"
+        [selection]="page | async"
+        (selectedNumber)="manuscriptService.pageInput.next($event)"
+        [label]="'Page' | translate"
+        class="flex-grow-1">
+    </app-select-number> -->
+    <app-select-number
+        [options]="manuscriptService.verses | async"
+        [selection]="verse | async"
+        (selectedNumber)="manuscriptService.verseInput.next($event)"
+        [label]="'Verse' | translate"
+        class="flex-grow-1">
+    </app-select-number>
+</div>
+<ng-container *ngIf="(verses | async) as vs">
+    <div
+        *ngIf="vs.length === 0 && (isShowingVerses | async) === true"
+        class="p-3">
+        <p>
+            {{ 'The transcription for this page is not available yet.' | translate }}
+            <br>
+            The verses in this pages are:
+        </p>
+        <ul *ngIf="(manuscriptService.pageVersesRange | async) as rng">
+            <li>
+                {{rng[0][0] + '-' + rng[0][1]}} {{ 'for the Homeric text' | translate }}
+            </li>
+            <li *ngIf="(manuscriptService.chant | async) < 13">
+                {{rng[1][0] + '-' + rng[1][1]}} {{ 'for the paraphrase text' | translate }}
+            </li>
+        </ul>
+    </div>
+    <app-text
+        [loading]="loading | async"
+        [verseClickable]="false"
+        [verses]="vs"
+        [scrollableIndex]="false"
+        [highlight]="showParaphfrase || showHomeric"
+        [showData]="false">
+    </app-text>
+</ng-container>

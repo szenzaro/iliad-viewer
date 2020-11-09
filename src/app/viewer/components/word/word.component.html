@@ -1,0 +1,73 @@
+<span
+    [attr.data-word-id]="word.id"
+    class="word text-nowrap"
+    [class.highlighted]="highlighted"
+    [class.badge]="posHighlighted || (isHighlighted | async)"
+    [class.adjective]="posAdjective && posHighlighted"
+    [class.particle]="posParticle && posHighlighted"
+    [class.preposition]="posPreposition && posHighlighted"
+    [class.article]="posArticle && posHighlighted"
+    [class.adverb]="posAdverb && posHighlighted"
+    [class.name]="posName && posHighlighted"
+    [class.anthroponymic]="posAnthroponymic && posHighlighted"
+    [class.verb]="posVerb && posHighlighted"
+    [class.pronoun]="posPronoun && posHighlighted"
+    [class.num]="posNum && posHighlighted"
+    [class.singular]="posSingular && posHighlighted"
+    [class.plural]="posPlural && posHighlighted"
+    [class.dual]="posDual && posHighlighted"
+    [class.nominative]="posNominative && posHighlighted"
+    [class.vocative]="posVocative && posHighlighted"
+    [class.accusative]="posAccusative && posHighlighted"
+    [class.genitive]="posGenitive && posHighlighted"
+    [class.dative]="posDative && posHighlighted"
+    [class.present]="posPresent && posHighlighted"
+    [class.imperfect]="posImperfect && posHighlighted"
+    [class.future]="posFuture && posHighlighted"
+    [class.aorist]="posAorist && posHighlighted"
+    [class.perfect]="posPerfect && posHighlighted"
+    [class.pluperfect]="posPluperfect && posHighlighted"
+    [class.future-perfect]="posFuturePerfect && posHighlighted"
+    [class.indicative]="posIndicative && posHighlighted"
+    [class.subjunctive]="posSubjunctive && posHighlighted"
+    [class.imperative]="posImperative && posHighlighted"
+    [class.optative]="posOptative && posHighlighted"
+    [class.infinitive]="posInfinitive && posHighlighted"
+    [class.participle]="posParticiple && posHighlighted"
+    [class.first-person]="pos1st && posHighlighted"
+    [class.second-person]="pos2nd && posHighlighted"
+    [class.third-person]="pos3rd && posHighlighted"
+    [class.active]="posActive && posHighlighted"
+    [class.middle]="posMiddle && posHighlighted"
+    [class.passive]="posPassive && posHighlighted"
+    [class.toponym]="posToponym && posHighlighted"
+    [class.patronymic]="posPatronymic && posHighlighted"
+    [class.intj]="posIntj && posHighlighted"
+    [class.neg]="posNeg && posHighlighted"
+    [class.conj]="posConj && posHighlighted"
+    [class.sub]="(alignmentKind | async) === 'sub'"
+    [class.eq]="(alignmentKind | async) === 'eq'"
+    [class.ins]="(alignmentKind | async) === 'ins'"
+    [class.del]="(alignmentKind | async) === 'del'"
+    [class.commentedinscholie]="(isCommented | async) && (scholieHighlighted | async)"
+    [class.correspondingscholie]="(isReprise | async) && (scholieHighlighted | async)"
+    (mouseenter)="wordOver.next(word.id)"
+    (mouseleave)="wordOver.next(null)"
+    (click)="!!word.data ? openWord.next(word) : 0">
+    {{ word.text }}&nbsp;
+    <fa-icon
+        *ngIf="posNeutral && posHighlighted"
+        class="neutral"
+        [icon]="faNeuter">
+    </fa-icon>
+    <fa-icon
+        *ngIf="posMasculine && posHighlighted"
+        class="masculine"
+        [icon]="faMars">
+    </fa-icon>
+    <fa-icon
+        *ngIf="posFeminine && posHighlighted"
+        class="feminine"
+        [icon]="faVenus">
+    </fa-icon>
+</span>

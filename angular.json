@@ -10,13 +10,14 @@
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "style": "scss"
         }
       },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/iliad-viewer",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -27,15 +28,24 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/ngx-ui-switch/ui-switch.component.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/openseadragon/build/openseadragon/openseadragon.js",
+              "src/assets/osd-html-elements/OpenSeadragonHTMLelements.js"
             ]
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -130,5 +140,8 @@
       }
     }
   },
-  "defaultProject": "iliad-viewer"
+  "defaultProject": "iliad-viewer",
+  "cli": {
+    "analytics": false
+  }
 }

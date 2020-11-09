@@ -1,0 +1,105 @@
+<div class="d-flex">
+    <div class="d-flex flex-grow-1 justify-content-center mt-3">
+        <app-radio
+            initialValue="text"
+            (value)="type.next($event)"
+            [inline]="true"
+            [items]="scholieViews">
+        </app-radio>
+    </div>
+    <app-info-button
+        class="m-2"
+        [helpContent]="ScholieHelpComponent">
+    </app-info-button>
+</div>
+
+<div [hidden]="(type | async) !== 'text'">
+    <app-word-filters
+        [showAndOr]="false"
+        [disabled]="true"
+        (filterChange)="filter.next($event)"
+        [pillsData]="filterData">
+    </app-word-filters>
+    <div class="d-flex flex-grow-1 full-height justify-content-around mt-1">
+        <app-comparable-text
+            [disableText]="true"
+            [posFilter]="filterWords | async"
+            (wordOver)="leftWordOver.next($event)"
+            [(scrollIndex)]="scrollIndex"
+            [highlightIds]="sourceIds | async"
+            class="container"
+            [chantOptions]="chants1 | async"
+            [chant]="chant1 | async"
+            (chantChange)="chant1.next($event)"
+            (textChange)="sourceChange.next($event)"
+            [text]="'homeric'">
+        </app-comparable-text>
+
+        <app-comparable-text
+            [disableText]="true"
+            [posFilter]="filterWords | async"
+            (wordOver)="rightWordOver.next($event)"
+            [(scrollIndex)]="scrollIndex"
+            [highlightIds]="targetIds | async"
+            class="container"
+            [chantOptions]="chants2 | async"
+            [chant]="chant2 | async"
+            (chantChange)="chant2.next($event)"
+            (textChange)="targetChange.next($event)"
+            [text]="'paraphrase'">
+        </app-comparable-text>
+    </div>
+</div>
+
+<div *ngIf="(type | async) === 'table'">
+    <div class="d-flex">
+        <app-select-number
+            [options]="chants | async"
+            [selection]="chantOption | async"
+            (selectedNumber)="chant.next($event)"
+            [label]="'Book' | translate"
+            class="flex-grow-1">
+        </app-select-number>
+        <app-select-number
+            [options]="verses | async"
+            [selection]="verseOption | async"
+            (selectedNumber)="verse.next($event)"
+            [label]="'Verse' | translate"
+            class="flex-grow-1">
+        </app-select-number>
+    </div>
+    <ng-container *ngIf="(scholie | async) as sch">
+        <p *ngIf="sch.length === 0"> {{ 'No scholies found!' | translate}}</p>
+        <cdk-virtual-scroll-viewport
+            class="full-height"
+            itemSize="32">
+            <table *ngIf="sch.length > 0" class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 100px">{{ 'Chant' | translate}}</th>
+                        <th style="width: 100px">{{ 'Verse' | translate}}</th>
+                        <th>{{ 'Iliad' | translate}}</th>
+                        <th>{{ 'Scholie' | translate}}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <ng-container *cdkVirtualFor="let s of sch">
+                        <tr>
+                            <td>{{ s[0] }}</td>
+                            <td>{{ s[1] }}</td>
+                            <td>{{ s[2] }}</td>
+                            <td>
+                                <span
+                                    *ngFor="let dd of s[3]"
+                                    [class.s-highlighted]="dd[0]">
+                                    {{ dd[1] }}
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </cdk-virtual-scroll-viewport>
+    </ng-container>
+</div>

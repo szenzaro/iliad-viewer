@@ -1,0 +1,110 @@
+<div class="d-flex align-items-baseline">
+    <div class="w-50 d-flex flex-column">
+        <app-word-filters
+            *ngIf="searchQuery.pos"
+            [disabled]="searchDisabled"
+            [submitBtn]="true"
+            [pos]="searchQuery.wFilter"
+            (filterChange)="searchQuery.wFilter = $event"
+            (submitFilter)="queryChange.next(searchQuery)">
+        </app-word-filters>
+        <div
+            *ngIf="!searchQuery.pos"
+            class="input-group">
+            <input
+                type="text"
+                class="form-control"
+                (keyup.enter)="searchDisabled ? 0 : checkChange(searchQuery)"
+                [(ngModel)]="searchQuery.text"
+                [placeholder]="'Search text' | translate">
+            <button
+                [disabled]="searchDisabled"
+                (click)="checkChange(searchQuery)"
+                class="btn btn-secondary">
+                <fa-icon [icon]="faSearch"></fa-icon>
+            </button>
+        </div>
+        <div
+            *ngIf="!searchQuery.alignment"
+            class="d-flex pt-3">
+            <label
+                class="mr-2 align-self-center"
+                for="texts">
+                {{ 'Sources' | translate }}:
+            </label>
+            <ng-select
+                class="flex-grow-1"
+                [items]="texts | async"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                [searchable]="false"
+                labelForId="texts"
+                [(ngModel)]="searchQuery.texts">
+            </ng-select>
+        </div>
+        <div
+            *ngIf="searchQuery.alignment"
+            class="d-flex pt-3">
+            <button
+                (click)="swapTexts()"
+                class="btn btn-secondary btn-sm">
+                <fa-icon [icon]="faExchange"></fa-icon>
+            </button>
+            <app-select-text
+                [label]="('From' | translate) + ':'"
+                [(text)]="sourceText"
+                class="flex-grow-1">
+            </app-select-text>
+            <app-select-text
+                [label]="('To' | translate) + ':'"
+                [(text)]="targetText"
+                class="flex-grow-1">
+            </app-select-text>
+        </div>
+    </div>
+    <div class="w-50 p-3 d-flex justify-content-between">
+        <app-radio
+            [label]="('Mode' | translate) + ':'"
+            [initialValue]="searchQuery.pos ? 'pos' : searchQuery.index"
+            (value)="searchQuery.index = $event"
+            (value)="switchExactMatch($event)"
+            (value)="searchQuery.pos = $event === 'pos'"
+            [items]="indexes">
+        </app-radio>
+        <div class="mr-5">
+            <div class="form-check">
+                <input
+                    type="checkbox"
+                    class="form-check-input pointer"
+                    [(ngModel)]="alignment"
+                    id="alignCheckbox">
+                <label
+                    class="form-check-label pointer"
+                    for="alignCheckbox">
+                    {{ 'Alignment' | translate }}
+                </label>
+            </div>
+            <app-radio
+                [disabled]="!alignment"
+                [initialValue]="searchQuery.alignmentType"
+                (value)="searchQuery.alignmentType = $event"
+                [items]="alignmentTypes | async">
+            </app-radio>
+        </div>
+        <div class="d-flex flex-column">
+            <label>{{ 'Options' | translate }}:</label>
+            <app-switch
+                [label]="'Case sensitive' | translate"
+                [(value)]="searchQuery.caseSensitive">
+            </app-switch>
+            <app-switch
+                [label]="'Diacritics sensitive' | translate"
+                [(value)]="searchQuery.diacriticSensitive">
+            </app-switch>
+            <app-switch
+                [label]="'Exact Match' | translate"
+                [(value)]="searchQuery.exactMatch">
+            </app-switch>
+        </div>
+    </div>
+</div>

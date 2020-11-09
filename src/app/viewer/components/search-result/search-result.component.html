@@ -1,0 +1,9 @@
+<div class="d-flex">
+    <app-verse
+        [showChant]="showChant"
+        [verse]="result | async"
+        [highlightIds]="wids | async"
+        (openWord)="openedWord = $event"
+        [wordDetails]="openedWord">
+    </app-verse>
+</div>

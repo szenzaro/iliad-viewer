@@ -1,0 +1,31 @@
+<div class="d-flex">
+    <app-word-filters
+        class="m-2 flex-grow-1"
+        [pos]="filterChange | async"
+        (filterChange)="filterChange.next($event)">
+    </app-word-filters>
+    <app-info-button class="m-2" [helpContent]="ComparisonHelpComponent"></app-info-button>
+</div>
+<div
+    [class.d-flex]="showText"
+    class="flex-grow-1 full-height justify-content-around">
+    <app-comparable-text
+        [(scrollIndex)]="scrollIndex"
+        [chant]="chant1 | async"
+        (chantChange)="chant1.next($event)"
+        [posFilter]="filterChange | async"
+        class="container w-70"
+        [text]="text1 | async"
+        (textChange)="text1.next($event)">
+    </app-comparable-text>
+
+    <app-comparable-text
+        [(scrollIndex)]="scrollIndex"
+        [chant]="chant2 | async"
+        (chantChange)="chant2.next($event)"
+        [posFilter]="filterChange | async"
+        class="container"
+        [text]="text2 | async"
+        (textChange)="text2.next($event)">
+    </app-comparable-text>
+</div>

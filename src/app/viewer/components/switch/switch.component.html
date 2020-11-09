@@ -1,0 +1,13 @@
+<div [class.d-inline]="inline" class="custom-control custom-switch">
+    <input
+        [disabled]="disabled"
+        type="checkbox"
+        class="custom-control-input pointer"
+        [(ngModel)]="value"
+        [id]="id">
+    <label
+        class="custom-control-label pointer"
+        [for]="id">
+        {{ label }}
+    </label>
+</div>

@@ -1,0 +1,42 @@
+<div class="d-flex">
+    <div
+        class="d-flex flex-grow-1"
+        [class.flex-column]="!inline">
+        <label
+            *ngIf="label"
+            class="m-0 p-1">
+            {{ label | translate}}
+        </label>
+        <ng-select
+            class="flex-grow-1 mr-1"
+            [items]="options"
+            [hideSelected]="true"
+            [clearable]="false"
+            [ngModel]="selectedItem | async"
+            (ngModelChange)="selection = $event"
+            bindLabel="label">
+            <ng-template
+                ng-option-tmp
+                let-item="item"
+                let-index="index">
+                {{item.label | translate}}
+            </ng-template>
+        </ng-select>
+    </div>
+    <ng-container *ngIf="showButtons">
+        <button
+            *ngIf="selectedInfo | async as itemInfo"
+            class="btn btn-secondary btn-sm"
+            (click)="selectionChange.next(itemInfo.prev)"
+            [disabled]="itemInfo.first">
+            <fa-icon [icon]="faArrowLeft"></fa-icon>
+        </button>
+        <button
+            *ngIf="selectedInfo | async as itemInfo"
+            class="btn btn-secondary btn-sm"
+            (click)="selectionChange.next(itemInfo.next)"
+            [disabled]="itemInfo.last">
+            <fa-icon [icon]="faArrowRight"></fa-icon>
+        </button>
+    </ng-container>
+</div>

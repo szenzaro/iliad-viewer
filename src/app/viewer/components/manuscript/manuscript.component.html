@@ -1,0 +1,35 @@
+<div class="d-flex">
+    <app-annotation-filter
+        class="flex-grow-1"
+        *ngIf="!!interlinearText"
+        [(showAnnotation)]="showAnnotations"
+        (filterChange)="annotationsFilter = $event"
+        (showHomerChange)="interlinearText.showHomeric = $event"
+        (showParaphraseChange)="interlinearText.showParaphfrase = $event">
+    </app-annotation-filter>
+    <app-info-button
+        class="m-2"
+        [helpContent]="ManuscriptHelpComponent">
+    </app-info-button>
+</div>
+<div class="d-flex">
+    <div class="col">
+        <app-select-number
+            [options]="manuscriptService.totalPages | async"
+            [selection]="manuscriptPageOption | async"
+            (selectedNumber)="manuscriptService.pageInput.next($event)"
+            [label]="'Manuscript Page' | translate"
+            class="flex-grow-1">
+        </app-select-number>
+        <app-openseadragon
+            [page]="manuscriptService.page | async"
+            (pageChange)="manuscriptService.pageInput.next($event)"
+            [annotations]="filteredAnnotations | async"
+            manifestURL="./assets/manuscript/manifest.json">
+        </app-openseadragon>
+    </div>
+    <app-interlinear-text
+        #interlinearText
+        class="col">
+    </app-interlinear-text>
+</div>

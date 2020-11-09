@@ -1,0 +1,50 @@
+<div
+    *ngIf="!!verse"
+    class="verse d-flex flex-nowrap"
+    [class.verse-highlight]="highlight">
+    <span
+        class="p-1 pr-3 text-secondary"
+        [class.pointer]="clickable"
+        (click)="verseClicked.next(verse.n)">
+        [{{ showChant ? verse.chant + '.' : '' }}{{ verse.n }}]
+    </span>
+    <app-word
+        class="p-1"
+        *ngFor="let w of verse.words"
+        [class.cursor]="showData"
+        [word]="w"
+        [posHighlight]="posHighlight"
+        [highlighted]="isHighlighted(w.id)"
+        (wordOver)="wordOver.next($event)"
+        (openWord)="openWord.next($event)">
+    </app-word>
+    <span
+        class="word p-1"
+        *ngIf="verse.words?.length == 0">
+        {{ 'OMISIT' | translate}}
+    </span>
+</div>
+<ng-container *ngIf="(openWord | async) as w">
+    <div
+        *ngIf="wordDetails?.id === w?.id"
+        class="word-data-panel">
+        <ul *ngIf="!!w.data">
+            <li>
+                <span>{{ 'Lemma' | translate }}:</span>
+                {{ w.data.lemma}}
+            </li>
+            <li>
+                <span>{{ 'Translation' | translate }}:</span>
+                {{ getTranslationData(w.data.lemma) | async }}
+            </li>
+            <li>
+                <span>{{ 'Description' | translate }}:</span>
+                {{ tagToDescription(w.data.tag, ts) }}
+            </li>
+            <!-- <li>
+                <span>{{ 'ID' | translate }}:</span>
+                {{ w.id }}
+            </li> -->
+        </ul>
+    </div>
+</ng-container>

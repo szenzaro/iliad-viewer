@@ -1,2 +1,375 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
 @import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/variables";
+@import "scss/_colors.scss";
+
+body {
+    background-color: $white-egg;
+}
+
+.full-height {
+    height: 100vh;
+}
+
+.flex-grow-0 {
+    flex-grow: 0;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+.overflow-scroll-y {
+    overflow-y: auto
+}
+
+.overflow-scroll-x {
+    overflow-x: auto;
+}
+
+.overflow-scroll {
+    overflow: auto;
+}
+
+.viewer-nav {
+    min-height: 46px;
+}
+
+.verse:hover,
+.verse-highlight {
+    background-color: $c-light-grey;
+}
+
+.word {
+    font-family: sans-serif;
+}
+
+.word:hover,
+.highlighted {
+    color: $word-over-color;
+    background-color: $word-over-bg-color;
+}
+
+.annotation {
+    background-color: #7c9497;
+    opacity: 0.4;
+    position: absolute;
+}
+
+.annotation:hover {
+    opacity: 1;
+}
+
+.annotation.pill {
+    border-radius: 50%;
+}
+
+.annotation.scholie {
+    background-color: yellow;
+}
+
+.annotation.detail {
+    background-color: green;
+}
+
+.annotation.homeric {
+    background-color: red;
+}
+
+.annotation.paraphrase {
+    background-color: blue;
+}
+
+.annotation>span {
+    display: block;
+    min-width: 300px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    top: 15px;
+    left: 15px;
+    position: absolute;
+    z-index: 99999;
+}
+
+.invisible {
+    display: none;
+}
+
+.word-data-panel {
+    background-color: white;
+    border: solid 1px #cecece;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    margin-top: 1px;
+}
+
+.word-data-panel>ul {
+    list-style-type: none;
+    padding-top: 10px;
+}
+
+.word-data-panel {
+    ul {
+        li {
+            span {
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.badge {
+    border-style: solid;
+    border-color: $badge-color;
+}
+
+.article {
+    background-color: $article-color;
+    color: white;
+}
+
+.particle {
+    background-color: $particle-color;
+    color: white;
+}
+
+.preposition {
+    background-color: $preposition-color;
+    color: white;
+}
+
+.adjective {
+    background-color: $adjective-color;
+    color: white;
+}
+
+.adverb {
+    background-color: $adverb-color;
+    color: white;
+}
+
+.name,
+.anthroponymic,
+.patronymic,
+.toponym {
+    background-color: $name-color;
+    color: white;
+}
+
+.verb {
+    background-color: $verb-color;
+    color: white;
+}
+
+.pronoun {
+    background-color: $pronoun-color;
+    color: white;
+}
+
+.num {
+    background-color: $num-color;
+    color: white;
+}
+
+.singular {
+    border-style: solid;
+}
+
+.plural {
+    border-style: dashed;
+}
+
+.dual {
+    border-style: double;
+}
+
+.nominative {
+    border-width: 3px;
+    border-color: $nominative-color;
+}
+
+.vocative {
+    border-width: 3px;
+    border-color: $vocative-color;
+}
+
+.accusative {
+    border-width: 3px;
+    border-color: $accusative-color;
+}
+
+.genitive {
+    border-width: 3px;
+    border-color: $genitive-color;
+}
+
+.dative {
+    border-width: 3px;
+    border-color: $dative-color;
+}
+
+.present {
+    border-color: $present-color;
+}
+
+.imperfect {
+    border-color: $imperfect-color;
+}
+
+.future {
+    border-color: $future-color;
+}
+
+.aorist {
+    border-color: $aorist-color;
+}
+
+.perfect {
+    border-color: $perfect-color;
+}
+
+.pluperfect {
+    border-color: $pluperfect-color;
+}
+
+.future-perfect {
+    border-color: $future-perfect-color;
+}
+
+.indicative {
+    border-color: $indicative-color;
+}
+
+.subjunctive {
+    border-color: $subjunctive-color;
+}
+
+.imperative {
+    border-color: $imperative-color;
+}
+
+.optative {
+    border-color: $optative-color;
+}
+
+.infinitive {
+    border-color: $infinitive-color;
+}
+
+.participle {
+    border-color: $participle-color;
+}
+
+.first-person {
+    border-color: $first-person-color;
+}
+
+.second-person {
+    border-color: $second-person-color;
+}
+
+.third-person {
+    border-color: $third-person-color;
+}
+
+.active {
+    border-color: $active-color;
+}
+
+.middle {
+    border-color: $middle-color;
+}
+
+.passive {
+    border-color: $passive-color;
+}
+
+.conj {
+    background-color: $conj-color;
+    color: white;
+}
+
+.neg {
+    background-color: $neg-color;
+    color: white;
+}
+
+.intj {
+    background-color: $intj-color;
+    color: white;
+}
+
+.sub {
+    border-color: $sub-color;
+}
+
+.ins {
+    border-color: $ins-color;
+}
+
+.eq {
+    border-color: $eq-color;
+}
+
+.del {
+    border-color: $del-color;
+}
+
+.commentedinscholie {
+    border-color: $commentedinscholie-color;
+}
+
+.correspondingscholie {
+    color: $correspondingscholie-color;
+}
+
+.help-modal h1 {
+    margin: 1em 0 0.5em 0;
+    border-left: 4px solid #18a2b8;
+    font-weight: 300;
+    font-size: 28px;
+    padding-left: 10px;
+}
+
+.help-modal ul {
+    list-style-type: square;
+}
+
+.help-modal ul>ul {
+    list-style-type: circle;
+}
+
+.help-modal ol.upper-alpha {
+    list-style-type: upper-alpha;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.license {
+    font-size: 9px;
+    max-width: 400px;
+    color: white;
+    a {
+        color: white;
+        font-weight: bold;
+    }
+}
+
+.header-bg {
+    background-color: $header-bg-color;
+}
+
+
+.header-logo {
+    height: 40px;
+    margin: 0;
+}

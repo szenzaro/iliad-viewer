@@ -1,0 +1,50 @@
+<div class="d-flex">
+    <div class="d-flex flex-grow-1 justify-content-center m-2">
+        <app-radio
+            [label]="('Alignment type' | translate) + ':'"
+            [initialValue]="type | async"
+            (value)="type.next($event)"
+            [inline]="true"
+            [items]="alignmentTypes | async">
+        </app-radio>
+    </div>
+    <app-info-button
+        class="m-2"
+        [helpContent]="AlignmentHelpComponent">
+    </app-info-button>
+</div>
+<app-word-filters
+    [disabled]="true"
+    [showAndOr]="false"
+    (filterChange)="filter.next($event)"
+    [pillsData]="filterData">
+</app-word-filters>
+<div class="d-flex flex-grow-1 full-height justify-content-around mt-1">
+    <app-comparable-text
+        [disableText]="true"
+        [posFilter]="filterWords | async"
+        (wordOver)="leftWordOver.next($event)"
+        [(scrollIndex)]="scrollIndex"
+        [highlightIds]="sourceIds | async"
+        class="container"
+        [chantOptions]="chants1 | async"
+        [chant]="chant1 | async"
+        (chantChange)="chant1.next($event)"
+        (textChange)="sourceChange.next($event)"
+        [text]="'homeric'">
+    </app-comparable-text>
+
+    <app-comparable-text
+        [disableText]="true"
+        [posFilter]="filterWords | async"
+        (wordOver)="rightWordOver.next($event)"
+        [(scrollIndex)]="scrollIndex"
+        [highlightIds]="targetIds | async"
+        class="container"
+        [chantOptions]="chants2 | async"
+        [chant]="chant2 | async"
+        (chantChange)="chant2.next($event)"
+        (textChange)="targetChange.next($event)"
+        [text]="'paraphrase'">
+    </app-comparable-text>
+</div>

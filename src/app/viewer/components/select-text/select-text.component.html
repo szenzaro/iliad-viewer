@@ -1,0 +1,19 @@
+<div
+    class="d-flex flex-grow-1"
+    [class.flex-column]="!inline">
+    <label
+        *ngIf="label"
+        class="m-0 p-1">
+        {{ label | translate}}
+    </label>
+    <ng-select
+        [disabled]="disabled"
+        class="flex-grow-1 mr-1"
+        [items]="textsList | async"
+        [hideSelected]="true"
+        [clearable]="false"
+        [(ngModel)]="text"
+        [bindValue]="bindValue"
+        bindLabel="label">
+    </ng-select>
+</div>

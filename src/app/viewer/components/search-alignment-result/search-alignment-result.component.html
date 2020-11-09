@@ -1,0 +1,7 @@
+<app-verse
+    [showChant]="showChant"
+    (openWord)="sourceOpenedWord = $event"
+    [wordDetails]="sourceOpenedWord"
+    [verse]="sourceVerse | async"
+    [highlightIds]="sourceIds | async">
+</app-verse>

@@ -1,0 +1,76 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'Scholie page help' | translate}}</h4>
+    <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body help-modal">
+
+    <ng-container *ngIf="translate.currentLang === 'en'">Help not available in english yet!</ng-container>
+
+    <ng-container *ngIf="translate.currentLang === 'fr'">
+        <h1>But</h1>
+        <ul>
+            <li>
+                Visualiser dans le texte de l’<em>Iliade</em> tous les mots commentés par les scholies D, d’après l’édition de C. G. Heyne (1834) et indiquer, dans cet ensemble, les mots dont les équivalences proposées par les scholies sont reprises dans la paraphrase.
+            </li>
+            <li>
+                Visualiser les mots et les expressions de la paraphrase repris des scholies D.
+            </li>
+            <li>
+                En balayant les mots de l’un ou l’autre texte (<em>Iliade</em> ou paraphrase du <em>Genavensis græcus 44</em>), les correspondances précises issues des scholies s’affichent.
+            </li>
+            <li>
+                Pour optimiser la visualisation des équivalences lexicales entre a) les mots homériques et les scholies D et b) les scholies D et la paraphrase, toutes les informations non lexicales que contient le corpus des scholies D ont été supprimées.
+            </li>
+        </ul>
+        <h1>Description</h1>
+        <ul>
+            <li>
+                Cette fenêtre offre le choix entre deux options de présentation.
+                <ol class="upper-alpha">
+                    <li>
+                        <em>Tableau comparatif</em> permet de comparer le texte de l’<em>Iliade</em> et celui de la paraphrase. Les options d’interaction permettent de visualiser les mots homériques commentés par les scholies D ainsi que les mots et expressions de la paraphrase qui reprennent les équivalences proposés par les scholies D. En balayant les mots de l’un ou l’autre textes, les équivalences précisent s’affichent.
+                    </li>
+                    <li>
+                        <em>Tableau des scholies</em> permet de visualiser, par chant et par vers, les mots homériques qui font l’objet d’un commentaire dans les scholies D. Dans la colonne « scholie », les mots en rouge sont ceux qui sont repris dans la paraphrase. Les scholies D, tirées du <em>TLG</em> suivent, pour la plus grande partie, l’édition de C. G. Heyne (<em>Homeri Ilias</em>, Oxford : Oxford University Press, 1834). L’édition de H. van Thiel (<em>Scholia D in Iliadem</em>, Köln : Universitäts- und Stadtbibliothek, 2014) a également été utilisée quand son texte a été jugé préférable. Ce tableau ne reprend pas l’ensemble du texte des scholies D, mais seulement les indications lexicales pertinentes pour visualiser ce que le texte de la paraphrase doit aux scholies.
+                    </li>
+                </ol>
+            </li>
+        </ul>
+
+        <h1>Options d’interaction</h1>
+        <ul>
+            <li>
+                <em>Tableau comparatif</em> : présentation en miroir du texte de l’<em>Iliade</em> et de la paraphrase.
+            </li>
+            <li>
+                <em>Tableau des scholies D</em> : présentation par chant et par vers des mots homériques qui font l’objet d’un commentaire dans les scholies D.
+            </li>
+            <li>
+                <em>Mots commentés par les scholies D</em> : encadre les mots homériques qui font l’objet d’un commentaire dans les scholies D.
+            </li>
+            <li>
+                <em>Mots mis en correspondance par les scholies D</em> : surligne dans le texte homériques les mots repris par les scholies D et dont les équivalences sont reprises dans la paraphrase ; surligne également, dans la paraphrase, les mots ou expressions reprises des scholies D.
+            </li>
+            <li>
+                <button class="m-1 btn btn-sm btn-secondary">
+                    <fa-icon [icon]="faBackspace"></fa-icon>
+                </button> : efface les options sélectionnées
+            </li>
+        </ul>
+    </ng-container>
+
+</div>
+<div class="modal-footer">
+    <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="activeModal.close('Close click')">
+        {{ 'Close' | translate }}
+    </button>
+</div>
