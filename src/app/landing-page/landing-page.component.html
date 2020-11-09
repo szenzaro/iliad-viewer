@@ -10,15 +10,8 @@
 
     <ng-container *ngIf="translate.currentLang === 'fr'">
 
-        <section class="container">
-            Direction scientifique : David Bouvier et Ariane Jambé
-            <br>
-            Conception technique : Simone Zenzaro
-        </section>
-
         <section class="container d-flex flex-column">
             <div class="align-self-center p-3">
-
                 <div
                     class="landing-pill"
                     *ngFor="let option of defaultOptions">
@@ -41,6 +34,13 @@
             </div>
         </section>
 
+        <section class="container p-3 landing-info">
+            <p>
+                Direction scientifique : David Bouvier et Ariane Jambé
+                <br>
+                Conception technique : Simone Zenzaro
+            </p>
+        </section>
     </ng-container>
 
     <footer class="container">
@@ -55,7 +55,7 @@
             <br>
             CH-1015 Lausanne
             <br>
-            e-mail : iliadoscope@unil.ch
+            e-mail : david.bouvier@unil.ch
         </p>
     </footer>
 </div>
