@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, merge, of, Subject } from 'rxjs';
 import {
   debounceTime,
-  distinctUntilChanged,
   filter,
   map,
   mergeMap,
@@ -15,11 +14,17 @@ import {
 } from 'rxjs/operators';
 import { TextService } from 'src/app/services/text.service';
 import { numberToOption, numberToOptions } from 'src/app/utils';
+import { Map } from '../../utils/index';
 
 interface InputTriple {
   chant: number;
   page: number;
   verse: number;
+}
+
+function removeMissingPagesVerses(chant: number, versesByChant: Map<number>) {
+  const vs = numberToOptions(versesByChant[chant] || 0);
+  return chant === 2 ? vs.filter((v) => 494 > +v.id || +v.id > 505) : vs;
 }
 
 @Injectable({
@@ -168,9 +173,7 @@ export class ManuscriptService {
     this.chant,
     this.textService.versesByChant,
   ]).pipe(
-    map(([c, vbc]) => vbc[c] || 0),
-    distinctUntilChanged(),
-    map(numberToOptions),
+    map(([c, vbc]) => removeMissingPagesVerses(c, vbc)),
   );
 
   pageVersesRange = this.triple.pipe(
