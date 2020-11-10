@@ -3,7 +3,7 @@ import { TextService } from 'src/app/services/text.service';
 
 import { InSubject } from '../../utils/in-subject';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
@@ -20,9 +20,14 @@ export class SelectTextComponent {
   @Input() label: string;
   @Input() disabled = false;
   @Input() bindValue: string;
+  @Input() @InSubject() hideUnsearchable: boolean;
+  hideUnsearchableChange = new BehaviorSubject<boolean>(false);
 
-  textsList = this.textService.textList.pipe(
-    map((tl) => tl.map((t) => ({ ...t, label: this.ts.instant(_T(t.label))}))),
+  textsList = combineLatest([this.textService.textList, this.hideUnsearchableChange]).pipe(
+    map(([tl, hideUnserch]) => tl
+      .map((t) => ({ ...t, label: this.ts.instant(_T(t.label)) }))
+      .filter((t) => !hideUnserch || t.searchable)
+    ),
   );
 
   @Input() @InSubject() text: string;

@@ -51,6 +51,7 @@ export interface TextItem {
   label: string;
   type: 'verse' | 'prose';
   chants: number[];
+  searchable: boolean;
 }
 
 export interface TextManifest {

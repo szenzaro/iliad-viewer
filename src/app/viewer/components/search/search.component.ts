@@ -1,9 +1,11 @@
 import { KeyValue } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, map, shareReplay, takeUntil, tap } from 'rxjs/operators';
 import { SearchQuery, SearchService } from 'src/app/services/search.service';
+import { TextService } from 'src/app/services/text.service';
 import { groupBy, Map } from 'src/app/utils';
 import { Word } from 'src/app/utils/models';
 import { SearchHelpComponent } from '../help/search-help/search-help.component';
@@ -129,6 +131,8 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
     public readonly searchService: SearchService,
     private readonly router: Router,
     private readonly activeRoute: ActivatedRoute,
+    private readonly textService: TextService,
+    private readonly ts: TranslateService,
   ) {
 
     this.currentQuery
@@ -200,6 +204,13 @@ export class SearchComponent implements AfterViewInit, OnDestroy {
 
   // tslint:disable-next-line: no-any
   keyNumOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => +a.key - +b.key;
+
+  textIdToLabel(id: string) {
+    return this.textService.textList.pipe(
+      map((tl) => tl.filter((t) => t.id === id)[0].label),
+      map((l) => this.ts.instant(l) as string),
+    );
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe.next();

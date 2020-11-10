@@ -15,7 +15,7 @@
                 type="text"
                 class="form-control"
                 (keyup.enter)="searchDisabled ? 0 : checkChange(searchQuery)"
-                [(ngModel)]="searchQuery.text"
+                [(ngModel)]="sqText"
                 [placeholder]="'Search text' | translate">
             <button
                 [disabled]="searchDisabled"
@@ -38,7 +38,7 @@
                 [multiple]="true"
                 [closeOnSelect]="false"
                 [searchable]="false"
-                labelForId="texts"
+                bindValue="id"
                 [(ngModel)]="searchQuery.texts">
             </ng-select>
         </div>
@@ -51,13 +51,17 @@
                 <fa-icon [icon]="faExchange"></fa-icon>
             </button>
             <app-select-text
+                [hideUnsearchable]="true"
                 [label]="('From' | translate) + ':'"
-                [(text)]="sourceText"
+                [text]="sourceText | async"
+                (textChange)="sourceTextValue = $event"
                 class="flex-grow-1">
             </app-select-text>
             <app-select-text
+                [hideUnsearchable]="true"
                 [label]="('To' | translate) + ':'"
-                [(text)]="targetText"
+                [text]="targetText | async"
+                (textChange)="targetTextValue = $event"
                 class="flex-grow-1">
             </app-select-text>
         </div>

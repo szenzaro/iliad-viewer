@@ -2,14 +2,22 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { marker as _T } from '@biesbjerg/ngx-translate-extract-marker';
 import { faExchangeAlt, faSearch, } from '@fortawesome/free-solid-svg-icons';
 import { TranslateService } from '@ngx-translate/core';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { AlignmentLabels, AlignmentService } from 'src/app/services/alignment.service';
 import { SearchQuery, SearchService } from 'src/app/services/search.service';
 import { TextItem, TextService } from 'src/app/services/text.service';
-import { capitalize } from 'src/app/utils';
 
 function removePunctuation(s: string) {
   return s.replace(/[.,\/#!$%\\[\]^&\*;:{}=\-_`~()]/g, '').replace(/\s{2,}/g, ' ');
+}
+
+function getTextOption(id: string, textService: TextService, ts: TranslateService) {
+  return textService.textList.pipe(
+    map((tl) => tl.filter((t) => t.id === id)[0].label),
+    take(1),
+    map((label) => ({ id, label: ts.instant(_T(label)) })),
+  )
+    ;
 }
 
 @Component({
@@ -48,27 +56,32 @@ export class SearchBoxComponent {
   );
 
   texts = this.textService.textList.pipe(
-    map((x) => x.map(({ id }) => id)),
+    map((x) => x
+      .filter((t) => t.searchable)
+      .map(({ id, label }) => ({ id, label: this.ts.instant(_T(label)) }))),
   );
 
   faSearch = faSearch;
   faExchange = faExchangeAlt;
 
+  get sqText() { return this.searchQuery.text; }
+  set sqText(s: string) { this.searchQuery.text = s.trim(); }
+
   get sourceText() {
-    return { id: this.searchQuery.texts[0], label: capitalize(this.searchQuery.texts[0]) };
+    return getTextOption(this.searchQuery.texts[0], this.textService, this.ts);
   }
 
-  set sourceText(t: Partial<TextItem>) {
+  set sourceTextValue(t: Partial<TextItem>) {
     if (!!t) {
       this.searchQuery.texts[0] = t.id;
     }
   }
 
   get targetText() {
-    return { id: this.searchQuery.texts[1], label: capitalize(this.searchQuery.texts[1]) };
+    return getTextOption(this.searchQuery.texts[1], this.textService, this.ts);
   }
 
-  set targetText(t: Partial<TextItem>) {
+  set targetTextValue(t: Partial<TextItem>) {
     if (!!t) {
       this.searchQuery.texts[1] = t.id;
     }
@@ -102,4 +115,6 @@ export class SearchBoxComponent {
   switchExactMatch(x: 'text' | 'lemma' | 'pos') {
     this.searchQuery.exactMatch = x === 'lemma';
   }
+
+  selectCmp(a: Partial<{ id: string }>, b: Partial<{ id: string }>) { return a.id === b.id; }
 }
